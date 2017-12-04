@@ -122,4 +122,28 @@ public final class Constants
   {
     return Array.clone(MAGIC_MOTOROLA);
   }
+
+  public static int mapPhotometricInterpretationToNumberOfSamples(final int photomInterpValue)
+  {
+    int imageSamples;
+    switch (photomInterpValue)
+    {
+    case PHOTOMETRIC_INTERPRETATION_WHITE_IS_ZERO:
+    case PHOTOMETRIC_INTERPRETATION_BLACK_IS_ZERO:
+    case PHOTOMETRIC_INTERPRETATION_PALETTED:
+      imageSamples = 1;
+      break;
+    case PHOTOMETRIC_INTERPRETATION_RGB:
+    case PHOTOMETRIC_INTERPRETATION_Y_CB_CR:
+      imageSamples = 3;
+      break;
+    case PHOTOMETRIC_INTERPRETATION_SEPARATED:
+      imageSamples = 4;
+      break;
+    default:
+      imageSamples = 0;
+      break;
+    }
+    return imageSamples;
+  }
 }

@@ -15,7 +15,12 @@
  */
 package ufxcoder.formats.tiff;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import ufxcoder.app.AppConfig;
 import ufxcoder.formats.FileDescription;
 
@@ -111,6 +116,46 @@ public class TiffValidator
     }
   }
 
+  private void validateDateTime(final ImageFileDirectory ifd)
+  {
+    validateDateTime(ifd.findByTag(FieldDescriptionFactory.DATE_TIME));
+  }
+
+  public Date parseDateTimeString(final String str)
+  {
+    Date result;
+    if (str == null)
+    {
+      result = null;
+    }
+    else
+    {
+      final DateFormat parser = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss'\u0000'", Locale.ENGLISH);
+      parser.setLenient(false);
+      try
+      {
+        result = parser.parse(str);
+      }
+      catch (ParseException e)
+      {
+        result = null;
+      }
+    }
+    return result;
+  }
+
+  private void validateDateTime(final Field dateTime)
+  {
+    if (dateTime != null)
+    {
+      final String str = dateTime.getAsString();
+      if (parseDateTimeString(str) == null)
+      {
+        proc.addErrorMessage(proc.msg("tiff.error.invalid_date_time", str));
+      }
+    }
+  }
+
   /**
    * Make sure that the fields of an image file directory are stored in strict ascending order of their tags.
    *
@@ -167,6 +212,7 @@ public class TiffValidator
     {
       validate(field);
     }
+    validateDateTime(ifd);
     final boolean thumbnail = isThumbnailIfd(ifd);
     if (!thumbnail)
     {
@@ -174,30 +220,6 @@ public class TiffValidator
       stVal.checkStripsAndTiles(ifd);
     }
     checkSamples(ifd);
-  }
-
-  private int mapPhotometricInterpretationToNumberOfSamples(final int photomInterpValue)
-  {
-    int imageSamples;
-    switch (photomInterpValue)
-    {
-    case Constants.PHOTOMETRIC_INTERPRETATION_WHITE_IS_ZERO:
-    case Constants.PHOTOMETRIC_INTERPRETATION_BLACK_IS_ZERO:
-    case Constants.PHOTOMETRIC_INTERPRETATION_PALETTED:
-      imageSamples = 1;
-      break;
-    case Constants.PHOTOMETRIC_INTERPRETATION_RGB:
-    case Constants.PHOTOMETRIC_INTERPRETATION_Y_CB_CR:
-      imageSamples = 3;
-      break;
-    case Constants.PHOTOMETRIC_INTERPRETATION_SEPARATED:
-      imageSamples = 4;
-      break;
-    default:
-      imageSamples = 0;
-      break;
-    }
-    return imageSamples;
   }
 
   private void checkSamples(final ImageFileDirectory ifd)
@@ -209,7 +231,7 @@ public class TiffValidator
     if (photoInterp != null)
     {
       photomInterpValue = (int) photoInterp.getAsLong();
-      imageSamples = mapPhotometricInterpretationToNumberOfSamples(photomInterpValue);
+      imageSamples = Constants.mapPhotometricInterpretationToNumberOfSamples(photomInterpValue);
     }
 
     // retrieve number of additional samples

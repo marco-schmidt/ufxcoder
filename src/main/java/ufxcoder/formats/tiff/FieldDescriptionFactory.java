@@ -87,6 +87,14 @@ public final class FieldDescriptionFactory
           FieldType.Short, FieldType.Long
       })), Long.valueOf(1), null, 1, Integer.MAX_VALUE, null, false);
   /**
+   * Date and time of creation.
+   */
+  public static final FieldDescription DATE_TIME = new FieldDescription(306,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Char
+      })), null, null, 20, 20, null, false);
+  /**
    * Width of a tile.
    */
   public static final FieldDescription TILE_WIDTH = new FieldDescription(322,
@@ -190,8 +198,8 @@ public final class FieldDescriptionFactory
   private static final FieldDescription[] ALL =
   {
       IMAGE_WIDTH, IMAGE_LENGTH, COMPRESSION, PHOTOMETRIC_INTERPRETATION, STRIP_OFFSETS, ROWS_PER_STRIP,
-      STRIP_BYTE_COUNTS, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS, SUB_IMAGE_FILE_DIRECTORIES, GPS,
-      DNG_VERSION, CR2_SLICE_INFORMATION
+      STRIP_BYTE_COUNTS, DATE_TIME, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS, SUB_IMAGE_FILE_DIRECTORIES,
+      GPS, DNG_VERSION, CR2_SLICE_INFORMATION
   };
 
   private FieldDescriptionFactory()
