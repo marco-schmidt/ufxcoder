@@ -57,8 +57,8 @@ public class FieldDescription
       final int minCount, final int maxCount, final Object defaultValue, final boolean mandatory)
   {
     this.tag = tag;
-    maximumCount = Integer.valueOf(minCount);
-    minimumCount = Integer.valueOf(maxCount);
+    maximumCount = Integer.valueOf(maxCount);
+    minimumCount = Integer.valueOf(minCount);
     this.defaultValue = defaultValue;
     this.mandatory = mandatory;
     maximum = max;

@@ -40,6 +40,24 @@ public class TiffValidator
     {
       validateType(field, desc);
       validateMinMax(field, desc);
+      validateNumber(field, desc);
+    }
+  }
+
+  private void validateNumber(final Field field, final FieldDescription desc)
+  {
+    final long numValues = field.getNumValues();
+    final Number minimumCount = desc.getMinimumCount();
+    if (minimumCount != null && numValues < minimumCount.longValue())
+    {
+      proc.addErrorMessage(
+          proc.msg("tiff.error.field_has_too_few_values", field.getId(), numValues, minimumCount.longValue()));
+    }
+    final Number maximumCount = desc.getMaximumCount();
+    if (maximumCount != null && numValues > maximumCount.longValue())
+    {
+      proc.addErrorMessage(
+          proc.msg("tiff.error.field_has_too_many_values", field.getId(), numValues, maximumCount.longValue()));
     }
   }
 
