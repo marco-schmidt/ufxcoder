@@ -47,6 +47,38 @@ public class TiffValidator
       validateMinMax(field, desc);
       validateNumber(field, desc);
     }
+    if (field.getType() == FieldType.Char.getId())
+    {
+      validateCharacters(field);
+    }
+  }
+
+  private void validateCharacters(final Field field)
+  {
+    final byte[] data = field.getData();
+    if (data != null && data.length > 0)
+    {
+      // count non-ASCII characters in all bytes except for the last one
+      int numNonAscii = 0;
+      for (int i = 0; i < data.length - 1; i++)
+      {
+        final int value = data[i] & 0xff;
+        if (value > 127)
+        {
+          numNonAscii++;
+        }
+      }
+      if (numNonAscii > 0)
+      {
+        proc.addErrorMessage(config.msg("tiff.error.validation.non_ascii_characters", numNonAscii));
+      }
+
+      // last byte must be zero
+      if (data[data.length - 1] != 0)
+      {
+        proc.addErrorMessage(config.msg("tiff.error.validation.characters_not_zero_terminated"));
+      }
+    }
   }
 
   private void validateNumber(final Field field, final FieldDescription desc)
