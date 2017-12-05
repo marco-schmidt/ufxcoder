@@ -15,86 +15,72 @@
  */
 package ufxcoder.formats.tiff;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ufxcoder.app.AppConfig;
 
 public class TiffTest
 {
-  private TiffProcessor proc;
+  private TiffDateTime dateTime;
 
   @Before
   public void setup()
   {
-    // BasicConfigurator.configure();
-    proc = new TiffProcessor();
-    final AppConfig config = new AppConfig();
-    config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));
-    proc.setConfig(config);
+    dateTime = new TiffDateTime();
   }
 
   @Test
   public void testDateTimeCorrect()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNotNull("Correct date time string must yield non-null result.",
-        val.parseDateTimeString("1970:01:01 12:00:00\000"));
+        dateTime.parseDateTimeString("1970:01:01 12:00:00\000"));
   }
 
   @Test
   public void testDateTimeNull()
   {
-    final TiffValidator val = new TiffValidator(proc);
-    Assert.assertNull("Incorrect date time string (null) must yield null result.", val.parseDateTimeString(null));
+    Assert.assertNull("Incorrect date time string (null) must yield null result.", dateTime.parseDateTimeString(null));
   }
 
   @Test
   public void testDateTimeEmpty()
   {
-    final TiffValidator val = new TiffValidator(proc);
-    Assert.assertNull("Incorrect date time string (empty string) must yield null result.", val.parseDateTimeString(""));
+    Assert.assertNull("Incorrect date time string (empty string) must yield null result.",
+        dateTime.parseDateTimeString(""));
   }
 
   @Test
   public void testDateTimeText()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNull("Incorrect date time string (empty string) must yield null result.",
-        val.parseDateTimeString("not a date"));
+        dateTime.parseDateTimeString("not a date"));
   }
 
   @Test
   public void testDateTimeMonth13()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNull("Incorrect date time string (month 13) must yield null result.",
-        val.parseDateTimeString("1970:13:01 12:00:00\000"));
+        dateTime.parseDateTimeString("1970:13:01 12:00:00\000"));
   }
 
   @Test
   public void testDateTime1900February29()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNull("Incorrect date time string (1900-02-29) must yield null result.",
-        val.parseDateTimeString("1900:02:29 12:00:00\000"));
+        dateTime.parseDateTimeString("1900:02:29 12:00:00\000"));
   }
 
   @Test
   public void testDateTime1997February29()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNull("Incorrect date time string (1997-02-29) must yield null result.",
-        val.parseDateTimeString("1997:02:29 12:00:00\000"));
+        dateTime.parseDateTimeString("1997:02:29 12:00:00\000"));
   }
 
   @Test
   public void testDateTime2000February29()
   {
-    final TiffValidator val = new TiffValidator(proc);
     Assert.assertNotNull("Correct date time string must yield non-null result.",
-        val.parseDateTimeString("2000:02:29 12:00:00\000"));
+        dateTime.parseDateTimeString("2000:02:29 12:00:00\000"));
   }
 }

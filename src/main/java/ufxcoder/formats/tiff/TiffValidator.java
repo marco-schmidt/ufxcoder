@@ -15,12 +15,7 @@
  */
 package ufxcoder.formats.tiff;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import ufxcoder.app.AppConfig;
 import ufxcoder.formats.FileDescription;
 
@@ -158,35 +153,13 @@ public class TiffValidator
     validateDateTime(ifd.findByTag(FieldDescriptionFactory.DATE_TIME_ORIGINAL));
   }
 
-  public Date parseDateTimeString(final String str)
-  {
-    Date result;
-    if (str == null)
-    {
-      result = null;
-    }
-    else
-    {
-      final DateFormat parser = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss'\u0000'", Locale.ENGLISH);
-      parser.setLenient(false);
-      try
-      {
-        result = parser.parse(str);
-      }
-      catch (ParseException e)
-      {
-        result = null;
-      }
-    }
-    return result;
-  }
-
   private void validateDateTime(final Field dateTime)
   {
     if (dateTime != null)
     {
       final String str = dateTime.getAsString();
-      if (parseDateTimeString(str) == null)
+      final TiffDateTime tiffDateTime = new TiffDateTime();
+      if (tiffDateTime.parseDateTimeString(str) == null)
       {
         proc.addErrorMessage(proc.msg("tiff.error.invalid_date_time", str));
       }
@@ -257,43 +230,7 @@ public class TiffValidator
       final TiffStripTileValidator stVal = new TiffStripTileValidator(config, proc);
       stVal.checkStripsAndTiles(ifd);
     }
-    checkSamples(ifd);
-  }
-
-  private void checkSamples(final ImageFileDirectory ifd)
-  {
-    // determine image data samples per pixel from photometric interpretation
-    final Field photoInterp = ifd.findByTag(FieldDescriptionFactory.PHOTOMETRIC_INTERPRETATION);
-    int imageSamples = 0;
-    int photomInterpValue = 0;
-    if (photoInterp != null)
-    {
-      photomInterpValue = (int) photoInterp.getAsLong();
-      imageSamples = Constants.mapPhotometricInterpretationToNumberOfSamples(photomInterpValue);
-    }
-
-    // retrieve number of additional samples
-    long additionalSamples = 0;
-    final Field extraSamples = ifd.findByTag(FieldDescriptionFactory.EXTRA_SAMPLES);
-    if (extraSamples != null)
-    {
-      additionalSamples = extraSamples.getNumValues();
-    }
-
-    // retrieve total number of samples per pixel
-    long totalSamples = 0;
-    final Field samplesPerPixel = ifd.findByTag(FieldDescriptionFactory.SAMPLES_PER_PIXEL);
-    if (samplesPerPixel != null)
-    {
-      totalSamples = samplesPerPixel.getAsLong();
-    }
-
-    // compare expected to actual samples
-    if (imageSamples + additionalSamples != totalSamples)
-    {
-      final String msg = proc.getConfig().msg("tiff.error.validation.unexpected_number_of_samples", photomInterpValue,
-          imageSamples, additionalSamples, totalSamples);
-      proc.addErrorMessage(msg);
-    }
+    final TiffColorValidator colorValidator = new TiffColorValidator(proc);
+    colorValidator.checkSamples(ifd);
   }
 }
