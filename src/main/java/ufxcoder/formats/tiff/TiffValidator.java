@@ -74,14 +74,17 @@ public class TiffValidator
     for (int index = 0; index < field.getNumValues(); index++)
     {
       final Number value = field.getAsNumber(index);
-      final Double doubleValue = Double.valueOf(value.doubleValue());
-      if (min.compareTo(doubleValue) > 0)
+      if (value != null)
       {
-        proc.addErrorMessage(proc.msg("tiff.error.value_smaller_than_minimum", field.getId(), value, min));
-      }
-      if (max.compareTo(doubleValue) < 0)
-      {
-        proc.addErrorMessage(proc.msg("tiff.error.value_larger_than_maximum", field.getId(), value, max));
+        final Double doubleValue = Double.valueOf(value.doubleValue());
+        if (min.compareTo(doubleValue) > 0)
+        {
+          proc.addErrorMessage(proc.msg("tiff.error.value_smaller_than_minimum", field.getId(), value, min));
+        }
+        if (max.compareTo(doubleValue) < 0)
+        {
+          proc.addErrorMessage(proc.msg("tiff.error.value_larger_than_maximum", field.getId(), value, max));
+        }
       }
     }
   }
@@ -119,6 +122,8 @@ public class TiffValidator
   private void validateDateTime(final ImageFileDirectory ifd)
   {
     validateDateTime(ifd.findByTag(FieldDescriptionFactory.DATE_TIME));
+    validateDateTime(ifd.findByTag(FieldDescriptionFactory.DATE_TIME_DIGITIZED));
+    validateDateTime(ifd.findByTag(FieldDescriptionFactory.DATE_TIME_ORIGINAL));
   }
 
   public Date parseDateTimeString(final String str)

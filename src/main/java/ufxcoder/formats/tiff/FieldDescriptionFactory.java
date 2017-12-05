@@ -175,6 +175,23 @@ public final class FieldDescriptionFactory
       {
           FieldType.Long, FieldType.IfdOffset
       })), 8, null, 1, Integer.MAX_VALUE, null, false);
+  /**
+   * Date and time of creation of original image.
+   */
+  public static final FieldDescription DATE_TIME_ORIGINAL = new FieldDescription(36867,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Char
+      })), null, null, 20, 20, null, false);
+
+  /**
+   * Date and time when image was digitized (e.g. scanned).
+   */
+  public static final FieldDescription DATE_TIME_DIGITIZED = new FieldDescription(36868,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Char
+      })), null, null, 20, 20, null, false);
 
   /**
    * DNG version (four numeric parts).
@@ -199,7 +216,7 @@ public final class FieldDescriptionFactory
   {
       IMAGE_WIDTH, IMAGE_LENGTH, COMPRESSION, PHOTOMETRIC_INTERPRETATION, STRIP_OFFSETS, ROWS_PER_STRIP,
       STRIP_BYTE_COUNTS, DATE_TIME, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS, SUB_IMAGE_FILE_DIRECTORIES,
-      GPS, DNG_VERSION, CR2_SLICE_INFORMATION
+      GPS, DATE_TIME_ORIGINAL, DATE_TIME_DIGITIZED, DNG_VERSION, CR2_SLICE_INFORMATION
   };
 
   private FieldDescriptionFactory()
