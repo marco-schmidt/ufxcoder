@@ -191,7 +191,8 @@ public class TiffValidator
   {
     if (imageFileDirectoryOffset % 2 != 0)
     {
-      final String msg = proc.getConfig().msg("odd_image_file_directory_offset", imageFileDirectoryOffset);
+      final String msg = proc.getConfig().msg("tiff.error.validation.odd_image_file_directory_offset",
+          imageFileDirectoryOffset);
       proc.addErrorMessage(msg);
     }
   }
