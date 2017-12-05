@@ -125,6 +125,11 @@ public class FieldReader
       {
         final ByteOrder byteOrder = desc.getByteOrder();
         final long offset = big ? Array.from64(data, 0, byteOrder) : Array.from32(data, 0, byteOrder);
+        if (offset % 2 != 0)
+        {
+          final String msg = processor.getConfig().msg("tiff.error.validation.odd_offset", offset);
+          processor.addErrorMessage(msg);
+        }
         final SeekableSource source = processor.getSource();
         source.seek(offset);
         final byte[] buffer = new byte[(int) dataSize];
@@ -176,7 +181,15 @@ public class FieldReader
     {
       final Integer numerator = Integer.valueOf(Array.from32(data, offset, byteOrder));
       final Integer denominator = Integer.valueOf(Array.from32(data, offset + FieldType.Long.getSize(), byteOrder));
-      result = denominator.equals(0) ? numerator : numerator / denominator;
+      if (denominator.equals(0))
+      {
+        processor.addErrorMessage(processor.msg("tiff.error.validation.denominator_zero"));
+        result = numerator;
+      }
+      else
+      {
+        result = numerator / denominator;
+      }
       break;
     }
     default:
