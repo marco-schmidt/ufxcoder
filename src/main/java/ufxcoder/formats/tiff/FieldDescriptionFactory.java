@@ -40,6 +40,9 @@ public final class FieldDescriptionFactory
       {
           FieldType.Short, FieldType.Long
       })), 1, null, 1, 1, null, false);
+  /**
+   * Data compression of image data.
+   */
   private static final FieldDescription COMPRESSION = new FieldDescription(259,
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
@@ -94,6 +97,14 @@ public final class FieldDescriptionFactory
       {
           FieldType.Char
       })), null, null, 20, 20, null, false);
+  /**
+   * Function to be applied to image data before compression.
+   */
+  public static final FieldDescription PREDICTOR = new FieldDescription(317,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Short
+      })), Integer.valueOf(1), Integer.valueOf(3), 1, 1, 1, false);
   /**
    * Width of a tile.
    */
@@ -215,8 +226,8 @@ public final class FieldDescriptionFactory
   private static final FieldDescription[] ALL =
   {
       IMAGE_WIDTH, IMAGE_LENGTH, COMPRESSION, PHOTOMETRIC_INTERPRETATION, STRIP_OFFSETS, ROWS_PER_STRIP,
-      STRIP_BYTE_COUNTS, DATE_TIME, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS, SUB_IMAGE_FILE_DIRECTORIES,
-      GPS, DATE_TIME_ORIGINAL, DATE_TIME_DIGITIZED, DNG_VERSION, CR2_SLICE_INFORMATION
+      STRIP_BYTE_COUNTS, DATE_TIME, PREDICTOR, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS,
+      SUB_IMAGE_FILE_DIRECTORIES, GPS, DATE_TIME_ORIGINAL, DATE_TIME_DIGITIZED, DNG_VERSION, CR2_SLICE_INFORMATION
   };
 
   private FieldDescriptionFactory()
