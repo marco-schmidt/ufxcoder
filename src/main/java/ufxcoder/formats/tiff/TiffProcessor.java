@@ -18,7 +18,6 @@ package ufxcoder.formats.tiff;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ufxcoder.conversion.ByteOrder;
 import ufxcoder.formats.AbstractFormatProcessor;
 import ufxcoder.formats.FileDescription;
 import ufxcoder.io.SeekableSource;
@@ -32,54 +31,25 @@ public class TiffProcessor extends AbstractFormatProcessor
   private static final Logger LOGGER = LoggerFactory.getLogger(TiffProcessor.class);
   private long imageFileDirectoryOffset;
 
-  private boolean extractByteOrder(final TiffFileDescription desc, final Segment globalHeader)
-  {
-    String msgKey = null;
-    if (globalHeader.equalsAt(0, Constants.getSignatureIntel()))
-    {
-      desc.setByteOrder(ByteOrder.LittleEndian);
-      msgKey = "tiff.byteorder.littleendian";
-    }
-    else
-    {
-      if (globalHeader.equalsAt(0, Constants.getSignatureMotorola()))
-      {
-        desc.setByteOrder(ByteOrder.BigEndian);
-        msgKey = "tiff.byteorder.bigendian";
-      }
-      else
-      {
-        desc.addErrorMessage(msg("tiff.error.signature_missing"));
-      }
-    }
-    if (msgKey != null)
-    {
-      LOGGER.debug(msg("tiff.byteorder") + "=" + msg(msgKey));
-    }
-    globalHeader.setIndex(2);
-    globalHeader.setByteOrder(desc.getByteOrder());
-    return isSuccess();
-  }
-
   @Override
   public void process()
   {
     final TiffFileDescription desc = new TiffFileDescription();
     setFileDescription(desc);
-
-    final Segment globalHeader = identify(desc);
+    final TiffReader reader = new TiffReader(this);
+    final Segment globalHeader = reader.identify(desc);
     if (!isIdentify() && desc.isSuccess())
     {
       try
       {
-        extractFirstOffset(desc, globalHeader);
+        reader.extractFirstOffset(desc, globalHeader);
       }
       catch (IOException e)
       {
         LOGGER.error("Unable to read TIFF offset.", e);
       }
-      final ImageFileDirectoryReader reader = new ImageFileDirectoryReader(this);
-      reader.readAllMetadata(imageFileDirectoryOffset);
+      final ImageFileDirectoryReader ifdReader = new ImageFileDirectoryReader(this);
+      ifdReader.readAllMetadata(imageFileDirectoryOffset);
     }
 
     final SeekableSource src = getSource();
@@ -93,83 +63,6 @@ public class TiffProcessor extends AbstractFormatProcessor
       {
         LOGGER.error(e.getMessage());
       }
-    }
-  }
-
-  private Segment identify(final TiffFileDescription desc)
-  {
-    Segment globalHeader = null;
-    try
-    {
-      globalHeader = read(4);
-      extractByteOrder(desc, globalHeader);
-      extractVersion(desc, globalHeader);
-    }
-    catch (IOException e)
-    {
-      desc.addErrorMessage(msg("tiff.error.cannot_read_global_header"));
-    }
-    return globalHeader;
-  }
-
-  private void extractFirstOffset(final TiffFileDescription desc, final Segment globalHeader) throws IOException
-  {
-    if (desc.isSuccess())
-    {
-      long offsetPosition = 0;
-      if (desc.isBig())
-      {
-        append(globalHeader, 12);
-        final int offsetByteSize = globalHeader.int16();
-        if (offsetByteSize != Constants.OFFSET_SIZE_BIG)
-        {
-          desc.addErrorMessage("x");
-        }
-        final int zero = globalHeader.int16();
-        if (zero != 0)
-        {
-          desc.addErrorMessage("x");
-        }
-        imageFileDirectoryOffset = globalHeader.int64();
-      }
-      else
-      {
-        offsetPosition = globalHeader.getOffset() + globalHeader.getLength();
-        append(globalHeader, 4);
-        imageFileDirectoryOffset = globalHeader.int32();
-      }
-      desc.addOffset(Long.valueOf(imageFileDirectoryOffset));
-      if (!isValidSourceOffset(imageFileDirectoryOffset))
-      {
-        desc.addErrorMessage(msg("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition));
-      }
-    }
-  }
-
-  private void extractVersion(final TiffFileDescription desc, final Segment globalHeader)
-  {
-    final int version = globalHeader.int16();
-    String styleKey = null;
-    if (version == Constants.MAGIC_TIFF)
-    {
-      desc.setBig(false);
-      styleKey = "tiff.style.regular";
-      setFormatIdentified(true);
-    }
-    else
-      if (version == Constants.MAGIC_BIG_TIFF)
-      {
-        desc.setBig(true);
-        styleKey = "tiff.style.big";
-        setFormatIdentified(true);
-      }
-      else
-      {
-        desc.addErrorMessage(msg("tiff.error.invalid_version"));
-      }
-    if (styleKey != null)
-    {
-      LOGGER.debug(String.format("%s=%s", msg("tiff.style"), msg(styleKey)));
     }
   }
 
