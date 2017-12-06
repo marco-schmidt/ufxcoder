@@ -37,7 +37,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.4-rc-6'
+  gradleVersion = '4.4'
 }
 
 tasks.withType(JavaCompile) {
