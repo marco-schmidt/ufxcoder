@@ -16,6 +16,7 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.formats.AbstractFormatProcessor;
@@ -29,7 +30,7 @@ import ufxcoder.io.Segment;
 public class TiffProcessor extends AbstractFormatProcessor
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(TiffProcessor.class);
-  private long imageFileDirectoryOffset;
+  private BigInteger imageFileDirectoryOffset;
 
   @Override
   public void process()
@@ -42,7 +43,7 @@ public class TiffProcessor extends AbstractFormatProcessor
     {
       try
       {
-        reader.extractFirstOffset(desc, globalHeader);
+        imageFileDirectoryOffset = reader.extractFirstOffset(desc, globalHeader);
       }
       catch (IOException e)
       {

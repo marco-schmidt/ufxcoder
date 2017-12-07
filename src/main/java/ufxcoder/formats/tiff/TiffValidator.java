@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.tiff;
 
+import java.math.BigInteger;
 import java.util.List;
 import ufxcoder.app.AppConfig;
 import ufxcoder.formats.FileDescription;
@@ -184,17 +185,16 @@ public class TiffValidator
       final int tag2 = field2.getId();
       if (tag1 >= tag2)
       {
-        final String msg = config.msg("tiff.error.validation.image_file_directory_entries_order",
-            Long.toString(ifd.getOffset()), Integer.toString(index + 1), Integer.toString(tag1),
-            Integer.toString(index + 2), Integer.toString(tag2));
+        final String msg = config.msg("tiff.error.validation.image_file_directory_entries_order", ifd.getOffset(),
+            Integer.toString(index + 1), Integer.toString(tag1), Integer.toString(index + 2), Integer.toString(tag2));
         desc.addErrorMessage(msg);
       }
     }
   }
 
-  private void checkImageFileDirectoryOffset(final long imageFileDirectoryOffset)
+  private void checkImageFileDirectoryOffset(final BigInteger imageFileDirectoryOffset)
   {
-    if (imageFileDirectoryOffset % 2 != 0)
+    if (imageFileDirectoryOffset.testBit(0))
     {
       final String msg = proc.getConfig().msg("tiff.error.validation.odd_image_file_directory_offset",
           imageFileDirectoryOffset);

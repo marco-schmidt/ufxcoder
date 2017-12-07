@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.tiff;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +39,7 @@ public class TiffFileDescription extends FileDescription
   private boolean dng;
   private boolean cr2;
   private final List<ImageFileDirectory> directories = new ArrayList<ImageFileDirectory>();
-  private final Set<Long> offsets = new HashSet<Long>();
+  private final Set<BigInteger> offsets = new HashSet<BigInteger>();
 
   public boolean isBig()
   {
@@ -60,12 +61,12 @@ public class TiffFileDescription extends FileDescription
     return directories.size();
   }
 
-  public void addOffset(final Long offset)
+  public void addOffset(final BigInteger offset)
   {
     offsets.add(offset);
   }
 
-  public boolean contains(final Long offset)
+  public boolean contains(final BigInteger offset)
   {
     return offsets.contains(offset);
   }

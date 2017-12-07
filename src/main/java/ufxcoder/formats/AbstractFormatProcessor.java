@@ -17,6 +17,7 @@ package ufxcoder.formats;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.app.AppConfig;
@@ -160,12 +161,12 @@ public abstract class AbstractFormatProcessor
     segment.setLength(data.length);
   }
 
-  public boolean isValidSourceOffset(final long offset)
+  public boolean isValidSourceOffset(final BigInteger offset)
   {
     boolean valid;
     try
     {
-      valid = offset >= 0 && offset < source.getLength();
+      valid = offset.signum() != -1 && offset.compareTo(BigInteger.valueOf(source.getLength())) <= 0;
     }
     catch (IOException e)
     {

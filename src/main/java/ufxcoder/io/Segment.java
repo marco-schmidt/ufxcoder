@@ -15,6 +15,7 @@
  */
 package ufxcoder.io;
 
+import java.math.BigInteger;
 import ufxcoder.conversion.Array;
 import ufxcoder.conversion.ByteOrder;
 
@@ -115,6 +116,25 @@ public class Segment
     final long result = Array.from64(data, index, byteOrder);
     index += 8;
     return result;
+  }
+
+  public BigInteger bigInt(final int numBytes)
+  {
+    final byte[] array = getData(numBytes);
+    if (byteOrder == ByteOrder.LittleEndian)
+    {
+      int index1 = 0;
+      int index2 = array.length - 1;
+      while (index1 < index2)
+      {
+        final byte temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+        index1++;
+        index2--;
+      }
+    }
+    return new BigInteger(array);
   }
 
   public int getIndex()

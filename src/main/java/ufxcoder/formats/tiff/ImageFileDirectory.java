@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.tiff;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +29,12 @@ public class ImageFileDirectory
   private long numTags;
   private final List<Field> fields = new ArrayList<Field>();
   private final Map<Integer, Field> mapTagToFields = new HashMap<Integer, Field>();
-  private long nextImageFileDirectoryOffset;
-  private final long offset;
+  private BigInteger nextImageFileDirectoryOffset;
+  private final BigInteger offset;
   private final List<ImageFileDirectory> subs = new ArrayList<ImageFileDirectory>();
   private ImageFileDirectory gpsInfo;
 
-  public ImageFileDirectory(final long offset)
+  public ImageFileDirectory(final BigInteger offset)
   {
     this.offset = offset;
   }
@@ -94,12 +95,12 @@ public class ImageFileDirectory
     return result;
   }
 
-  public long getNextImageFileDirectoryOffset()
+  public BigInteger getNextImageFileDirectoryOffset()
   {
     return nextImageFileDirectoryOffset;
   }
 
-  public void setNextImageFileDirectoryOffset(final long nextImageFileDirectoryOffset)
+  public void setNextImageFileDirectoryOffset(final BigInteger nextImageFileDirectoryOffset)
   {
     this.nextImageFileDirectoryOffset = nextImageFileDirectoryOffset;
   }
@@ -109,7 +110,7 @@ public class ImageFileDirectory
     return fields;
   }
 
-  public long getOffset()
+  public BigInteger getOffset()
   {
     return offset;
   }

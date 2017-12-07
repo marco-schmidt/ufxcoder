@@ -16,6 +16,7 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class ImageFileDirectoryReader
     this.tiffProcessor = tiffProcessor;
   }
 
-  public void readAllMetadata(final long initialOffset)
+  public void readAllMetadata(final BigInteger initialOffset)
   {
     try
     {
@@ -45,7 +46,7 @@ public class ImageFileDirectoryReader
       final TiffValidator validator = new TiffValidator(tiffProcessor);
       final TiffFileDescription desc = tiffProcessor.getTiffFileDescription();
       final ImageFileDirectoryReader reader = new ImageFileDirectoryReader(tiffProcessor);
-      long imageFileDirectoryOffset = initialOffset;
+      BigInteger imageFileDirectoryOffset = initialOffset;
       do
       {
         ifd = reader.readImageFileDirectory(tiffProcessor.getSource(), desc.isBig(), imageFileDirectoryOffset);
@@ -77,10 +78,10 @@ public class ImageFileDirectoryReader
         }
         else
         {
-          desc.addOffset(Long.valueOf(imageFileDirectoryOffset));
+          desc.addOffset(imageFileDirectoryOffset);
         }
       }
-      while (imageFileDirectoryOffset != 0);
+      while (!imageFileDirectoryOffset.equals(BigInteger.ZERO));
 
       if (desc.getNumDirectories() == Constants.CR2_IMAGE_FILE_DIRECTORIES)
       {
@@ -109,9 +110,9 @@ public class ImageFileDirectoryReader
   }
 
   public ImageFileDirectory readImageFileDirectory(final SeekableSource source, final boolean big,
-      final long imageFileDirectoryOffset) throws IOException
+      final BigInteger imageFileDirectoryOffset) throws IOException
   {
-    source.seek(imageFileDirectoryOffset);
+    source.seek(imageFileDirectoryOffset.longValue());
 
     LOGGER.debug(String.format("%d IFD #%d", imageFileDirectoryOffset,
         tiffProcessor.getTiffFileDescription().getNumDirectories() + 1));
@@ -154,8 +155,7 @@ public class ImageFileDirectoryReader
       val.validate(field);
       ifd.add(field);
     }
-    final long nextOffset = big ? rawIfd.int64() : rawIfd.int32();
-    ifd.setNextImageFileDirectoryOffset(nextOffset);
+    ifd.setNextImageFileDirectoryOffset(rawIfd.bigInt(big ? 8 : 4));
   }
 
   /**
@@ -181,7 +181,7 @@ public class ImageFileDirectoryReader
         final Number offset = field.getAsNumber(i);
         if (offset != null)
         {
-          final long numericOffset = offset.longValue();
+          final BigInteger numericOffset = BigInteger.valueOf(offset.longValue());
           if (tiffProcessor.isValidSourceOffset(numericOffset))
           {
             try

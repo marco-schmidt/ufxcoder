@@ -16,6 +16,7 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import ufxcoder.conversion.ByteOrder;
 import ufxcoder.io.Segment;
 
@@ -74,16 +75,17 @@ public class TiffReader
     return proc.isSuccess();
   }
 
-  public void extractFirstOffset(final TiffFileDescription desc, final Segment globalHeader) throws IOException
+  public BigInteger extractFirstOffset(final TiffFileDescription desc, final Segment globalHeader) throws IOException
   {
+    BigInteger imageFileDirectoryOffset = null;
     if (desc.isSuccess())
     {
-      long imageFileDirectoryOffset;
       long offsetPosition = 0;
+      int offsetByteSize;
       if (desc.isBig())
       {
         proc.append(globalHeader, 12);
-        final int offsetByteSize = globalHeader.int16();
+        offsetByteSize = globalHeader.int16();
         if (offsetByteSize != Constants.OFFSET_SIZE_BIG)
         {
           desc.addErrorMessage("x");
@@ -93,20 +95,21 @@ public class TiffReader
         {
           desc.addErrorMessage("x");
         }
-        imageFileDirectoryOffset = globalHeader.int64();
       }
       else
       {
         offsetPosition = globalHeader.getOffset() + globalHeader.getLength();
-        proc.append(globalHeader, 4);
-        imageFileDirectoryOffset = globalHeader.int32();
+        offsetByteSize = 4;
+        proc.append(globalHeader, offsetByteSize);
       }
-      desc.addOffset(Long.valueOf(imageFileDirectoryOffset));
+      imageFileDirectoryOffset = globalHeader.bigInt(offsetByteSize);
+      desc.addOffset(imageFileDirectoryOffset);
       if (!proc.isValidSourceOffset(imageFileDirectoryOffset))
       {
         desc.addErrorMessage(proc.msg("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition));
       }
     }
+    return imageFileDirectoryOffset;
   }
 
   public void extractVersion(final TiffFileDescription desc, final Segment globalHeader)
