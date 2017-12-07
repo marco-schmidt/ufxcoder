@@ -39,7 +39,9 @@ public final class Constants
   };
 
   /**
-   * Identifying version number of standard TIFF files.
+   * Identifying version number of standard TIFF files. <em>"An arbitrary but carefully chosen number (42) that further
+   * identifies the file as a TIFF file.An arbitrary but carefully chosen number (42) that further identifies the file
+   * as a TIFF file."</em> (TIFF6.pdf, p. 13)
    */
   public static final int MAGIC_TIFF = 42;
 

@@ -16,8 +16,6 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ufxcoder.conversion.ByteOrder;
 import ufxcoder.io.Segment;
 
@@ -26,7 +24,6 @@ import ufxcoder.io.Segment;
  */
 public class TiffReader
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger(TiffReader.class);
   private final TiffProcessor proc;
 
   public TiffReader(final TiffProcessor proc)
@@ -107,31 +104,25 @@ public class TiffReader
     }
   }
 
-  private void extractVersion(final TiffFileDescription desc, final Segment globalHeader)
+  public void extractVersion(final TiffFileDescription desc, final Segment globalHeader)
   {
     final int version = globalHeader.int16();
-    String styleKey = null;
     if (version == Constants.MAGIC_TIFF)
     {
       desc.setBig(false);
-      styleKey = "tiff.style.regular";
       proc.setFormatIdentified(true);
     }
     else
+    {
       if (version == Constants.MAGIC_BIG_TIFF)
       {
         desc.setBig(true);
-        styleKey = "tiff.style.big";
         proc.setFormatIdentified(true);
       }
       else
       {
-        desc.addErrorMessage(proc.msg("tiff.error.invalid_version"));
+        proc.error("tiff.error.invalid_version");
       }
-    if (styleKey != null)
-    {
-      LOGGER.debug(String.format("%s=%s", proc.msg("tiff.style"), proc.msg(styleKey)));
     }
   }
-
 }
