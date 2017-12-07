@@ -101,6 +101,7 @@ spotbugs {
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false
+  excludeFilter = file('config/spotbugs/excludeBugsFilter.xml')
 }
 
 tasks.withType(com.github.spotbugs.SpotBugsTask) {

@@ -28,6 +28,7 @@ public class FileDescription
   private File file;
   private ByteOrder byteOrder;
   private final List<String> errorMessages = new ArrayList<String>();
+  private final List<ProcessorEvent> events = new ArrayList<ProcessorEvent>();
 
   public String getErrorMessage()
   {
@@ -68,6 +69,47 @@ public class FileDescription
     errorMessages.add(errorMessage);
   }
 
+  public boolean containsEvent(final String key)
+  {
+    boolean result = false;
+    for (final ProcessorEvent event : events)
+    {
+      if (key.equals(event.getMessageKey()))
+      {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  public boolean hasWarningOrHigher()
+  {
+    boolean result = false;
+    for (final ProcessorEvent event : events)
+    {
+      final EventSeverity severity = event.getSeverity();
+      if (severity == EventSeverity.Warning || severity == EventSeverity.Error)
+      {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  public void addEvent(final EventSeverity severity, final String messageKey, final String message)
+  {
+    final ProcessorEvent event = new ProcessorEvent(severity);
+    event.setMessage(message);
+    event.setMessageKey(messageKey);
+    events.add(event);
+    if (severity == EventSeverity.Error)
+    {
+      addErrorMessage(message);
+    }
+  }
+
   public ByteOrder getByteOrder()
   {
     return byteOrder;
@@ -95,6 +137,6 @@ public class FileDescription
 
   public boolean isSuccess()
   {
-    return errorMessages.isEmpty();
+    return errorMessages.isEmpty() && !hasWarningOrHigher();
   }
 }

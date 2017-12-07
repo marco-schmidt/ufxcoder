@@ -50,29 +50,22 @@ public class TiffReader
     return globalHeader;
   }
 
-  private boolean extractByteOrder(final TiffFileDescription desc, final Segment globalHeader)
+  public boolean extractByteOrder(final TiffFileDescription desc, final Segment globalHeader)
   {
-    String msgKey = null;
     if (globalHeader.equalsAt(0, Constants.getSignatureIntel()))
     {
       desc.setByteOrder(ByteOrder.LittleEndian);
-      msgKey = "tiff.byteorder.littleendian";
     }
     else
     {
       if (globalHeader.equalsAt(0, Constants.getSignatureMotorola()))
       {
         desc.setByteOrder(ByteOrder.BigEndian);
-        msgKey = "tiff.byteorder.bigendian";
       }
       else
       {
-        desc.addErrorMessage(proc.msg("tiff.error.signature_missing"));
+        proc.error("tiff.error.signature_missing");
       }
-    }
-    if (msgKey != null)
-    {
-      LOGGER.debug(proc.msg("tiff.byteorder") + "=" + proc.msg(msgKey));
     }
     globalHeader.setIndex(2);
     globalHeader.setByteOrder(desc.getByteOrder());
