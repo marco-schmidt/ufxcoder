@@ -142,6 +142,22 @@ public abstract class AbstractFormatProcessor
     this.source = source;
   }
 
+  public void closeSource()
+  {
+    final SeekableSource src = getSource();
+    if (src != null)
+    {
+      try
+      {
+        src.close();
+      }
+      catch (IOException e)
+      {
+        LOGGER.error(e.getMessage());
+      }
+    }
+  }
+
   /**
    * Read data from source and append to existing {@link Segment}.
    *

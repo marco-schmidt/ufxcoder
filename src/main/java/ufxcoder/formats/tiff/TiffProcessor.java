@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.formats.AbstractFormatProcessor;
 import ufxcoder.formats.FileDescription;
-import ufxcoder.io.SeekableSource;
 import ufxcoder.io.Segment;
 
 /**
@@ -53,18 +52,7 @@ public class TiffProcessor extends AbstractFormatProcessor
       ifdReader.readAllMetadata(imageFileDirectoryOffset);
     }
 
-    final SeekableSource src = getSource();
-    if (src != null)
-    {
-      try
-      {
-        src.close();
-      }
-      catch (IOException e)
-      {
-        LOGGER.error(e.getMessage());
-      }
-    }
+    closeSource();
   }
 
   public TiffFileDescription getTiffFileDescription()
