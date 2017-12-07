@@ -121,7 +121,7 @@ public class ImageFileDirectoryReader
     final ImageFileDirectory ifd = new ImageFileDirectory(imageFileDirectoryOffset);
     ifd.setNumTags(numTags);
 
-    if (numTags < Constants.MIN_TAGS_PER_IMAGE_FILE_DIRECTORY)
+    if (numTags < Constants.MIN_NUMBER_OF_ENTRIES_PER_IFD)
     {
       tiffProcessor.addErrorMessage(tiffProcessor.msg("tiff.error.too_few_tags", numTags));
     }

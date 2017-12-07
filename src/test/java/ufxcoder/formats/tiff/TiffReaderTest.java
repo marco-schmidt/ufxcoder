@@ -89,6 +89,6 @@ public class TiffReaderTest
     reader.extractVersion(desc, segment);
     Assert.assertFalse("Incorrect version leads to negative result.", proc.isFormatIdentified());
     Assert.assertTrue("At least one error.", desc.hasWarningOrHigher());
-    Assert.assertTrue("Contains 'invalid version' event.", desc.containsEvent("tiff.error.invalid_version"));
+    Assert.assertTrue("Contains 'invalid version' event.", desc.containsEvent(Msg.INVALID_VERSION));
   }
 }

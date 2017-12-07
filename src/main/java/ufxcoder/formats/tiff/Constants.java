@@ -39,9 +39,9 @@ public final class Constants
   };
 
   /**
-   * Identifying version number of standard TIFF files. <em>"An arbitrary but carefully chosen number (42) that further
+   * Identifying version number of standard TIFF files. <em>An arbitrary but carefully chosen number (42) that further
    * identifies the file as a TIFF file.An arbitrary but carefully chosen number (42) that further identifies the file
-   * as a TIFF file."</em> (TIFF6.pdf, p. 13)
+   * as a TIFF file.</em> (TIFF6.pdf, p. 13)
    */
   public static final int MAGIC_TIFF = 42;
 
@@ -51,9 +51,16 @@ public final class Constants
   public static final int MAGIC_BIG_TIFF = 43;
 
   /**
-   * Minimum number of tags per image file directory.
+   * Minimum number of entries per image file directory. <em>[...] and each IFD must have at least one entry.</em>
+   * (TIFF6.pdf, p. 14)
    */
-  public static final int MIN_TAGS_PER_IMAGE_FILE_DIRECTORY = 1;
+  public static final int MIN_NUMBER_OF_ENTRIES_PER_IFD = 1;
+
+  /**
+   * Minimum number of image file directories. <em>There must be at least 1 IFD in a TIFF file [...]</em> (TIFF6.pdf, p.
+   * 14)
+   */
+  public static final int MIN_NUMBER_OF_IMAGE_FILE_DIRECTORIES = 1;
 
   /**
    * Size of an image file directory entry of BigTIFF files.

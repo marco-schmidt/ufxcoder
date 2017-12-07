@@ -31,18 +31,23 @@ public class TiffReader
     this.proc = proc;
   }
 
+  /**
+   * Try to identify underlying stream as TIFF.
+   */
   public Segment identify(final TiffFileDescription desc)
   {
     Segment globalHeader = null;
     try
     {
       globalHeader = proc.read(4);
-      extractByteOrder(desc, globalHeader);
-      extractVersion(desc, globalHeader);
+      if (extractByteOrder(desc, globalHeader))
+      {
+        extractVersion(desc, globalHeader);
+      }
     }
     catch (IOException e)
     {
-      desc.addErrorMessage(proc.msg("tiff.error.cannot_read_global_header"));
+      proc.error(Msg.CANNOT_READ_GLOBAL_HEADER, e);
     }
     return globalHeader;
   }
@@ -61,7 +66,7 @@ public class TiffReader
       }
       else
       {
-        proc.error("tiff.error.signature_missing");
+        proc.error(Msg.INVALID_BYTE_ORDER);
       }
     }
     globalHeader.setIndex(2);
@@ -121,7 +126,7 @@ public class TiffReader
       }
       else
       {
-        proc.error("tiff.error.invalid_version");
+        proc.error(Msg.INVALID_VERSION);
       }
     }
   }
