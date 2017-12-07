@@ -53,6 +53,15 @@ public class ArgumentParser
         };
       },
 
+      new AbstractParameter("args.identify", "identify", "i", null)
+      {
+        @Override
+        public void process(final AppConfig config, final String nextArg)
+        {
+          config.setMode(ProcessMode.Identify);
+        };
+      },
+
       new AbstractParameter("args.stop_interpreting_switches", "", null, null)
       {
         @Override
