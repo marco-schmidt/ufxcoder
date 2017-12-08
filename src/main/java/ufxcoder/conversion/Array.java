@@ -15,6 +15,8 @@
  */
 package ufxcoder.conversion;
 
+import java.math.BigInteger;
+
 /**
  * Helper class with array-related operations.
  */
@@ -136,6 +138,34 @@ public final class Array
     final long value8 = buffer[offset + 7] & 0xff;
     return value8 << 56 | value7 << 48 | value6 << 40 | value5 << 32 | value4 << 24 | value3 << 16 | value2 << 8
         | value1;
+  }
+
+  public static BigInteger toBigInteger(final byte[] data, final ByteOrder byteOrder)
+  {
+    BigInteger result;
+    if (data != null && data.length > 0)
+    {
+      byte[] array = clone(data);
+      if (byteOrder == ByteOrder.LittleEndian)
+      {
+        int index1 = 0;
+        int index2 = array.length - 1;
+        while (index1 < index2)
+        {
+          final byte temp = array[index1];
+          array[index1] = array[index2];
+          array[index2] = temp;
+          index1++;
+          index2--;
+        }
+      }
+      result = new BigInteger(array);
+    }
+    else
+    {
+      result = null;
+    }
+    return result;
   }
 
   private static boolean equals(final byte[] array1, final int index1, final byte[] array2, final int index2,

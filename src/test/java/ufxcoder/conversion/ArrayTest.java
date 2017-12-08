@@ -87,4 +87,57 @@ public class ArrayTest
     Assert.assertEquals("Searching for pattern contained at index 1 and 4 must return the first match, 1.", 1,
         Array.indexOf(data, initialIndex, pattern));
   }
+
+  @Test
+  public void testToBigIntegerNull()
+  {
+    Assert.assertNull("Null input leads to null output.", Array.toBigInteger(null, ByteOrder.BigEndian));
+    Assert.assertNull("Null input leads to null output.", Array.toBigInteger(null, ByteOrder.LittleEndian));
+  }
+
+  @Test
+  public void testToBigIntegerEmpty()
+  {
+    final byte[] array = new byte[0];
+    Assert.assertNull("Empty input leads to null output.", Array.toBigInteger(array, ByteOrder.BigEndian));
+    Assert.assertNull("Empty input leads to null output.", Array.toBigInteger(array, ByteOrder.LittleEndian));
+  }
+
+  @Test
+  public void testToBigIntegerSingleByte()
+  {
+    final byte value = 99;
+    final byte[] array = new byte[]
+    {
+        value
+    };
+    Assert.assertEquals("Single byte leads to exactly that value.", value,
+        Array.toBigInteger(array, ByteOrder.BigEndian).longValue());
+  }
+
+  @Test
+  public void testToBigIntegerTwoBytes()
+  {
+    final byte[] array = new byte[]
+    {
+        1, 4
+    };
+    Assert.assertEquals("Two bytes big endian.", 1 * 256 + 4,
+        Array.toBigInteger(array, ByteOrder.BigEndian).longValue());
+    Assert.assertEquals("Two bytes little endian.", 4 * 256 + 1,
+        Array.toBigInteger(array, ByteOrder.LittleEndian).longValue());
+  }
+
+  @Test
+  public void testToBigIntegerFourBytes()
+  {
+    final byte[] array = new byte[]
+    {
+        1, 2, 3, 4
+    };
+    Assert.assertEquals("Four bytes big endian.", 1 * 16777216L + 2 * 65536L + 3 * 256L + 4,
+        Array.toBigInteger(array, ByteOrder.BigEndian).longValue());
+    Assert.assertEquals("Four bytes little endian.", 4 * 16777216L + 3 * 65536L + 2 * 256L + 1,
+        Array.toBigInteger(array, ByteOrder.LittleEndian).longValue());
+  }
 }
