@@ -16,7 +16,7 @@
 package ufxcoder.formats;
 
 /**
- * Data class for which occurred during processing.
+ * Data class for event which occurred during processing.
  */
 public class ProcessorEvent
 {
