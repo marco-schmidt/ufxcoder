@@ -37,6 +37,11 @@ public final class Msg
    */
   public static final String CANNOT_READ_GLOBAL_HEADER = "tiff.error.cannot_read_global_header";
 
+  /**
+   * There was an I/O error trying to read an offset value.
+   */
+  public static final String CANNOT_READ_OFFSET = "tiff.error.cannot_read_offset";
+
   private Msg()
   {
   }

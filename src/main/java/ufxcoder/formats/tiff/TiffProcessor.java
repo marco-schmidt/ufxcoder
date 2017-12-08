@@ -17,8 +17,6 @@ package ufxcoder.formats.tiff;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ufxcoder.formats.AbstractFormatProcessor;
 import ufxcoder.formats.FileDescription;
 import ufxcoder.io.Segment;
@@ -28,7 +26,6 @@ import ufxcoder.io.Segment;
  */
 public class TiffProcessor extends AbstractFormatProcessor
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger(TiffProcessor.class);
   private BigInteger imageFileDirectoryOffset;
 
   @Override
@@ -37,7 +34,9 @@ public class TiffProcessor extends AbstractFormatProcessor
     final TiffFileDescription desc = new TiffFileDescription();
     setFileDescription(desc);
     final TiffReader reader = new TiffReader(this);
+
     final Segment globalHeader = reader.identify(desc);
+
     if (!isIdentify() && desc.isSuccess())
     {
       try
@@ -46,10 +45,13 @@ public class TiffProcessor extends AbstractFormatProcessor
       }
       catch (IOException e)
       {
-        LOGGER.error("Unable to read TIFF offset.", e);
+        error(Msg.CANNOT_READ_OFFSET, e);
       }
-      final ImageFileDirectoryReader ifdReader = new ImageFileDirectoryReader(this);
-      ifdReader.readAllMetadata(imageFileDirectoryOffset);
+      if (!desc.hasWarningOrHigher())
+      {
+        final ImageFileDirectoryReader ifdReader = new ImageFileDirectoryReader(this);
+        ifdReader.readAllMetadata(imageFileDirectoryOffset);
+      }
     }
 
     closeSource();
