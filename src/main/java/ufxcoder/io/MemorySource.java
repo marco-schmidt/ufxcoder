@@ -21,7 +21,7 @@ import ufxcoder.conversion.Array;
 /**
  * A {@link SeekableSource} based on data kept in memory.
  */
-public class MemorySource implements SeekableSource
+public class MemorySource extends AbstractSeekableSource
 {
   private final byte[] data;
   private int index;
@@ -29,6 +29,7 @@ public class MemorySource implements SeekableSource
 
   public MemorySource(final byte[] buffer)
   {
+    super();
     if (buffer == null)
     {
       throw new IllegalArgumentException("Must have non-null buffer argument.");

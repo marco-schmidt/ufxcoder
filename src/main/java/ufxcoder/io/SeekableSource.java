@@ -17,6 +17,7 @@ package ufxcoder.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * <p>
@@ -64,4 +65,19 @@ public interface SeekableSource extends Closeable
   void readFully(byte[] buffer, int offset, int length) throws IOException;
 
   void seek(long pos) throws IOException;
+
+  void seek(BigInteger offset) throws IOException;
+
+  /**
+   * Does the underlying source hold a number of bytes at a certain offset?
+   *
+   * @param offset
+   *          position in the source
+   * @param numBytes
+   *          number of bytes
+   * @return if offset + numBytes <= {@link #getLength()}
+   * @throws IOException
+   *           if querying current file size fails
+   */
+  boolean isValidSection(BigInteger offset, BigInteger numBytes) throws IOException;
 }

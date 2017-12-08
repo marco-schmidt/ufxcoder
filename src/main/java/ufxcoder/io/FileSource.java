@@ -15,7 +15,6 @@
  */
 package ufxcoder.io;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -23,7 +22,7 @@ import java.io.RandomAccessFile;
 /**
  * A {@link SeekableSource} based on a {@link RandomAccessFile}.
  */
-public class FileSource implements SeekableSource, Closeable
+public class FileSource extends AbstractSeekableSource
 {
   private RandomAccessFile input;
   private String name;
@@ -40,6 +39,7 @@ public class FileSource implements SeekableSource, Closeable
 
   public FileSource(final RandomAccessFile file, final String name)
   {
+    super();
     input = file;
     this.name = name;
   }
