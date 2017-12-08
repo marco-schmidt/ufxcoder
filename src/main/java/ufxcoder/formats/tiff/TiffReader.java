@@ -129,7 +129,7 @@ public class TiffReader
       }
       else
       {
-        proc.error(Msg.INVALID_VERSION);
+        proc.error(Msg.INVALID_VERSION, version);
       }
     }
   }
