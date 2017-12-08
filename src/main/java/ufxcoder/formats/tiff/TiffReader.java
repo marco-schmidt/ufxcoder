@@ -88,12 +88,12 @@ public class TiffReader
         offsetByteSize = globalHeader.int16();
         if (offsetByteSize != Constants.OFFSET_SIZE_BIG)
         {
-          desc.addErrorMessage("x");
+          proc.error(Msg.INVALID_BIG_TIFF_OFFSET_SIZE, Constants.OFFSET_SIZE_BIG, offsetByteSize);
         }
         final int zero = globalHeader.int16();
         if (zero != 0)
         {
-          desc.addErrorMessage("x");
+          proc.error(Msg.INVALID_BIG_TIFF_OFFSET_ZERO, zero);
         }
       }
       else
@@ -102,11 +102,14 @@ public class TiffReader
         offsetByteSize = 4;
         proc.append(globalHeader, offsetByteSize);
       }
-      imageFileDirectoryOffset = globalHeader.bigInt(offsetByteSize);
-      desc.addOffset(imageFileDirectoryOffset);
-      if (!proc.isValidSourceOffset(imageFileDirectoryOffset))
+      if (proc.isSuccess())
       {
-        desc.addErrorMessage(proc.msg("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition));
+        imageFileDirectoryOffset = globalHeader.bigInt(offsetByteSize);
+        desc.addOffset(imageFileDirectoryOffset);
+        if (!proc.isValidSourceOffset(imageFileDirectoryOffset))
+        {
+          desc.addErrorMessage(proc.msg("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition));
+        }
       }
     }
     return imageFileDirectoryOffset;

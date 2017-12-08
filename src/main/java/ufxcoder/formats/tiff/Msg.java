@@ -57,6 +57,16 @@ public final class Msg
    */
   public static final String INVALID_OFFSET_AND_SIZE = "tiff.error.file_offset_and_size";
 
+  /**
+   * Big TIFF offsets must be eight bytes large.
+   */
+  public static final String INVALID_BIG_TIFF_OFFSET_SIZE = "tiff.error.invalid_big_tiff_offset_size";
+
+  /**
+   * Big TIFF field after offset size must contain value zero.
+   */
+  public static final String INVALID_BIG_TIFF_OFFSET_ZERO = "tiff.error.invalid_big_tiff_offset_zero";
+
   private Msg()
   {
   }

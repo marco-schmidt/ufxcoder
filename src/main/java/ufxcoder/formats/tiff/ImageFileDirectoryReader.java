@@ -59,7 +59,8 @@ public class ImageFileDirectoryReader
 
         imageFileDirectoryOffset = handleContent(ifd, reader, desc);
       }
-      while (imageFileDirectoryOffset != null && !imageFileDirectoryOffset.equals(BigInteger.ZERO));
+      while (tiffProcessor.isSuccess() && imageFileDirectoryOffset != null
+          && !imageFileDirectoryOffset.equals(BigInteger.ZERO));
 
       if (desc.getNumDirectories() == Constants.CR2_IMAGE_FILE_DIRECTORIES)
       {
@@ -160,10 +161,20 @@ public class ImageFileDirectoryReader
     for (long i = 0; i < numTags; i++)
     {
       final Field field = reader.parseField(big, rawIfd);
-      val.validate(field);
-      ifd.add(field);
+      if (tiffProcessor.isSuccess())
+      {
+        val.validate(field);
+        ifd.add(field);
+      }
+      else
+      {
+        break;
+      }
     }
-    ifd.setNextImageFileDirectoryOffset(rawIfd.bigInt(big ? 8 : 4));
+    if (tiffProcessor.isSuccess())
+    {
+      ifd.setNextImageFileDirectoryOffset(rawIfd.bigInt(big ? 8 : 4));
+    }
   }
 
   /**
