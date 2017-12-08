@@ -117,6 +117,11 @@ public final class Constants
    */
   public static final int PHOTOMETRIC_INTERPRETATION_Y_CB_CR = 6;
 
+  /**
+   * Maximum size of field data outside of an image file directory to be allocated at once.
+   */
+  public static final int MAX_FIELD_DATA_ALLOCATION_SIZE = 64 * 1024;
+
   private Constants()
   {
     // avoid instantiation of this helper class

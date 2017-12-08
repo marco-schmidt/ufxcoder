@@ -74,6 +74,14 @@ public class TiffProcessor extends AbstractFormatProcessor
     return new TiffFileDescription();
   }
 
+  public void checkImageFileDirectoryOffset(final BigInteger imageFileDirectoryOffset)
+  {
+    if (imageFileDirectoryOffset.testBit(0))
+    {
+      error(Msg.ODD_FILE_OFFSET, imageFileDirectoryOffset);
+    }
+  }
+
   @Override
   public String[] getTypicalFileExtensions()
   {

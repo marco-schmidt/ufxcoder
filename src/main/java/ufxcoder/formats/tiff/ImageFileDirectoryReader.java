@@ -57,31 +57,9 @@ public class ImageFileDirectoryReader
           desc.setDng(true);
         }
 
-        List<ImageFileDirectory> ifdList = reader.readSubImageFileDirectories(ifd,
-            FieldDescriptionFactory.SUB_IMAGE_FILE_DIRECTORIES);
-        for (final ImageFileDirectory sub : ifdList)
-        {
-          ifd.addSubImageFileDirectory(sub);
-        }
-        ifdList = reader.readSubImageFileDirectories(ifd, FieldDescriptionFactory.GPS);
-        if (!ifdList.isEmpty())
-        {
-          ifd.setGpsInfo(ifdList.get(0));
-        }
-        reader.parseXmp(desc, ifd.findByTag(FieldDescriptionFactory.XMP));
-
-        imageFileDirectoryOffset = ifd.getNextImageFileDirectoryOffset();
-        if (desc.contains(imageFileDirectoryOffset))
-        {
-          LOGGER.error(tiffProcessor.msg("tiff.error.image_file_directory_repeated", imageFileDirectoryOffset,
-              desc.getAbsolutePath()));
-        }
-        else
-        {
-          desc.addOffset(imageFileDirectoryOffset);
-        }
+        imageFileDirectoryOffset = handleContent(ifd, reader, desc);
       }
-      while (!imageFileDirectoryOffset.equals(BigInteger.ZERO));
+      while (imageFileDirectoryOffset != null && !imageFileDirectoryOffset.equals(BigInteger.ZERO));
 
       if (desc.getNumDirectories() == Constants.CR2_IMAGE_FILE_DIRECTORIES)
       {
@@ -94,6 +72,36 @@ public class ImageFileDirectoryReader
     {
       LOGGER.error("Unable to read TIFF image file directory.", e);
     }
+  }
+
+  private BigInteger handleContent(final ImageFileDirectory ifd, final ImageFileDirectoryReader reader,
+      final TiffFileDescription desc)
+  {
+    List<ImageFileDirectory> ifdList = reader.readSubImageFileDirectories(ifd,
+        FieldDescriptionFactory.SUB_IMAGE_FILE_DIRECTORIES);
+    for (final ImageFileDirectory sub : ifdList)
+    {
+      ifd.addSubImageFileDirectory(sub);
+    }
+    ifdList = reader.readSubImageFileDirectories(ifd, FieldDescriptionFactory.GPS);
+    if (!ifdList.isEmpty())
+    {
+      ifd.setGpsInfo(ifdList.get(0));
+    }
+    reader.parseXmp(desc, ifd.findByTag(FieldDescriptionFactory.XMP));
+
+    final BigInteger imageFileDirectoryOffset = ifd.getNextImageFileDirectoryOffset();
+    if (desc.contains(imageFileDirectoryOffset))
+    {
+      LOGGER.error(tiffProcessor.msg("tiff.error.image_file_directory_repeated", imageFileDirectoryOffset,
+          desc.getAbsolutePath()));
+    }
+    else
+    {
+      desc.addOffset(imageFileDirectoryOffset);
+    }
+
+    return imageFileDirectoryOffset;
   }
 
   private void parseXmp(final TiffFileDescription desc, final Field xmp)

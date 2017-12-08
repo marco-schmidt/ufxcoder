@@ -16,6 +16,7 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import ufxcoder.app.AppConfig;
 import ufxcoder.io.SeekableSource;
 
@@ -126,7 +127,16 @@ public class TiffStripTileValidator
 
   private long toLong(final Field field)
   {
-    return field == null ? 0 : field.getAsNumber().longValue();
+    long result = 0;
+    if (field != null)
+    {
+      final Number number = field.getAsNumber();
+      if (number != null)
+      {
+        result = number.longValue();
+      }
+    }
+    return result;
   }
 
   private void checkStrips(final ImageFileDirectory ifd, final Field rowsPerStrip, final Field stripOffsets,
@@ -215,28 +225,15 @@ public class TiffStripTileValidator
     final SeekableSource source = proc.getSource();
     try
     {
-      final long fileSize = source.getLength();
       final long numValues = offsets.getNumValues();
       for (int index = 0; index < numValues; index++)
       {
-        final Number offsetNumber = offsets.getAsNumber(index);
-        final long offset = offsetNumber.longValue();
-        final Number countNumber = byteCounts.getAsNumber(index);
-        final long count = countNumber.longValue();
-        if (offset >= fileSize)
+        final BigInteger offset = offsets.getAsBigInteger(index);
+        final BigInteger count = byteCounts.getAsBigInteger(index);
+        if (!source.isValidSection(offset, count))
         {
-          final String msg = config.msg("tiff.error.validation.offset_outside_file", ifd.getOffset(), offset, fileSize);
-          proc.getFileDescription().addErrorMessage(msg);
-        }
-        else
-        {
-          final long lastByteOffset = offset + count;
-          if (lastByteOffset > fileSize)
-          {
-            final String msg = config.msg("tiff.error.validation.end_of_strip_or_tile_outside_file", ifd.getOffset(),
-                lastByteOffset, fileSize);
-            proc.getFileDescription().addErrorMessage(msg);
-          }
+          proc.error(Msg.INVALID_OFFSET_AND_SIZE, offset, count);
+          break;
         }
       }
     }

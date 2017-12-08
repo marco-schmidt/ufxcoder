@@ -15,7 +15,6 @@
  */
 package ufxcoder.formats.tiff;
 
-import java.math.BigInteger;
 import java.util.List;
 import ufxcoder.app.AppConfig;
 import ufxcoder.formats.FileDescription;
@@ -192,16 +191,6 @@ public class TiffValidator
     }
   }
 
-  private void checkImageFileDirectoryOffset(final BigInteger imageFileDirectoryOffset)
-  {
-    if (imageFileDirectoryOffset.testBit(0))
-    {
-      final String msg = proc.getConfig().msg("tiff.error.validation.odd_image_file_directory_offset",
-          imageFileDirectoryOffset);
-      proc.addErrorMessage(msg);
-    }
-  }
-
   public boolean isThumbnailIfd(final ImageFileDirectory ifd)
   {
     boolean result = false;
@@ -217,7 +206,7 @@ public class TiffValidator
 
   public void validate(final ImageFileDirectory ifd)
   {
-    checkImageFileDirectoryOffset(ifd.getOffset());
+    proc.checkImageFileDirectoryOffset(ifd.getOffset());
     checkFieldOrder(ifd);
     for (final Field field : ifd.getFields())
     {

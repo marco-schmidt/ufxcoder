@@ -42,6 +42,21 @@ public final class Msg
    */
   public static final String CANNOT_READ_OFFSET = "tiff.error.cannot_read_offset";
 
+  /**
+   * There was an I/O error trying to read an offset value.
+   */
+  public static final String INVALID_FIELD_TYPE = "tiff.error.invalid_field_type";
+
+  /**
+   * Data offsets must not be odd.
+   */
+  public static final String ODD_FILE_OFFSET = "tiff.error.validation.odd_image_file_directory_offset";
+
+  /**
+   * Combination of file offset and size invalid.
+   */
+  public static final String INVALID_OFFSET_AND_SIZE = "tiff.error.file_offset_and_size";
+
   private Msg()
   {
   }

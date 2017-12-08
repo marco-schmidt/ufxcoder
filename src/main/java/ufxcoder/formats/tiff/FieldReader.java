@@ -16,6 +16,7 @@
 package ufxcoder.formats.tiff;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.conversion.Array;
@@ -69,8 +70,10 @@ public class FieldReader
     field.setNumValues(count);
     field.setData(data);
 
-    loadAdditionalData(field);
-    parseFieldData(field, rawIfd.getByteOrder());
+    if (loadAdditionalData(field))
+    {
+      parseFieldData(field, rawIfd.getByteOrder());
+    }
     log(field);
 
     return field;
@@ -104,15 +107,18 @@ public class FieldReader
    *
    * @param field
    *          the TIFF field to check
+   * @return whether loading was successful
    * @throws IOException
    *           if loading data failed
    */
-  private void loadAdditionalData(final Field field) throws IOException
+  private boolean loadAdditionalData(final Field field) throws IOException
   {
+    boolean result;
     final FieldType valueType = FieldType.findById(field.getType());
     if (valueType == null)
     {
       processor.addErrorMessage(processor.msg("tiff.error.unknown_tiff_field_type", field.getId()));
+      result = false;
     }
     else
     {
@@ -121,34 +127,60 @@ public class FieldReader
       final boolean big = desc.isBig();
       final boolean fits = dataSize <= (big ? Constants.OFFSET_SIZE_BIG : Constants.OFFSET_SIZE_REGULAR);
       final byte[] data = field.getData();
-      if (!fits)
+      if (fits)
+      {
+        result = true;
+      }
+      else
       {
         final ByteOrder byteOrder = desc.getByteOrder();
-        final long offset = big ? Array.from64(data, 0, byteOrder) : Array.from32(data, 0, byteOrder);
-        if (offset % 2 != 0)
-        {
-          final String msg = processor.getConfig().msg("tiff.error.validation.odd_offset", offset);
-          processor.addErrorMessage(msg);
-        }
+        final BigInteger offset = Array.toBigInteger(data, byteOrder);
+        processor.checkImageFileDirectoryOffset(offset);
         final SeekableSource source = processor.getSource();
-        source.seek(offset);
-        final byte[] buffer = new byte[(int) dataSize];
-        source.readFully(buffer, 0, buffer.length);
-        field.setData(buffer);
+        if (source.isValidSection(offset, BigInteger.valueOf(dataSize)))
+        {
+          field.setAdditionalOffset(offset);
+          if (dataSize <= Constants.MAX_FIELD_DATA_ALLOCATION_SIZE)
+          {
+            source.seek(offset);
+            final byte[] buffer = new byte[(int) dataSize];
+            source.readFully(buffer, 0, buffer.length);
+            field.setData(buffer);
+            result = true;
+          }
+          else
+          {
+            field.setData(null);
+            result = false;
+          }
+        }
+        else
+        {
+          processor.error(Msg.INVALID_OFFSET_AND_SIZE, offset, dataSize);
+          result = false;
+        }
       }
     }
+    return result;
   }
 
   private void parseFieldData(final Field field, final ByteOrder byteOrder)
   {
     final FieldType type = FieldType.findById(field.getType());
-    final byte[] data = field.getData();
-    int offset = 0;
-    for (long i = 0; i < field.getNumValues(); i++)
+    if (type == null)
     {
-      final Object value = parse(data, offset, type, byteOrder);
-      field.add(value);
-      offset += type.getSize();
+      processor.error(Msg.INVALID_FIELD_TYPE, field.getType());
+    }
+    else
+    {
+      final byte[] data = field.getData();
+      int offset = 0;
+      for (long i = 0; i < field.getNumValues(); i++)
+      {
+        final Object value = parse(data, offset, type, byteOrder);
+        field.add(value);
+        offset += type.getSize();
+      }
     }
   }
 

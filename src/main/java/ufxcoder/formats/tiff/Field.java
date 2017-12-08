@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.tiff;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import ufxcoder.conversion.Array;
@@ -37,6 +38,7 @@ public class Field
    * File offset from which this value was read.
    */
   private long offset;
+  private BigInteger additionalOffset;
   private byte[] data;
   private final List<Object> values = new ArrayList<Object>();
 
@@ -114,6 +116,33 @@ public class Field
     return result;
   }
 
+  public BigInteger getAsBigInteger()
+  {
+    return getAsBigInteger(0);
+  }
+
+  public BigInteger getAsBigInteger(final int index)
+  {
+    BigInteger result = null;
+    if (index >= 0 && index < values.size())
+    {
+      final Object object = values.get(index);
+      if (object instanceof BigInteger)
+      {
+        result = (BigInteger) object;
+      }
+      else
+      {
+        if (object instanceof Number)
+        {
+          final Number number = (Number) object;
+          result = BigInteger.valueOf(number.longValue());
+        }
+      }
+    }
+    return result;
+  }
+
   public long getAsLong()
   {
     return getAsLong(0);
@@ -152,5 +181,15 @@ public class Field
       }
     }
     return result.toString();
+  }
+
+  public BigInteger getAdditionalOffset()
+  {
+    return additionalOffset;
+  }
+
+  public void setAdditionalOffset(final BigInteger additionalOffset)
+  {
+    this.additionalOffset = additionalOffset;
   }
 }
