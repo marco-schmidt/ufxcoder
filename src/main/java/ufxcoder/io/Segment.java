@@ -120,21 +120,7 @@ public class Segment
 
   public BigInteger bigInt(final int numBytes)
   {
-    final byte[] array = getData(numBytes);
-    if (byteOrder == ByteOrder.LittleEndian)
-    {
-      int index1 = 0;
-      int index2 = array.length - 1;
-      while (index1 < index2)
-      {
-        final byte temp = array[index1];
-        array[index1] = array[index2];
-        array[index2] = temp;
-        index1++;
-        index2--;
-      }
-    }
-    return new BigInteger(array);
+    return Array.toBigInteger(getData(numBytes), byteOrder);
   }
 
   public int getIndex()
