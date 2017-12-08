@@ -61,6 +61,7 @@ public class TiffReaderTest
   @Test
   public void testExtractCorrectBigEndianRegular()
   {
+    desc.reset();
     segment.setData(CORRECT_BIG_ENDIAN_REGULAR_TIFF);
     segment.setIndex(0);
 
@@ -78,6 +79,7 @@ public class TiffReaderTest
   @Test
   public void testExtractBrokenLittleEndianRegular()
   {
+    desc.reset();
     segment.setData(BROKEN_LITTLE_ENDIAN_REGULAR_TIFF);
     segment.setIndex(0);
 

@@ -139,4 +139,12 @@ public class FileDescription
   {
     return errorMessages.isEmpty() && !hasWarningOrHigher();
   }
+
+  public void reset()
+  {
+    setFile(null);
+    setByteOrder(null);
+    errorMessages.clear();
+    events.clear();
+  }
 }

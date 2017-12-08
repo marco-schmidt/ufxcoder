@@ -95,4 +95,15 @@ public class TiffFileDescription extends FileDescription
   {
     return index >= 0 && index < directories.size() ? directories.get(index) : null;
   }
+
+  @Override
+  public void reset()
+  {
+    super.reset();
+    setBig(false);
+    setCr2(false);
+    setDng(false);
+    directories.clear();
+    offsets.clear();
+  }
 }
