@@ -56,6 +56,11 @@ public abstract class AbstractFormatProcessor
     addEvent(EventSeverity.Error, messageKey, arguments);
   }
 
+  public void warn(final String messageKey, final Object... arguments)
+  {
+    addEvent(EventSeverity.Warning, messageKey, arguments);
+  }
+
   public void reset()
   {
     setFileDescription(null);
