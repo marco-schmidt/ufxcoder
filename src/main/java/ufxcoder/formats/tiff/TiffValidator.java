@@ -177,7 +177,7 @@ public class TiffValidator
       final int tag2 = field2.getId();
       if (tag1 >= tag2)
       {
-        proc.error("tiff.error.validation.image_file_directory_entries_order", ifd.getOffset(),
+        proc.warn("tiff.error.validation.image_file_directory_entries_order", ifd.getOffset(),
             Integer.toString(index + 1), Integer.toString(tag1), Integer.toString(index + 2), Integer.toString(tag2));
       }
     }

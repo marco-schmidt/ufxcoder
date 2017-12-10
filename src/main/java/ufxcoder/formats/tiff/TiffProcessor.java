@@ -78,7 +78,7 @@ public class TiffProcessor extends AbstractFormatProcessor
   {
     if (imageFileDirectoryOffset.testBit(0))
     {
-      error(Msg.ODD_FILE_OFFSET, imageFileDirectoryOffset);
+      warn(Msg.ODD_FILE_OFFSET, imageFileDirectoryOffset);
     }
   }
 
