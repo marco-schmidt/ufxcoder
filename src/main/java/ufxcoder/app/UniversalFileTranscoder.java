@@ -134,7 +134,7 @@ public class UniversalFileTranscoder
 
     final PatternLayoutEncoder encoder = new PatternLayoutEncoder();
     encoder.setContext(loggerContext);
-    encoder.setPattern("%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ}\t%thread\t%message%n");
+    encoder.setPattern("%message%n");
     encoder.start();
 
     final ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<ILoggingEvent>();
@@ -208,7 +208,7 @@ public class UniversalFileTranscoder
     {
       try
       {
-        Thread.sleep(1000);
+        Thread.sleep(100);
       }
       catch (InterruptedException e)
       {

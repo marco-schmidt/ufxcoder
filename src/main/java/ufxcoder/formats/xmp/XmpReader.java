@@ -49,7 +49,7 @@ public class XmpReader
     final int index = parseXpacket(data, 0, xpacket);
     if (index < 0)
     {
-      processor.addErrorMessage("could not find xpacket.");
+      processor.error("xmp.error.unable_to_find_xpacket");
       result = false;
     }
     /*

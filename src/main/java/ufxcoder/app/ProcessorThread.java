@@ -20,6 +20,7 @@ import java.util.concurrent.BlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.formats.AbstractFormatProcessor;
+import ufxcoder.formats.EventSeverity;
 import ufxcoder.formats.FileDescription;
 import ufxcoder.formats.FormatProcessorRegistry;
 import ufxcoder.io.SeekableSource;
@@ -75,15 +76,27 @@ public class ProcessorThread implements Runnable
 
   private void handleResult(final AbstractFormatProcessor proc, final SeekableSource source, final FileDescription desc)
   {
-    String result = null;
     if (proc.isFormatIdentified())
     {
-      result = desc.getErrorMessage();
-      if (result == null)
+      final String eventText = desc.formatEvents();
+      String key;
+      final EventSeverity highestSeverity = desc.findHighestSeverity();
+      if (highestSeverity == EventSeverity.Error)
       {
-        result = ".";
+        key = "processor.result.error";
       }
-      LOGGER.info(source.getName() + "\t" + proc.getShortName() + "\t" + result);
+      else
+      {
+        if (highestSeverity == EventSeverity.Warning)
+        {
+          key = "processor.result.warn";
+        }
+        else
+        {
+          key = "processor.result.ok";
+        }
+      }
+      LOGGER.info(source.getName() + "\t" + proc.getShortName() + "\t" + proc.msg(key) + "\t" + eventText);
     }
   }
 

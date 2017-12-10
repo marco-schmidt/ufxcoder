@@ -16,8 +16,6 @@
 package ufxcoder.formats.tiff;
 
 import java.util.List;
-import ufxcoder.app.AppConfig;
-import ufxcoder.formats.FileDescription;
 
 /**
  * Validate various parts of a TIFF file.
@@ -25,12 +23,10 @@ import ufxcoder.formats.FileDescription;
 public class TiffValidator
 {
   private final TiffProcessor proc;
-  private final AppConfig config;
 
   public TiffValidator(final TiffProcessor processor)
   {
     proc = processor;
-    config = proc.getConfig();
   }
 
   public void validate(final Field field)
@@ -65,13 +61,13 @@ public class TiffValidator
       }
       if (numNonAscii > 0)
       {
-        proc.addErrorMessage(config.msg("tiff.error.validation.non_ascii_characters", numNonAscii));
+        proc.error("tiff.error.validation.non_ascii_characters", numNonAscii);
       }
 
       // last byte must be zero
       if (data[data.length - 1] != 0)
       {
-        proc.addErrorMessage(config.msg("tiff.error.validation.characters_not_zero_terminated"));
+        proc.error("tiff.error.validation.characters_not_zero_terminated");
       }
     }
   }
@@ -82,14 +78,12 @@ public class TiffValidator
     final Number minimumCount = desc.getMinimumCount();
     if (minimumCount != null && numValues < minimumCount.longValue())
     {
-      proc.addErrorMessage(
-          proc.msg("tiff.error.field_has_too_few_values", field.getId(), numValues, minimumCount.longValue()));
+      proc.error("tiff.error.field_has_too_few_values", field.getId(), numValues, minimumCount.longValue());
     }
     final Number maximumCount = desc.getMaximumCount();
     if (maximumCount != null && numValues > maximumCount.longValue())
     {
-      proc.addErrorMessage(
-          proc.msg("tiff.error.field_has_too_many_values", field.getId(), numValues, maximumCount.longValue()));
+      proc.error("tiff.error.field_has_too_many_values", field.getId(), numValues, maximumCount.longValue());
     }
   }
 
@@ -106,11 +100,11 @@ public class TiffValidator
         final Double doubleValue = Double.valueOf(value.doubleValue());
         if (min.compareTo(doubleValue) > 0)
         {
-          proc.addErrorMessage(proc.msg("tiff.error.value_smaller_than_minimum", field.getId(), value, min));
+          proc.error("tiff.error.value_smaller_than_minimum", field.getId(), value, min);
         }
         if (max.compareTo(doubleValue) < 0)
         {
-          proc.addErrorMessage(proc.msg("tiff.error.value_larger_than_maximum", field.getId(), value, max));
+          proc.error("tiff.error.value_larger_than_maximum", field.getId(), value, max);
         }
       }
     }
@@ -134,13 +128,13 @@ public class TiffValidator
       final FieldType type = FieldType.findById(fieldTypeId);
       if (type == null)
       {
-        proc.addErrorMessage(proc.msg("tiff.error.unknown_field_type", fieldTypeId));
+        proc.error("tiff.error.unknown_field_type", fieldTypeId);
       }
       else
       {
         if (!desc.isAllowed(type))
         {
-          proc.addErrorMessage(proc.msg("tiff.error.incorrect_field_type", field.getId(), fieldTypeId));
+          proc.error("tiff.error.incorrect_field_type", field.getId(), fieldTypeId);
         }
       }
     }
@@ -161,7 +155,7 @@ public class TiffValidator
       final TiffDateTime tiffDateTime = new TiffDateTime();
       if (tiffDateTime.parseDateTimeString(str) == null)
       {
-        proc.addErrorMessage(proc.msg("tiff.error.invalid_date_time", str));
+        proc.error("tiff.error.invalid_date_time", str);
       }
     }
   }
@@ -175,7 +169,6 @@ public class TiffValidator
   public void checkFieldOrder(final ImageFileDirectory ifd)
   {
     final List<Field> fields = ifd.getFields();
-    final FileDescription desc = proc.getFileDescription();
     for (int index = 0; index < fields.size() - 1; index++)
     {
       final Field field1 = fields.get(index);
@@ -184,9 +177,8 @@ public class TiffValidator
       final int tag2 = field2.getId();
       if (tag1 >= tag2)
       {
-        final String msg = config.msg("tiff.error.validation.image_file_directory_entries_order", ifd.getOffset(),
+        proc.error("tiff.error.validation.image_file_directory_entries_order", ifd.getOffset(),
             Integer.toString(index + 1), Integer.toString(tag1), Integer.toString(index + 2), Integer.toString(tag2));
-        desc.addErrorMessage(msg);
       }
     }
   }
@@ -216,7 +208,7 @@ public class TiffValidator
     final boolean thumbnail = isThumbnailIfd(ifd);
     if (!thumbnail)
     {
-      final TiffStripTileValidator stVal = new TiffStripTileValidator(config, proc);
+      final TiffStripTileValidator stVal = new TiffStripTileValidator(proc);
       stVal.checkStripsAndTiles(ifd);
     }
     final TiffColorValidator colorValidator = new TiffColorValidator(proc);

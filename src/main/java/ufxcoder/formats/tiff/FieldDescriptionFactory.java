@@ -25,6 +25,23 @@ import java.util.List;
 public final class FieldDescriptionFactory
 {
   /**
+   * Description of the type of data associated with an image file directory.
+   */
+  public static final FieldDescription NEW_SUBFILE_TYPE = new FieldDescription(254,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Long
+      })), Long.valueOf(0), Long.valueOf(1 + 2 + 4 + 16), 1, 1, Long.valueOf(0), false);
+  /**
+   * Description of the type of data associated with an image file directory. Deprecated. Use {@value #NEW_SUBFILE_TYPE}
+   * instead.
+   */
+  public static final FieldDescription SUBFILE_TYPE = new FieldDescription(255,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Short
+      })), Long.valueOf(1), Long.valueOf(3), 1, 1, null, false);
+  /**
    * Horizontal size of image in pixels.
    */
   public static final FieldDescription IMAGE_WIDTH = new FieldDescription(256,
@@ -41,6 +58,14 @@ public final class FieldDescriptionFactory
           FieldType.Short, FieldType.Long
       })), 1, null, 1, 1, null, false);
   /**
+   * Number of bits used to store each sample of a pixel.
+   */
+  public static final FieldDescription BITS_PER_SAMPLE = new FieldDescription(258,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Short
+      })), 1, null, 1, 65535, Long.valueOf(1), false);
+  /**
    * Data compression of image data.
    */
   private static final FieldDescription COMPRESSION = new FieldDescription(259,
@@ -55,7 +80,15 @@ public final class FieldDescriptionFactory
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
           FieldType.Short
-      })), 0, 4, 1, 1, null, true);
+      })), 0, 8, 1, 1, null, true);
+  /**
+   * How was was grayscale data converted to black and white?
+   */
+  public static final FieldDescription THRESHHOLDING = new FieldDescription(263,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Short
+      })), 1, 3, 1, 1, 1, true);
   /**
    * File positions, one for each strip.
    */
@@ -225,9 +258,10 @@ public final class FieldDescriptionFactory
    */
   private static final FieldDescription[] ALL =
   {
-      IMAGE_WIDTH, IMAGE_LENGTH, COMPRESSION, PHOTOMETRIC_INTERPRETATION, STRIP_OFFSETS, ROWS_PER_STRIP,
-      STRIP_BYTE_COUNTS, DATE_TIME, PREDICTOR, TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS,
-      SUB_IMAGE_FILE_DIRECTORIES, GPS, DATE_TIME_ORIGINAL, DATE_TIME_DIGITIZED, DNG_VERSION, CR2_SLICE_INFORMATION
+      NEW_SUBFILE_TYPE, SUBFILE_TYPE, IMAGE_WIDTH, IMAGE_LENGTH, BITS_PER_SAMPLE, COMPRESSION,
+      PHOTOMETRIC_INTERPRETATION, THRESHHOLDING, STRIP_OFFSETS, ROWS_PER_STRIP, STRIP_BYTE_COUNTS, DATE_TIME, PREDICTOR,
+      TILE_WIDTH, TILE_LENGTH, TILE_OFFSETS, TILE_BYTE_COUNTS, SUB_IMAGE_FILE_DIRECTORIES, GPS, DATE_TIME_ORIGINAL,
+      DATE_TIME_DIGITIZED, DNG_VERSION, CR2_SLICE_INFORMATION
   };
 
   private FieldDescriptionFactory()

@@ -17,7 +17,6 @@ package ufxcoder.formats.tiff;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import ufxcoder.app.AppConfig;
 import ufxcoder.io.SeekableSource;
 
 /**
@@ -25,12 +24,10 @@ import ufxcoder.io.SeekableSource;
  */
 public class TiffStripTileValidator
 {
-  private final AppConfig config;
   private final TiffProcessor proc;
 
-  public TiffStripTileValidator(final AppConfig config, final TiffProcessor proc)
+  public TiffStripTileValidator(final TiffProcessor proc)
   {
-    this.config = config;
     this.proc = proc;
   }
 
@@ -99,8 +96,7 @@ public class TiffStripTileValidator
       }
       else
       {
-        final String msg = config.msg("tiff.error.validation.some_tile_fields_missing", ifd.getOffset());
-        proc.getFileDescription().addErrorMessage(msg);
+        proc.error("tiff.error.validation.some_tile_fields_missing", ifd.getOffset());
       }
     }
     else
@@ -113,14 +109,12 @@ public class TiffStripTileValidator
         }
         else
         {
-          final String msg = config.msg("tiff.error.validation.all_strip_and_some_tile_fields", ifd.getOffset());
-          proc.getFileDescription().addErrorMessage(msg);
+          proc.error("tiff.error.validation.all_strip_and_some_tile_fields", ifd.getOffset());
         }
       }
       else
       {
-        final String msg = config.msg("tiff.error.validation.only_some_strip_fields", ifd.getOffset());
-        proc.getFileDescription().addErrorMessage(msg);
+        proc.error("tiff.error.validation.only_some_strip_fields", ifd.getOffset());
       }
     }
   }
@@ -146,9 +140,8 @@ public class TiffStripTileValidator
     final long counts = stripByteCounts.getNumValues();
     if (offsets != counts)
     {
-      final String msg = config.msg("tiff.error.validation.number_of_strip_offsets_and_byte_counts_differ",
-          ifd.getOffset(), offsets, counts);
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.number_of_strip_offsets_and_byte_counts_differ", ifd.getOffset(), offsets,
+          counts);
     }
 
     final long rows = toLong(rowsPerStrip);
@@ -158,9 +151,7 @@ public class TiffStripTileValidator
       final long requiredStrips = (height + rows - 1) / rows;
       if (requiredStrips < offsets)
       {
-        final String msg = config.msg("tiff.error.validation.too_few_strips", ifd.getOffset(), requiredStrips, offsets,
-            height, rows);
-        proc.getFileDescription().addErrorMessage(msg);
+        proc.error("tiff.error.validation.too_few_strips", ifd.getOffset(), requiredStrips, offsets, height, rows);
       }
     }
 
@@ -177,24 +168,21 @@ public class TiffStripTileValidator
     final long width = toLong(tileWidth);
     if (width % 16 != 0)
     {
-      final String msg = config.msg("tiff.error.validation.tile_width_not_multiple_of_16", ifd.getOffset(), width);
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.tile_width_not_multiple_of_16", ifd.getOffset(), width);
     }
 
     final long height = toLong(tileHeight);
     if (height % 16 != 0)
     {
-      final String msg = config.msg("tiff.error.validation.tile_length_not_multiple_of_16", ifd.getOffset(), height);
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.tile_length_not_multiple_of_16", ifd.getOffset(), height);
     }
 
     final long offsets = toLong(tileOffsets);
     final long counts = toLong(tileByteCounts);
     if (offsets != counts)
     {
-      final String msg = config.msg("tiff.error.validation.number_of_tile_offsets_and_byte_counts_differ",
-          ifd.getOffset(), offsets, counts);
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.number_of_tile_offsets_and_byte_counts_differ", ifd.getOffset(), offsets,
+          counts);
     }
 
     final long horiz = (imageWidth + width - 1) / width;
@@ -202,9 +190,8 @@ public class TiffStripTileValidator
     final long expectedTiles = horiz * vert;
     if (offsets != expectedTiles)
     {
-      final String msg = config.msg("tiff.error.validation.number_of_expected_and_actual_tiles_differ", ifd.getOffset(),
-          expectedTiles, offsets);
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.number_of_expected_and_actual_tiles_differ", ifd.getOffset(), expectedTiles,
+          offsets);
     }
 
     checkImageDataSegments(ifd, tileOffsets, tileByteCounts);
@@ -239,9 +226,7 @@ public class TiffStripTileValidator
     }
     catch (IOException e)
     {
-      final String msg = config.msg("tiff.error.validation.unable_to_determine_source_size", source.getName(),
-          e.getMessage());
-      proc.getFileDescription().addErrorMessage(msg);
+      proc.error("tiff.error.validation.unable_to_determine_source_size", source.getName(), e.getMessage());
     }
   }
 }

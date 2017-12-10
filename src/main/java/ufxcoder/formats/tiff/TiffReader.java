@@ -108,7 +108,7 @@ public class TiffReader
         desc.addOffset(imageFileDirectoryOffset);
         if (!proc.isValidSourceOffset(imageFileDirectoryOffset))
         {
-          desc.addErrorMessage(proc.msg("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition));
+          proc.error("tiff.error.invalid_file_offset", imageFileDirectoryOffset, offsetPosition);
         }
       }
     }

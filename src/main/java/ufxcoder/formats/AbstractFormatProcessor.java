@@ -43,14 +43,6 @@ public abstract class AbstractFormatProcessor
     fileDescription.addEvent(severity, messageKey, config.msg(messageKey, arguments));
   }
 
-  public void addErrorMessage(final String msg)
-  {
-    if (msg != null && fileDescription != null)
-    {
-      fileDescription.addErrorMessage(msg);
-    }
-  }
-
   public void error(final String messageKey, final Object... arguments)
   {
     addEvent(EventSeverity.Error, messageKey, arguments);

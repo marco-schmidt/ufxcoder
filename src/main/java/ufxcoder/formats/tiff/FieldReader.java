@@ -117,7 +117,7 @@ public class FieldReader
     final FieldType valueType = FieldType.findById(field.getType());
     if (valueType == null)
     {
-      processor.addErrorMessage(processor.msg("tiff.error.unknown_tiff_field_type", field.getId()));
+      processor.error("tiff.error.unknown_tiff_field_type", field.getId());
       result = false;
     }
     else
@@ -215,7 +215,7 @@ public class FieldReader
       final Integer denominator = Integer.valueOf(Array.from32(data, offset + FieldType.Long.getSize(), byteOrder));
       if (denominator.equals(0))
       {
-        processor.addErrorMessage(processor.msg("tiff.error.validation.denominator_zero"));
+        processor.error("tiff.error.validation.denominator_zero");
         result = numerator;
       }
       else

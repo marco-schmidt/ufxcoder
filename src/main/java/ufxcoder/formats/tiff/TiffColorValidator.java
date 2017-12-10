@@ -58,9 +58,8 @@ public class TiffColorValidator
     // compare expected to actual samples
     if (imageSamples + additionalSamples != totalSamples)
     {
-      final String msg = proc.getConfig().msg("tiff.error.validation.unexpected_number_of_samples", photomInterpValue,
-          imageSamples, additionalSamples, totalSamples);
-      proc.addErrorMessage(msg);
+      proc.error("tiff.error.validation.unexpected_number_of_samples", photomInterpValue, imageSamples,
+          additionalSamples, totalSamples);
     }
   }
 }

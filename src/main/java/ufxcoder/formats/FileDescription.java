@@ -30,43 +30,40 @@ public class FileDescription
   private final List<String> errorMessages = new ArrayList<String>();
   private final List<ProcessorEvent> events = new ArrayList<ProcessorEvent>();
 
-  public String getErrorMessage()
+  private List<ProcessorEvent> errorsAndWarnings()
   {
-    String result;
-    if (errorMessages.isEmpty())
+    final List<ProcessorEvent> result = new ArrayList<ProcessorEvent>();
+    for (ProcessorEvent event : events)
     {
-      result = null;
-    }
-    else
-    {
-      if (errorMessages.size() == 1)
+      EventSeverity severity = event.getSeverity();
+      if (severity == EventSeverity.Error || severity == EventSeverity.Warning)
       {
-        result = errorMessages.get(0);
-      }
-      else
-      {
-        final StringBuffer sb = new StringBuffer();
-        int msgNr = 1;
-        for (final String msg : errorMessages)
-        {
-          if (sb.length() > 0)
-          {
-            sb.append(' ');
-          }
-          sb.append('(');
-          sb.append(msgNr++);
-          sb.append(") ");
-          sb.append(msg);
-        }
-        result = sb.toString();
+        result.add(event);
       }
     }
     return result;
   }
 
-  public void addErrorMessage(final String errorMessage)
+  public String formatEvents()
   {
-    errorMessages.add(errorMessage);
+    final List<ProcessorEvent> events = errorsAndWarnings();
+    final int number = events.size();
+    final StringBuffer sb = new StringBuffer();
+    int msgNr = 1;
+    for (final ProcessorEvent event : events)
+    {
+      if (sb.length() > 0)
+      {
+        sb.append(' ');
+      }
+      sb.append('[');
+      sb.append(msgNr++);
+      sb.append('/');
+      sb.append(number);
+      sb.append("] ");
+      sb.append(event.getMessage());
+    }
+    return sb.toString();
   }
 
   public boolean containsEvent(final String key)
@@ -78,6 +75,27 @@ public class FileDescription
       {
         result = true;
         break;
+      }
+    }
+    return result;
+  }
+
+  public EventSeverity findHighestSeverity()
+  {
+    EventSeverity result = null;
+    for (final ProcessorEvent event : events)
+    {
+      final EventSeverity severity = event.getSeverity();
+      if (severity == EventSeverity.Warning && result == null)
+      {
+        result = EventSeverity.Warning;
+      }
+      else
+      {
+        if (severity == EventSeverity.Error && result != EventSeverity.Error)
+        {
+          result = EventSeverity.Error;
+        }
       }
     }
     return result;
@@ -104,10 +122,16 @@ public class FileDescription
     event.setMessage(message);
     event.setMessageKey(messageKey);
     events.add(event);
-    if (severity == EventSeverity.Error)
-    {
-      addErrorMessage(message);
-    }
+  }
+
+  public void addError(final String messageKey, final String message)
+  {
+    addEvent(EventSeverity.Error, messageKey, message);
+  }
+
+  public void addWarning(final String messageKey, final String message)
+  {
+    addEvent(EventSeverity.Warning, messageKey, message);
   }
 
   public ByteOrder getByteOrder()

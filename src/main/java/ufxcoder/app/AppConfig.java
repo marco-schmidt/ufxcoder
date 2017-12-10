@@ -35,7 +35,7 @@ public class AppConfig
    * Default logging pattern.
    */
   public static final String DEFAULT_LOGGING_PATTERN = "%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ}\t%X{" + MDC_MACHINE
-      + "}\t%level\t%message%n";
+      + "}\t%thread\t%level\t%message%n";
 
   /**
    * If no argument is specified, use this many threads per CPU as returned by {@link Runtime#availableProcessors()}.

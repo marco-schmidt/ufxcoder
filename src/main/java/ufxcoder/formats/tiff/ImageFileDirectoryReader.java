@@ -89,7 +89,7 @@ public class ImageFileDirectoryReader
     {
       ifd.setGpsInfo(ifdList.get(0));
     }
-    reader.parseXmp(desc, ifd.findByTag(FieldDescriptionFactory.XMP));
+    reader.parseXmp(ifd.findByTag(FieldDescriptionFactory.XMP));
 
     final BigInteger imageFileDirectoryOffset = ifd.getNextImageFileDirectoryOffset();
     if (desc.contains(imageFileDirectoryOffset))
@@ -105,16 +105,13 @@ public class ImageFileDirectoryReader
     return imageFileDirectoryOffset;
   }
 
-  private void parseXmp(final TiffFileDescription desc, final Field xmp)
+  private void parseXmp(final Field xmp)
   {
     if (xmp != null)
     {
       final byte[] data = xmp.getData();
       final XmpReader reader = new XmpReader(tiffProcessor);
-      if (!reader.parseXmp(data))
-      {
-        desc.addErrorMessage("todo");
-      }
+      reader.parseXmp(data);
     }
   }
 
@@ -133,7 +130,7 @@ public class ImageFileDirectoryReader
 
     if (numTags < Constants.MIN_NUMBER_OF_ENTRIES_PER_IFD)
     {
-      tiffProcessor.addErrorMessage(tiffProcessor.msg("tiff.error.too_few_tags", numTags));
+      tiffProcessor.error("tiff.error.too_few_tags", numTags);
     }
     else
     {
