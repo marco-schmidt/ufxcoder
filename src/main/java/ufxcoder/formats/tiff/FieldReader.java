@@ -215,8 +215,16 @@ public class FieldReader
       final Integer denominator = Integer.valueOf(Array.from32(data, offset + FieldType.Long.getSize(), byteOrder));
       if (denominator.equals(0))
       {
-        processor.error("tiff.error.validation.denominator_zero");
-        result = numerator;
+        if (numerator.equals(0))
+        {
+          // 0/0 means "undefined"
+          result = 0;
+        }
+        else
+        {
+          processor.error("tiff.error.validation.denominator_zero");
+          result = numerator;
+        }
       }
       else
       {
