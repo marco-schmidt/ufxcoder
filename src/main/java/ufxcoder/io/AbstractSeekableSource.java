@@ -23,12 +23,19 @@ import java.math.BigInteger;
  */
 public abstract class AbstractSeekableSource implements SeekableSource
 {
+  private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+
   @Override
   public void seek(final BigInteger offset) throws IOException
   {
     if (offset == null)
     {
       throw new IllegalArgumentException("Argument offset must not be null.");
+    }
+    if (offset.compareTo(MAX_LONG) > 0)
+    {
+      throw new IOException(String.format("Unable to seek to position %s, it is larger than the maximum long %d.",
+          offset.toString(), Long.MAX_VALUE));
     }
     seek(offset.longValue());
   }
