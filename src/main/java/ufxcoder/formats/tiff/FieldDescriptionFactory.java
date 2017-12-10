@@ -80,7 +80,7 @@ public final class FieldDescriptionFactory
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
           FieldType.Short
-      })), 0, 8, 1, 1, null, true);
+      })), 0, null, 1, 1, null, true);
   /**
    * How was was grayscale data converted to black and white?
    */
@@ -145,7 +145,7 @@ public final class FieldDescriptionFactory
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
           FieldType.Short, FieldType.Long
-      })), Long.valueOf(16), Long.valueOf(1), 1, Integer.MAX_VALUE, null, false);
+      })), Long.valueOf(16), null, 1, Integer.MAX_VALUE, null, false);
   /**
    * Height of a tile.
    */
@@ -153,7 +153,7 @@ public final class FieldDescriptionFactory
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
           FieldType.Short, FieldType.Long
-      })), Long.valueOf(16), Long.valueOf(1), 1, Integer.MAX_VALUE, null, false);
+      })), Long.valueOf(16), null, 1, Integer.MAX_VALUE, null, false);
   /**
    * File positions, one for each tile.
    */
@@ -244,6 +244,15 @@ public final class FieldDescriptionFactory
       new HashSet<FieldType>(Arrays.asList(new FieldType[]
       {
           FieldType.Byte
+      })), null, null, 4, 4, null, false);
+  /**
+   * DNG lens information, four rational values: minimum and maximum focal length in millimeters and maximum aperture at
+   * those two focal lengths.
+   */
+  public static final FieldDescription LENS_INFO = new FieldDescription(50736,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Rational
       })), null, null, 4, 4, null, false);
   /**
    * CR2 slice information (three short values).
