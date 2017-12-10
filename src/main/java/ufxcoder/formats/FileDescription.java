@@ -33,9 +33,9 @@ public class FileDescription
   private List<ProcessorEvent> errorsAndWarnings()
   {
     final List<ProcessorEvent> result = new ArrayList<ProcessorEvent>();
-    for (ProcessorEvent event : events)
+    for (final ProcessorEvent event : events)
     {
-      EventSeverity severity = event.getSeverity();
+      final EventSeverity severity = event.getSeverity();
       if (severity == EventSeverity.Error || severity == EventSeverity.Warning)
       {
         result.add(event);
