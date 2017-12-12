@@ -34,6 +34,10 @@ public class TiffReader
 
   /**
    * Try to identify underlying stream as TIFF.
+   *
+   * @param desc
+   *          description of TIFF stream
+   * @return {@link Segment} that was created on the input
    */
   public Segment identify(final TiffFileDescription desc)
   {

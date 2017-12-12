@@ -75,7 +75,7 @@ public interface SeekableSource extends Closeable
    *          position in the source
    * @param numBytes
    *          number of bytes
-   * @return if offset + numBytes <= {@link #getLength()}
+   * @return if offset + numBytes &lt;= {@link #getLength()}
    * @throws IOException
    *           if querying current file size fails
    */
