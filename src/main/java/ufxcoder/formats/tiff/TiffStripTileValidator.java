@@ -119,7 +119,7 @@ public class TiffStripTileValidator
     }
   }
 
-  private long toLong(final Field field)
+  private long valueAsLong(final Field field)
   {
     long result = 0;
     if (field != null)
@@ -129,6 +129,16 @@ public class TiffStripTileValidator
       {
         result = number.longValue();
       }
+    }
+    return result;
+  }
+
+  private long countAsLong(final Field field)
+  {
+    long result = 0;
+    if (field != null)
+    {
+      result = field.getNumValues();
     }
     return result;
   }
@@ -144,10 +154,10 @@ public class TiffStripTileValidator
           counts);
     }
 
-    final long rows = toLong(rowsPerStrip);
+    final long rows = valueAsLong(rowsPerStrip);
     if (rows > 0)
     {
-      final long height = toLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_LENGTH.getTag()));
+      final long height = valueAsLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_LENGTH.getTag()));
       final long requiredStrips = ((height + rows - 1) / rows) * computePlanarFactor(ifd);
       if (requiredStrips < offsets)
       {
@@ -161,24 +171,24 @@ public class TiffStripTileValidator
   private void checkTiles(final ImageFileDirectory ifd, final Field tileWidth, final Field tileHeight,
       final Field tileOffsets, final Field tileByteCounts)
   {
-    final long imageHeight = toLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_LENGTH));
-    final long imageWidth = toLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_WIDTH));
+    final long imageHeight = valueAsLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_LENGTH));
+    final long imageWidth = valueAsLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_WIDTH));
 
     // TIFF6.pdf p. 67
-    final long width = toLong(tileWidth);
+    final long width = valueAsLong(tileWidth);
     if (width % 16 != 0)
     {
       proc.error("tiff.error.validation.tile_width_not_multiple_of_16", ifd.getOffset(), width);
     }
 
-    final long height = toLong(tileHeight);
+    final long height = valueAsLong(tileHeight);
     if (height % 16 != 0)
     {
       proc.error("tiff.error.validation.tile_length_not_multiple_of_16", ifd.getOffset(), height);
     }
 
-    final long offsets = toLong(tileOffsets);
-    final long counts = toLong(tileByteCounts);
+    final long offsets = countAsLong(tileOffsets);
+    final long counts = countAsLong(tileByteCounts);
     if (offsets != counts)
     {
       proc.error("tiff.error.validation.number_of_tile_offsets_and_byte_counts_differ", ifd.getOffset(), offsets,
