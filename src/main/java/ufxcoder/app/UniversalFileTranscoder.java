@@ -51,7 +51,7 @@ public class UniversalFileTranscoder
   private boolean initialize(final AppConfig config, final String... args)
   {
     boolean success = true;
-    final ResourceBundle bundle = ResourceBundle.getBundle("Messages", Locale.ENGLISH);
+    final ResourceBundle bundle = ResourceBundle.getBundle("Messages", config.getLocale());
     config.setBundle(bundle);
     config.setProcessors(FormatProcessorRegistry.createProcessorInstances());
     final ArgumentParser parser = new ArgumentParser();
@@ -104,6 +104,7 @@ public class UniversalFileTranscoder
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.UTC));
     initLogger();
     final AppConfig config = new AppConfig();
+    config.setLocale(Locale.ENGLISH);
     FormatProcessorRegistry.register(TiffProcessor.class);
     if (transcoder.initialize(config, args))
     {

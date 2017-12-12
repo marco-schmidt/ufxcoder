@@ -50,6 +50,7 @@ public class TiffReaderTest
   {
     final AppConfig config = new AppConfig();
     config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));
+    config.setLocale(Locale.ENGLISH);
     proc = new TiffProcessor();
     proc.setConfig(config);
     desc = new TiffFileDescription();

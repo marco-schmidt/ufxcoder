@@ -18,6 +18,7 @@ package ufxcoder.app;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import ufxcoder.formats.AbstractFormatProcessor;
 
@@ -43,23 +44,18 @@ public class AppConfig
   public static final int DEFAULT_NUMBER_OF_THREADS_PER_CPU = 8;
   private boolean showEnvironment;
   private ResourceBundle bundle;
-  private List<String> fileNames;
-  private List<String> directoryNames;
+  private final List<String> fileNames;
+  private final List<String> directoryNames;
   private ProcessMode mode;
   private List<AbstractFormatProcessor> processors;
   private SystemInfo systemInfo;
   private Integer numberOfThreads;
+  private Locale locale;
 
   public AppConfig()
   {
     fileNames = new ArrayList<String>();
     directoryNames = new ArrayList<String>();
-  }
-
-  public AppConfig(final ResourceBundle resBundle)
-  {
-    this();
-    setBundle(resBundle);
   }
 
   public ResourceBundle getBundle()
@@ -95,8 +91,18 @@ public class AppConfig
    */
   public String msg(final String key, final Object... args)
   {
+    String result;
     final String pattern = msg(key);
-    return pattern.isEmpty() ? "" : MessageFormat.format(pattern, args);
+    if (pattern.isEmpty())
+    {
+      result = "";
+    }
+    else
+    {
+      final MessageFormat formatter = new MessageFormat(pattern, getLocale());
+      result = formatter.format(args);
+    }
+    return result;
   }
 
   public boolean hasMsg(final String key)
@@ -181,5 +187,15 @@ public class AppConfig
   public void setNumberOfThreads(final Integer numberOfThreads)
   {
     this.numberOfThreads = numberOfThreads;
+  }
+
+  public Locale getLocale()
+  {
+    return locale;
+  }
+
+  public void setLocale(final Locale locale)
+  {
+    this.locale = locale;
   }
 }
