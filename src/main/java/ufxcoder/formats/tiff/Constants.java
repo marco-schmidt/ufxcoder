@@ -108,6 +108,12 @@ public final class Constants
   public static final int PHOTOMETRIC_INTERPRETATION_PALETTED = 3;
 
   /**
+   * Transparency mask (one alpha channel, each value describing how much of the background is to be seen behind a
+   * pixel).
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_MASK = 4;
+
+  /**
    * Color type separated, mostly CMYK.
    */
   public static final int PHOTOMETRIC_INTERPRETATION_SEPARATED = 5;
@@ -116,6 +122,16 @@ public final class Constants
    * Color type YCbCr, luminance and two color channels.
    */
   public static final int PHOTOMETRIC_INTERPRETATION_Y_CB_CR = 6;
+
+  /**
+   * Color type LogL.
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_LOG_L = 32844;
+
+  /**
+   * Color type LogL.
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_LOG_LUV = 32845;
 
   /**
    * Samples of a pixel are stored together.
@@ -159,10 +175,13 @@ public final class Constants
     case PHOTOMETRIC_INTERPRETATION_WHITE_IS_ZERO:
     case PHOTOMETRIC_INTERPRETATION_BLACK_IS_ZERO:
     case PHOTOMETRIC_INTERPRETATION_PALETTED:
+    case PHOTOMETRIC_INTERPRETATION_MASK:
+    case PHOTOMETRIC_INTERPRETATION_LOG_L:
       imageSamples = 1;
       break;
     case PHOTOMETRIC_INTERPRETATION_RGB:
     case PHOTOMETRIC_INTERPRETATION_Y_CB_CR:
+    case PHOTOMETRIC_INTERPRETATION_LOG_LUV:
       imageSamples = 3;
       break;
     case PHOTOMETRIC_INTERPRETATION_SEPARATED:
