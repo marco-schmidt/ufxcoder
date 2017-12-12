@@ -118,6 +118,20 @@ public final class Constants
   public static final int PHOTOMETRIC_INTERPRETATION_Y_CB_CR = 6;
 
   /**
+   * Samples of a pixel are stored together.
+   *
+   * @see FieldDescriptionFactory#PLANAR_CONFIGURATION
+   */
+  public static final int PLANAR_CONFIGURATION_CHUNKY = 1;
+
+  /**
+   * Samples of a channel are stored together.
+   *
+   * @see FieldDescriptionFactory#PLANAR_CONFIGURATION
+   */
+  public static final int PLANAR_CONFIGURATION_PLANAR = 2;
+
+  /**
    * Maximum size of field data outside of an image file directory to be allocated at once.
    */
   public static final int MAX_FIELD_DATA_ALLOCATION_SIZE = 64 * 1024;

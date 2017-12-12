@@ -33,7 +33,7 @@ public final class FieldDescriptionFactory
           FieldType.Long
       })), Long.valueOf(0), Long.valueOf(1 + 2 + 4 + 16), 1, 1, Long.valueOf(0), false);
   /**
-   * Description of the type of data associated with an image file directory. Deprecated. Use {@value #NEW_SUBFILE_TYPE}
+   * Description of the type of data associated with an image file directory. Deprecated. Use {@link #NEW_SUBFILE_TYPE}
    * instead.
    */
   public static final FieldDescription SUBFILE_TYPE = new FieldDescription(255,
@@ -122,6 +122,15 @@ public final class FieldDescriptionFactory
       {
           FieldType.Short, FieldType.Long
       })), Long.valueOf(1), null, 1, Integer.MAX_VALUE, null, false);
+  /**
+   * Layout of samples: per pixel or per channel.
+   */
+  public static final FieldDescription PLANAR_CONFIGURATION = new FieldDescription(284,
+      new HashSet<FieldType>(Arrays.asList(new FieldType[]
+      {
+          FieldType.Short
+      })), Long.valueOf(Constants.PLANAR_CONFIGURATION_CHUNKY), Long.valueOf(Constants.PLANAR_CONFIGURATION_PLANAR), 1,
+      1, Constants.PLANAR_CONFIGURATION_CHUNKY, false);
   /**
    * Date and time of creation.
    */

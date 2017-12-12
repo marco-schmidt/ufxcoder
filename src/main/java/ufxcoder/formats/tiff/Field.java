@@ -143,6 +143,17 @@ public class Field
     return result;
   }
 
+  public int getAsInt()
+  {
+    return getAsInt(0);
+  }
+
+  public int getAsInt(final int index)
+  {
+    final Number result = getAsNumber(index);
+    return result == null ? 0 : result.intValue();
+  }
+
   public long getAsLong()
   {
     return getAsLong(0);

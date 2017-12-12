@@ -148,7 +148,7 @@ public class TiffStripTileValidator
     if (rows > 0)
     {
       final long height = toLong(ifd.findByTag(FieldDescriptionFactory.IMAGE_LENGTH.getTag()));
-      final long requiredStrips = (height + rows - 1) / rows;
+      final long requiredStrips = ((height + rows - 1) / rows) * computePlanarFactor(ifd);
       if (requiredStrips < offsets)
       {
         proc.error("tiff.error.validation.too_few_strips", ifd.getOffset(), offsets, requiredStrips, height, rows);
@@ -187,7 +187,7 @@ public class TiffStripTileValidator
 
     final long horiz = (imageWidth + width - 1) / width;
     final long vert = (imageHeight + height - 1) / height;
-    final long expectedTiles = horiz * vert;
+    final long expectedTiles = horiz * vert * computePlanarFactor(ifd);
     if (offsets != expectedTiles)
     {
       proc.error("tiff.error.validation.number_of_expected_and_actual_tiles_differ", ifd.getOffset(), expectedTiles,
@@ -228,5 +228,22 @@ public class TiffStripTileValidator
     {
       proc.error("tiff.error.validation.unable_to_determine_source_size", source.getName(), e.getMessage());
     }
+  }
+
+  private int computePlanarFactor(final ImageFileDirectory ifd)
+  {
+    int result = 1;
+    final Field planarConfig = ifd.findByTag(FieldDescriptionFactory.PLANAR_CONFIGURATION);
+    final Field samplesPerPixel = ifd.findByTag(FieldDescriptionFactory.SAMPLES_PER_PIXEL);
+    if (planarConfig != null && planarConfig.getAsLong() == Constants.PLANAR_CONFIGURATION_PLANAR
+        && samplesPerPixel != null && samplesPerPixel.getNumValues() == 1)
+    {
+      final int numSamples = samplesPerPixel.getAsInt();
+      if (numSamples > 0)
+      {
+        result = numSamples;
+      }
+    }
+    return result;
   }
 }
