@@ -151,7 +151,7 @@ public class TiffStripTileValidator
       final long requiredStrips = (height + rows - 1) / rows;
       if (requiredStrips < offsets)
       {
-        proc.error("tiff.error.validation.too_few_strips", ifd.getOffset(), requiredStrips, offsets, height, rows);
+        proc.error("tiff.error.validation.too_few_strips", ifd.getOffset(), offsets, requiredStrips, height, rows);
       }
     }
 
