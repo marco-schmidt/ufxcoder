@@ -124,6 +124,21 @@ public final class Constants
   public static final int PHOTOMETRIC_INTERPRETATION_Y_CB_CR = 6;
 
   /**
+   * Color type CIE LAB.
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_CIE_LAB = 8;
+
+  /**
+   * Color type ICC LAB.
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_ICC_LAB = 9;
+
+  /**
+   * Color type ITU LAB.
+   */
+  public static final int PHOTOMETRIC_INTERPRETATION_ITU_LAB = 10;
+
+  /**
    * Color type LogL.
    */
   public static final int PHOTOMETRIC_INTERPRETATION_LOG_L = 32844;
@@ -182,6 +197,9 @@ public final class Constants
     case PHOTOMETRIC_INTERPRETATION_RGB:
     case PHOTOMETRIC_INTERPRETATION_Y_CB_CR:
     case PHOTOMETRIC_INTERPRETATION_LOG_LUV:
+    case PHOTOMETRIC_INTERPRETATION_CIE_LAB:
+    case PHOTOMETRIC_INTERPRETATION_ICC_LAB:
+    case PHOTOMETRIC_INTERPRETATION_ITU_LAB:
       imageSamples = 3;
       break;
     case PHOTOMETRIC_INTERPRETATION_SEPARATED:
