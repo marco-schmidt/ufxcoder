@@ -15,6 +15,7 @@
  */
 package ufxcoder.app;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,15 +69,6 @@ public class ArgumentParser
         public void process(final AppConfig config, final String nextArg)
         {
           // nothing to do, is interpreted at a higher level
-        };
-      },
-
-      new AbstractParameter("args.directory_tree", "directory", "d", ParameterType.Directory)
-      {
-        @Override
-        public void process(final AppConfig config, final String nextArg)
-        {
-          config.addDirectory(nextArg);
         };
       },
 
@@ -195,7 +187,7 @@ public class ArgumentParser
       }
       else
       {
-        config.addFileName(arg);
+        addFileSystemEntry(config, arg);
       }
     }
     return success;
@@ -220,7 +212,7 @@ public class ArgumentParser
       }
       else
       {
-        config.addFileName(arg);
+        addFileSystemEntry(config, arg);
       }
     }
     if (name != null)
@@ -265,6 +257,26 @@ public class ArgumentParser
       }
     }
     return success;
+  }
+
+  private void addFileSystemEntry(final AppConfig config, final String name)
+  {
+    final File entry = new File(name);
+    if (entry.isFile())
+    {
+      config.addFileName(name);
+    }
+    else
+    {
+      if (entry.isDirectory())
+      {
+        config.addDirectory(name);
+      }
+      else
+      {
+        LOGGER.error(config.msg("args.error.neither_file_nor_directory", name));
+      }
+    }
   }
 
   private void processParameter(final AppConfig config, final AbstractParameter param, final String nextArg)
