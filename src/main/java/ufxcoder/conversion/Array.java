@@ -140,6 +140,12 @@ public final class Array
         | value1;
   }
 
+  public static BigInteger toBigInteger(final byte[] data, final int offset, final int numBytes,
+      final ByteOrder byteOrder)
+  {
+    return toBigInteger(clone(data, offset, numBytes, 0), byteOrder);
+  }
+
   public static BigInteger toBigInteger(final byte[] data, final ByteOrder byteOrder)
   {
     BigInteger result;

@@ -195,7 +195,7 @@ public class FieldReader
     {
     case Byte:
     {
-      result = Byte.valueOf(data[offset]);
+      result = Integer.valueOf(data[offset] & 0xff);
       break;
     }
     case Char:
@@ -210,7 +210,7 @@ public class FieldReader
     }
     case Long:
     {
-      result = Integer.valueOf(Array.from32(data, offset, byteOrder));
+      result = Array.toBigInteger(data, offset, 4, byteOrder);
       break;
     }
     case Rational:
