@@ -51,6 +51,7 @@ public class AppConfig
   private SystemInfo systemInfo;
   private Integer numberOfThreads;
   private Locale locale;
+  private boolean quiet;
 
   public AppConfig()
   {
@@ -197,5 +198,15 @@ public class AppConfig
   public void setLocale(final Locale locale)
   {
     this.locale = locale;
+  }
+
+  public boolean isQuiet()
+  {
+    return quiet;
+  }
+
+  public void setQuiet(final boolean quiet)
+  {
+    this.quiet = quiet;
   }
 }

@@ -125,7 +125,15 @@ public class ArgumentParser
         {
           config.setShowEnvironment(true);
         };
+      }, new AbstractParameter("args.quiet", "quiet", "q", null)
+      {
+        @Override
+        public void process(final AppConfig config, final String nextArg)
+        {
+          config.setQuiet(true);
+        };
       }
+
   };
   private static final Logger LOGGER = LoggerFactory.getLogger(ArgumentParser.class);
   private static final String DASH = "-";

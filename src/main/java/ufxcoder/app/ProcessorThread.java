@@ -81,6 +81,7 @@ public class ProcessorThread implements Runnable
       final String eventText = desc.formatEvents();
       String key;
       final EventSeverity highestSeverity = desc.findHighestSeverity();
+      boolean ok = false;
       if (highestSeverity == EventSeverity.Error)
       {
         key = "processor.result.error";
@@ -94,9 +95,13 @@ public class ProcessorThread implements Runnable
         else
         {
           key = "processor.result.ok";
+          ok = true;
         }
       }
-      LOGGER.info(source.getName() + "\t" + proc.getShortName() + "\t" + proc.msg(key) + "\t" + eventText);
+      if (!(ok && config.isQuiet()))
+      {
+        LOGGER.info(source.getName() + "\t" + proc.getShortName() + "\t" + proc.msg(key) + "\t" + eventText);
+      }
     }
   }
 
