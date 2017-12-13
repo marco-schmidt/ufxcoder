@@ -51,10 +51,17 @@ public class ImageFileDirectoryReader
       {
         ifd = reader.readImageFileDirectory(tiffProcessor.getSource(), desc.isBig(), imageFileDirectoryOffset);
         desc.add(ifd);
-        validator.validate(ifd);
+        if (!tiffProcessor.isIdentify())
+        {
+          validator.validate(ifd);
+        }
         if (desc.getNumDirectories() == 1 && ifd.findByTag(FieldDescriptionFactory.DNG_VERSION) != null)
         {
           desc.setDng(true);
+          if (tiffProcessor.isIdentify())
+          {
+            break;
+          }
         }
 
         imageFileDirectoryOffset = handleContent(ifd, reader, desc);
@@ -62,16 +69,21 @@ public class ImageFileDirectoryReader
       while (tiffProcessor.isSuccess() && imageFileDirectoryOffset != null
           && !imageFileDirectoryOffset.equals(BigInteger.ZERO));
 
-      if (desc.getNumDirectories() == Constants.CR2_IMAGE_FILE_DIRECTORIES)
-      {
-        ifd = desc.getDirectory(Constants.CR2_IMAGE_FILE_DIRECTORIES - 1);
-        final Field cr2Slice = ifd.findByTag(FieldDescriptionFactory.CR2_SLICE_INFORMATION);
-        desc.setCr2(cr2Slice != null);
-      }
+      checkCr2(desc);
     }
     catch (IOException e)
     {
       LOGGER.error("Unable to read TIFF image file directory.", e);
+    }
+  }
+
+  private void checkCr2(final TiffFileDescription desc)
+  {
+    if (desc.getNumDirectories() == Constants.CR2_IMAGE_FILE_DIRECTORIES)
+    {
+      final ImageFileDirectory ifd = desc.getDirectory(Constants.CR2_IMAGE_FILE_DIRECTORIES - 1);
+      final Field cr2Slice = ifd.findByTag(FieldDescriptionFactory.CR2_SLICE_INFORMATION);
+      desc.setCr2(cr2Slice != null);
     }
   }
 

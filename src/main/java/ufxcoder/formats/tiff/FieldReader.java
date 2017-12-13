@@ -70,11 +70,15 @@ public class FieldReader
     field.setNumValues(count);
     field.setData(data);
 
-    if (loadAdditionalData(field))
+    // if data did not fit into IFD entry load it (unless in mode "identify")
+    if (!processor.isIdentify())
     {
-      parseFieldData(field, rawIfd.getByteOrder());
+      if (loadAdditionalData(field))
+      {
+        parseFieldData(field, rawIfd.getByteOrder());
+      }
+      log(field);
     }
-    log(field);
 
     return field;
   }
