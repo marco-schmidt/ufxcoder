@@ -38,6 +38,7 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import ufxcoder.formats.FormatProcessorRegistry;
+import ufxcoder.formats.jpeg.JpegProcessor;
 import ufxcoder.formats.tiff.TiffProcessor;
 import ufxcoder.io.CollectAllFilesVisitor;
 
@@ -106,6 +107,7 @@ public class UniversalFileTranscoder
     final AppConfig config = new AppConfig();
     config.setLocale(Locale.ENGLISH);
     FormatProcessorRegistry.register(TiffProcessor.class);
+    FormatProcessorRegistry.register(JpegProcessor.class);
     if (transcoder.initialize(config, args))
     {
       transcoder.process(config);

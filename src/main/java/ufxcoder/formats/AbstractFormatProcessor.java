@@ -139,6 +139,9 @@ public abstract class AbstractFormatProcessor
     this.source = source;
   }
 
+  /**
+   * Close underlying input {@link SeekableSource}.
+   */
   public void closeSource()
   {
     final SeekableSource src = getSource();
