@@ -69,6 +69,12 @@ public class UniversalFileTranscoder
           LOGGER.error(config.msg("args.error.scanning_directory", dirName), e);
         }
       }
+      if (config.isKnownFileExtensionsOnly())
+      {
+        parser.removeFilesWithUnknownExtensions(config.getFileNames(),
+            FormatProcessorRegistry.createKnownExtensionsSet(true));
+      }
+
       setDefaults(config, args);
       final SystemInfo info = new SystemInfo();
       config.setSystemInfo(info);

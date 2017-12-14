@@ -17,7 +17,10 @@ package ufxcoder.formats;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +62,33 @@ public final class FormatProcessorRegistry
           | InvocationTargetException | SecurityException e)
       {
         LOGGER.error(String.format("Unable to instantiate object of class %s.", clas.getName()), e);
+      }
+    }
+    return result;
+  }
+
+  public static Set<String> createKnownExtensionsSet(final boolean lower)
+  {
+    final List<AbstractFormatProcessor> processors = createProcessorInstances();
+    final Set<String> result = new HashSet<>();
+    for (final AbstractFormatProcessor proc : processors)
+    {
+      final String[] extensions = proc.getTypicalFileExtensions();
+      for (final String ext : extensions)
+      {
+        if (ext != null && !ext.isEmpty())
+        {
+          String extToAdd;
+          if (lower)
+          {
+            extToAdd = ext.toLowerCase(Locale.ENGLISH);
+          }
+          else
+          {
+            extToAdd = ext;
+          }
+          result.add(extToAdd);
+        }
       }
     }
     return result;

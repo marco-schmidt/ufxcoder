@@ -52,6 +52,7 @@ public class AppConfig
   private Integer numberOfThreads;
   private Locale locale;
   private boolean quiet;
+  private boolean knownFileExtensionsOnly;
 
   public AppConfig()
   {
@@ -208,5 +209,15 @@ public class AppConfig
   public void setQuiet(final boolean quiet)
   {
     this.quiet = quiet;
+  }
+
+  public boolean isKnownFileExtensionsOnly()
+  {
+    return knownFileExtensionsOnly;
+  }
+
+  public void setKnownFileExtensionsOnly(final boolean knownFileExtensionsOnly)
+  {
+    this.knownFileExtensionsOnly = knownFileExtensionsOnly;
   }
 }

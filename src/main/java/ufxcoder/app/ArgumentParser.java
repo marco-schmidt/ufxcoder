@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
@@ -93,6 +94,15 @@ public class ArgumentParser
           {
             config.msg("args.error.invalid_number_of_threads_exception", nextArg, nfe.getMessage());
           }
+        };
+      },
+
+      new AbstractParameter("args.known_extensions_only", "knownext", "k", null)
+      {
+        @Override
+        public void process(final AppConfig config, final String nextArg)
+        {
+          config.setKnownFileExtensionsOnly(true);
         };
       },
 
@@ -199,6 +209,34 @@ public class ArgumentParser
       }
     }
     return success;
+  }
+
+  public void removeFilesWithUnknownExtensions(final List<String> fileNames, final Set<String> lowerExtensions)
+  {
+    final Iterator<String> iter = fileNames.iterator();
+    while (iter.hasNext())
+    {
+      final File file = new File(iter.next());
+      final String name = file.getName();
+      final int lastDot = name.lastIndexOf('.');
+      boolean doRemove = false;
+      if (lastDot >= 0)
+      {
+        final String ext = name.substring(lastDot + 1).toLowerCase(Locale.ENGLISH);
+        if (!lowerExtensions.contains(ext))
+        {
+          doRemove = true;
+        }
+      }
+      else
+      {
+        doRemove = true;
+      }
+      if (doRemove)
+      {
+        iter.remove();
+      }
+    }
   }
 
   private boolean processParameter(final AppConfig config, final String arg, final Iterator<String> iterator)
