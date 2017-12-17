@@ -50,6 +50,24 @@ tasks.withType(JavaCompile) {
   options.compilerArgs += ['-Xlint:all', '-Werror']
 }
 
+def retrieveGitModification = { ->
+  def baos = new ByteArrayOutputStream()
+  exec {
+    commandLine 'git', 'diff', '--shortstat'
+    standardOutput = baos    
+  }
+  return baos.toString().trim()
+}
+
+def retrieveGitRevision = { ->
+  def baos = new ByteArrayOutputStream()
+  exec {
+    commandLine 'git', 'rev-parse', 'HEAD'
+    standardOutput = baos
+  }
+  return baos.toString().trim()
+}
+
 jar {
   manifest {
     attributes(
@@ -60,6 +78,8 @@ jar {
       'License': 'The Apache License 2.0',
       'Main-Class': mainClassName,
       'Java-Version': targetCompatibility,
+      'Git-Revision': retrieveGitRevision(),
+      'Git-Modified': retrieveGitModification(),
       'Class-Path': configurations.compile.collect { it.getName() }.join(' '))
   }
   from ('.') {
