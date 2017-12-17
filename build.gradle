@@ -54,7 +54,7 @@ def retrieveGitModification = { ->
   def baos = new ByteArrayOutputStream()
   exec {
     commandLine 'git', 'diff', '--shortstat'
-    standardOutput = baos    
+    standardOutput = baos
   }
   return baos.toString().trim()
 }
