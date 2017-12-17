@@ -50,7 +50,6 @@ public class ProcessorThread implements Runnable
 
   private void process(final String fileName)
   {
-    LOGGER.debug(fileName);
     boolean identified = false;
     for (final AbstractFormatProcessor proc : processors)
     {
