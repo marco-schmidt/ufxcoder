@@ -31,6 +31,11 @@ public final class Constants
   public static final int MARKER_END_OF_IMAGE = 0xffd9;
 
   /**
+   * Start-of-scan marker.
+   */
+  public static final int MARKER_START_OF_SCAN = 0xffda;
+
+  /**
    * Mask value that identifies a valid marker.
    */
   public static final int MARKER_MASK = 0xff00;
