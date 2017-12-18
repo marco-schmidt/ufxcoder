@@ -36,6 +36,16 @@ public final class Msg
   public static final String FIRST_MARKER_NOT_SOI = "jpeg.error.first_marker_not_soi";
 
   /**
+   * Start-of-image marker must only appear as first marker.
+   */
+  public static final String SOI_FIRST_MARKER_ONLY = "jpeg.error.soi_first_marker_only";
+
+  /**
+   * General error when reading from input stream.
+   */
+  public static final String READING_ERROR = "jpeg.error.reading_error";
+
+  /**
    * There is data after the last marker.
    */
   public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.error.extraneous_data_after_end_of_stream";

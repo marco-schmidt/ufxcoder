@@ -89,4 +89,30 @@ public class JpegProcessorTest
     Assert.assertTrue("Expect start-of-image marker to warrant absence of errors.", desc.isSuccess());
     Assert.assertTrue("Expect start-of-image marker to warrant successful identification.", proc.isFormatIdentified());
   }
+
+  @Test
+  public void testCheckCorrectMarkerThenNothing()
+  {
+    final JpegProcessor proc = create(new byte[]
+    {
+        (byte) 0xff, (byte) 0xd8
+    });
+    proc.getConfig().setMode(ProcessMode.Check);
+    proc.process();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    Assert.assertFalse("Expect I/O error.", desc.isSuccess());
+  }
+
+  @Test
+  public void testDuplicateStartOfImageMarker()
+  {
+    final JpegProcessor proc = create(new byte[]
+    {
+        (byte) 0xff, (byte) 0xd8, (byte) 0xff, (byte) 0xd8
+    });
+    proc.getConfig().setMode(ProcessMode.Check);
+    proc.process();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    Assert.assertTrue("A second start-of-image marker is not allowed.", desc.containsEvent(Msg.SOI_FIRST_MARKER_ONLY));
+  }
 }

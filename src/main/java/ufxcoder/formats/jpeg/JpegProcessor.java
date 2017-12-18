@@ -56,14 +56,6 @@ public class JpegProcessor extends AbstractFormatProcessor
       offset = readMarker(offset, marker);
       if (isSuccess())
       {
-        if (marker.getId() == Constants.MARKER_START_OF_IMAGE)
-        {
-          setFormatIdentified(true);
-        }
-        else
-        {
-          error(Msg.FIRST_MARKER_NOT_SOI);
-        }
       }
     }
     catch (IOException e)
@@ -114,7 +106,22 @@ public class JpegProcessor extends AbstractFormatProcessor
     {
       marker.setId(markerId);
       offset += 2;
-      if (hasLength(markerId))
+      if (marker.getId() == Constants.MARKER_START_OF_IMAGE)
+      {
+        if (marker.getNumber() == 1)
+        {
+          setFormatIdentified(true);
+        }
+        else
+        {
+          error(Msg.SOI_FIRST_MARKER_ONLY);
+        }
+      }
+      else
+      {
+        error(Msg.FIRST_MARKER_NOT_SOI);
+      }
+      if (isSuccess() && hasLength(markerId))
       {
         append(segm, 2);
         final int length = segm.int16();
