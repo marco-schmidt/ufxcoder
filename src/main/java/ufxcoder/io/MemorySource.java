@@ -83,11 +83,12 @@ public class MemorySource extends AbstractSeekableSource
   @Override
   public void readFully(final byte[] buffer, final int offset, final int length) throws IOException
   {
-    if (index + length > data.length)
+    if (index + length > data.length || length < 0)
     {
       throw new IOException("Cannot read required number of bytes.");
     }
     System.arraycopy(data, index, buffer, offset, length);
+    index += length;
   }
 
   @Override
