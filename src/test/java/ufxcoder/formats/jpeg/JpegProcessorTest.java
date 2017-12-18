@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import org.junit.Assert;
 import org.junit.Test;
 import ufxcoder.app.AppConfig;
+import ufxcoder.app.ProcessMode;
 
 /**
  * Test {@link JpegProcessor} with various input streams.
@@ -60,5 +61,32 @@ public class JpegProcessorTest
     proc.process();
     final JpegFileDescription desc = proc.getJpegFileDescription();
     Assert.assertTrue("Expect invalid marker error.", desc.containsEvent(Msg.INVALID_MARKER));
+  }
+
+  @Test
+  public void testFirstMarkerNotStartOfImage()
+  {
+    // first two bytes are a correct marker but not the right one
+    final JpegProcessor proc = create(new byte[]
+    {
+        (byte) 0xff, (byte) 0xda
+    });
+    proc.process();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    Assert.assertTrue("Expect first marker to be start-of-image.", desc.containsEvent(Msg.FIRST_MARKER_NOT_SOI));
+  }
+
+  @Test
+  public void testIdentifyCorrectMarker()
+  {
+    final JpegProcessor proc = create(new byte[]
+    {
+        (byte) 0xff, (byte) 0xd8
+    });
+    proc.getConfig().setMode(ProcessMode.Identify);
+    proc.process();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    Assert.assertTrue("Expect start-of-image marker to warrant absence of errors.", desc.isSuccess());
+    Assert.assertTrue("Expect start-of-image marker to warrant successful identification.", proc.isFormatIdentified());
   }
 }

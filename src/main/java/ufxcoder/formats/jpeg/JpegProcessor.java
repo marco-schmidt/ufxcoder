@@ -54,7 +54,17 @@ public class JpegProcessor extends AbstractFormatProcessor
     try
     {
       offset = readMarker(offset, marker);
-      setFormatIdentified(marker.getId() == Constants.MARKER_START_OF_IMAGE);
+      if (isSuccess())
+      {
+        if (marker.getId() == Constants.MARKER_START_OF_IMAGE)
+        {
+          setFormatIdentified(true);
+        }
+        else
+        {
+          error(Msg.FIRST_MARKER_NOT_SOI);
+        }
+      }
     }
     catch (IOException e)
     {

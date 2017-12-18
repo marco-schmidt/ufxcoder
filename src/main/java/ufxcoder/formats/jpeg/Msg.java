@@ -31,6 +31,11 @@ public final class Msg
   public static final String INVALID_MARKER = "jpeg.error.invalid_marker";
 
   /**
+   * First marker is not start-of-image.
+   */
+  public static final String FIRST_MARKER_NOT_SOI = "jpeg.error.first_marker_not_soi";
+
+  /**
    * There is data after the last marker.
    */
   public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.error.extraneous_data_after_end_of_stream";
