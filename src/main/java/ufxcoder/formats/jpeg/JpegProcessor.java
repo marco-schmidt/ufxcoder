@@ -54,9 +54,6 @@ public class JpegProcessor extends AbstractFormatProcessor
     try
     {
       offset = readMarker(offset, marker);
-      if (isSuccess())
-      {
-      }
     }
     catch (IOException e)
     {
