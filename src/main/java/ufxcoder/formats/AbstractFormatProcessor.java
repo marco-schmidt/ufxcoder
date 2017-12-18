@@ -24,6 +24,7 @@ import ufxcoder.app.AppConfig;
 import ufxcoder.app.ProcessMode;
 import ufxcoder.conversion.Array;
 import ufxcoder.io.FileSource;
+import ufxcoder.io.MemorySource;
 import ufxcoder.io.SeekableSource;
 import ufxcoder.io.Segment;
 
@@ -88,6 +89,17 @@ public abstract class AbstractFormatProcessor
   public void open(final File file) throws IOException
   {
     setSource(new FileSource(file));
+  }
+
+  /**
+   * Open with argument data as input source.
+   *
+   * @param data
+   *          byte array holding JPEG input stream
+   */
+  public void open(final byte[] data)
+  {
+    setSource(new MemorySource(data));
   }
 
   /**
