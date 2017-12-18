@@ -15,6 +15,9 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import ufxcoder.formats.FileDescription;
 
 /**
@@ -22,4 +25,37 @@ import ufxcoder.formats.FileDescription;
  */
 public class JpegFileDescription extends FileDescription
 {
+  private BigInteger initialOffset = BigInteger.ZERO;
+  private boolean embedded;
+  private final List<Marker> markers = new ArrayList<>();
+
+  public BigInteger getInitialOffset()
+  {
+    return initialOffset;
+  }
+
+  public void setInitialOffset(final BigInteger initialOffset)
+  {
+    this.initialOffset = initialOffset;
+  }
+
+  public boolean isEmbedded()
+  {
+    return embedded;
+  }
+
+  public void setEmbedded(final boolean embedded)
+  {
+    this.embedded = embedded;
+  }
+
+  public void add(final Marker marker)
+  {
+    markers.add(marker);
+  }
+
+  public List<Marker> getMarkers()
+  {
+    return markers;
+  }
 }

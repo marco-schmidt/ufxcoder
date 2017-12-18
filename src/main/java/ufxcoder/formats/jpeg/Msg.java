@@ -25,6 +25,16 @@ public final class Msg
    */
   public static final String CANNOT_READ_HEADER = "jpeg.error.cannot_read_header";
 
+  /**
+   * Marker is invalid.
+   */
+  public static final String INVALID_MARKER = "jpeg.error.invalid_marker";
+
+  /**
+   * There is data after the last marker.
+   */
+  public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.error.extraneous_data_after_end_of_stream";
+
   private Msg()
   {
   }

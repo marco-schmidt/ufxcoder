@@ -23,7 +23,17 @@ public final class Constants
   /**
    * Signature of JPEG files.
    */
-  public static final int MAGIC = 0xffd8;
+  public static final int MARKER_START_OF_IMAGE = 0xffd8;
+
+  /**
+   * End-of-stream marker.
+   */
+  public static final int MARKER_END_OF_IMAGE = 0xffd9;
+
+  /**
+   * Mask value that identifies a valid marker.
+   */
+  public static final int MARKER_MASK = 0xff00;
 
   private Constants()
   {
