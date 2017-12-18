@@ -116,7 +116,10 @@ public class JpegProcessor extends AbstractFormatProcessor
       }
       else
       {
-        error(Msg.FIRST_MARKER_NOT_SOI);
+        if (marker.getNumber() == 1)
+        {
+          error(Msg.FIRST_MARKER_NOT_SOI);
+        }
       }
       if (isSuccess() && hasLength(markerId))
       {
