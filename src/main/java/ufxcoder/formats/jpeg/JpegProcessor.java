@@ -16,6 +16,8 @@
 package ufxcoder.formats.jpeg;
 
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ufxcoder.conversion.ByteOrder;
 import ufxcoder.formats.AbstractFormatProcessor;
 import ufxcoder.formats.FileDescription;
@@ -27,6 +29,8 @@ import ufxcoder.io.Segment;
  */
 public class JpegProcessor extends AbstractFormatProcessor
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger(JpegProcessor.class);
+
   @Override
   public FileDescription createDescription()
   {
@@ -166,6 +170,8 @@ public class JpegProcessor extends AbstractFormatProcessor
     }
     final Segment segment = marker.getSegment();
     append(segment, length);
+    LOGGER
+        .debug(marker.getSegment().getOffset() + " " + Integer.toHexString(marker.getId()) + " " + marker.getLength());
     return initialOffset + length;
   }
 
