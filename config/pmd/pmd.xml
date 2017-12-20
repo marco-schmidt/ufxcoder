@@ -11,6 +11,11 @@
         <property name="maxmethods" value="50"/>
     </properties>
   </rule>
+  <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+    <properties>
+        <property name="reportLevel" value="15"/>
+    </properties>
+  </rule>
   
   <rule ref="rulesets/java/comments.xml">
      <exclude name="CommentRequired"/>
