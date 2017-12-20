@@ -97,6 +97,20 @@ public class Segment
     return result;
   }
 
+  public int int8()
+  {
+    int result;
+    if (data != null && index >= 0 && index < data.length)
+    {
+      result = data[index++] & 0xff;
+    }
+    else
+    {
+      result = -1;
+    }
+    return result;
+  }
+
   public int int16()
   {
     final int result = Array.from16(data, index, byteOrder);

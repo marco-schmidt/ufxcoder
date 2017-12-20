@@ -189,6 +189,8 @@ public class JpegProcessor extends AbstractFormatProcessor
     append(segment, length);
     LOGGER
         .debug(marker.getSegment().getOffset() + " " + Integer.toHexString(marker.getId()) + " " + marker.getLength());
+    final JpegReader reader = new JpegReader(this);
+    reader.parseMarker(marker);
     return initialOffset + length;
   }
 

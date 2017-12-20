@@ -50,6 +50,26 @@ public final class Msg
    */
   public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.error.extraneous_data_after_end_of_stream";
 
+  /**
+   * Invalid number of bits per sample for lossless frames.
+   */
+  public static final String INVALID_SAMPLE_PRECISION_LOSSLESS = "jpeg.error.invalid_sample_precision_lossless";
+
+  /**
+   * Invalid number of bits per sample for extended frames.
+   */
+  public static final String INVALID_SAMPLE_PRECISION_EXTENDED = "jpeg.error.invalid_sample_precision_extended";
+
+  /**
+   * Invalid number of bits per sample for progressive frames.
+   */
+  public static final String INVALID_SAMPLE_PRECISION_PROGRESSIVE = "jpeg.error.invalid_sample_precision_progressive";
+
+  /**
+   * Invalid number of bits per sample for baseline frames.
+   */
+  public static final String INVALID_SAMPLE_PRECISION_BASELINE = "jpeg.error.invalid_sample_precision_baseline";
+
   private Msg()
   {
   }

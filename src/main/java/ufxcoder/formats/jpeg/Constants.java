@@ -21,6 +21,71 @@ package ufxcoder.formats.jpeg;
 public final class Constants
 {
   /**
+   * Start-of-frame 0 marker (baseline).
+   */
+  public static final int MARKER_START_OF_FRAME_0 = 0xffc0;
+
+  /**
+   * Start-of-frame 1 marker (extended sequential DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_1 = 0xffc1;
+
+  /**
+   * Start-of-frame 2 marker (progressive DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_2 = 0xffc2;
+
+  /**
+   * Start-of-frame 3 marker (lossless sequential).
+   */
+  public static final int MARKER_START_OF_FRAME_3 = 0xffc3;
+
+  /**
+   * Start-of-frame 5 marker (differential sequential DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_5 = 0xffc5;
+
+  /**
+   * Start-of-frame 6 marker (differential progressive DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_6 = 0xffc6;
+
+  /**
+   * Start-of-frame 7 marker (differential lossless sequential).
+   */
+  public static final int MARKER_START_OF_FRAME_7 = 0xffc7;
+
+  /**
+   * Start-of-frame 9 marker (extended sequential DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_9 = 0xffc9;
+
+  /**
+   * Start-of-frame 10 marker (progressive DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_10 = 0xffca;
+
+  /**
+   * Start-of-frame 11 marker (lossless sequential).
+   */
+  public static final int MARKER_START_OF_FRAME_11 = 0xffcb;
+
+  /**
+   * Start-of-frame 13 marker (differential sequential DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_13 = 0xffcd;
+
+  /**
+   * Start-of-frame 14 marker (differential progressive DCT).
+   */
+  public static final int MARKER_START_OF_FRAME_14 = 0xffce;
+
+  /**
+   * Start-of-frame 15 marker (differential lossless sequential).
+   */
+  public static final int MARKER_START_OF_FRAME_15 = 0xffcf;
+
+  /**
    * Signature of JPEG files.
    */
   public static final int MARKER_START_OF_IMAGE = 0xffd8;
@@ -39,6 +104,11 @@ public final class Constants
    * Mask value that identifies a valid marker.
    */
   public static final int MARKER_MASK = 0xff00;
+
+  /**
+   * Marker with tables to be used for Huffman entropy coding.
+   */
+  public static final int MARKER_DEFINE_HUFFMAN_TABLES = 0xffdb;
 
   private Constants()
   {
