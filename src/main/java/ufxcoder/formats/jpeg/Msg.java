@@ -70,6 +70,11 @@ public final class Msg
    */
   public static final String INVALID_SAMPLE_PRECISION_BASELINE = "jpeg.error.invalid_sample_precision_baseline";
 
+  /**
+   * Cannot have more than one frame definition in a stream.
+   */
+  public static final String MULTIPLE_FRAMES = "jpeg.error.multiple_frames";
+
   private Msg()
   {
   }

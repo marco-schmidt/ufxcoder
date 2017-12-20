@@ -59,30 +59,48 @@ public class JpegReader
 
   private void parseStartOfFrame(final Marker marker)
   {
+    if (proc.getJpegFileDescription().getFrame() != null)
+    {
+      proc.error(Msg.MULTIPLE_FRAMES);
+    }
     final int id = marker.getId();
-    final boolean baseline = id == Constants.MARKER_START_OF_FRAME_0;
-    final boolean extended = id == Constants.MARKER_START_OF_FRAME_1 || id == Constants.MARKER_START_OF_FRAME_5
-        || id == Constants.MARKER_START_OF_FRAME_9 || id == Constants.MARKER_START_OF_FRAME_13;
-    final boolean progressive = id == Constants.MARKER_START_OF_FRAME_2 || id == Constants.MARKER_START_OF_FRAME_6
-        || id == Constants.MARKER_START_OF_FRAME_10 || id == Constants.MARKER_START_OF_FRAME_14;
-    final boolean lossless = id == Constants.MARKER_START_OF_FRAME_3 || id == Constants.MARKER_START_OF_FRAME_7
-        || id == Constants.MARKER_START_OF_FRAME_11 || id == Constants.MARKER_START_OF_FRAME_15;
+    final JpegFrame frame = new JpegFrame();
+    frame.setBaseline(id == Constants.MARKER_START_OF_FRAME_0);
+    frame.setExtended(id == Constants.MARKER_START_OF_FRAME_1 || id == Constants.MARKER_START_OF_FRAME_5
+        || id == Constants.MARKER_START_OF_FRAME_9 || id == Constants.MARKER_START_OF_FRAME_13);
+    frame.setProgressive(id == Constants.MARKER_START_OF_FRAME_2 || id == Constants.MARKER_START_OF_FRAME_6
+        || id == Constants.MARKER_START_OF_FRAME_10 || id == Constants.MARKER_START_OF_FRAME_14);
+    frame.setLossless(id == Constants.MARKER_START_OF_FRAME_3 || id == Constants.MARKER_START_OF_FRAME_7
+        || id == Constants.MARKER_START_OF_FRAME_11 || id == Constants.MARKER_START_OF_FRAME_15);
 
     final Segment segment = marker.getSegment();
-    final int samplePrecision = segment.int8();
-    if (lossless && (samplePrecision < 2 || samplePrecision > 16))
+    frame.setSamplePrecision(segment.int8());
+    checkSamplePrecision(frame);
+  }
+
+  /**
+   * Check sample precision for given frame. ITU-T T.81 page 35f, see "Table B.2 – Frame header parameter sizes and
+   * values".
+   *
+   * @param frame
+   *          check this frame's sample precision
+   */
+  private void checkSamplePrecision(final JpegFrame frame)
+  {
+    final int samplePrecision = frame.getSamplePrecision();
+    if (frame.isLossless() && (samplePrecision < 2 || samplePrecision > 16))
     {
       proc.error(Msg.INVALID_SAMPLE_PRECISION_LOSSLESS, samplePrecision);
     }
-    if (extended && samplePrecision != 8 && samplePrecision != 12)
+    if (frame.isExtended() && samplePrecision != 8 && samplePrecision != 12)
     {
       proc.error(Msg.INVALID_SAMPLE_PRECISION_EXTENDED, samplePrecision);
     }
-    if (progressive && samplePrecision != 8 && samplePrecision != 12)
+    if (frame.isProgressive() && samplePrecision != 8 && samplePrecision != 12)
     {
       proc.error(Msg.INVALID_SAMPLE_PRECISION_PROGRESSIVE, samplePrecision);
     }
-    if (baseline && samplePrecision != 8)
+    if (frame.isBaseline() && samplePrecision != 8)
     {
       proc.error(Msg.INVALID_SAMPLE_PRECISION_BASELINE, samplePrecision);
     }

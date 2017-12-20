@@ -28,6 +28,7 @@ public class JpegFileDescription extends FileDescription
   private BigInteger initialOffset = BigInteger.ZERO;
   private boolean embedded;
   private final List<Marker> markers = new ArrayList<>();
+  private JpegFrame frame;
 
   public BigInteger getInitialOffset()
   {
@@ -57,5 +58,15 @@ public class JpegFileDescription extends FileDescription
   public List<Marker> getMarkers()
   {
     return markers;
+  }
+
+  public JpegFrame getFrame()
+  {
+    return frame;
+  }
+
+  public void setFrame(final JpegFrame frame)
+  {
+    this.frame = frame;
   }
 }
