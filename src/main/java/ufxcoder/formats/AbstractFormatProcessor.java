@@ -59,6 +59,10 @@ public abstract class AbstractFormatProcessor
     setFileDescription(null);
     setFormatIdentified(false);
     setSource(null);
+    if (fileDescription != null)
+    {
+      fileDescription.reset();
+    }
   }
 
   public FileDescription getFileDescription()

@@ -25,6 +25,9 @@ public class JpegFrame
   private boolean lossless;
   private boolean progressive;
   private int samplePrecision;
+  private int numComponents;
+  private int width;
+  private int height;
 
   public int getSamplePrecision()
   {
@@ -74,5 +77,35 @@ public class JpegFrame
   public void setProgressive(final boolean progressive)
   {
     this.progressive = progressive;
+  }
+
+  public int getNumComponents()
+  {
+    return numComponents;
+  }
+
+  public void setNumComponents(final int numComponents)
+  {
+    this.numComponents = numComponents;
+  }
+
+  public int getWidth()
+  {
+    return width;
+  }
+
+  public void setWidth(final int width)
+  {
+    this.width = width;
+  }
+
+  public int getHeight()
+  {
+    return height;
+  }
+
+  public void setHeight(final int height)
+  {
+    this.height = height;
   }
 }

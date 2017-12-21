@@ -75,6 +75,31 @@ public final class Msg
    */
   public static final String MULTIPLE_FRAMES = "jpeg.error.multiple_frames";
 
+  /**
+   * Start-of-frame width must not be zero.
+   */
+  public static final String WIDTH_ZERO = "jpeg.error.width_zero";
+
+  /**
+   * Start-of-frame must have at least one component.
+   */
+  public static final String AT_LEAST_ONE_COMPONENT = "jpeg.error.at_least_one_component";
+
+  /**
+   * Progressive start-of-frame must have at most four components.
+   */
+  public static final String INVALID_PROGRESSIVE_TOO_MANY_COMPONENTS = "jpeg.error.progressive_invalid_number_of_component";
+
+  /**
+   * Invalid frame length.
+   */
+  public static final String INVALID_FRAME_LENGTH = "jpeg.error.invalid_frame_length";
+
+  /**
+   * Frame length is too small. Special case of {@link #INVALID_FRAME_LENGTH}.
+   */
+  public static final String FRAME_LENGTH_TOO_SMALL = "jpeg.error.frame_length_too_small";
+
   private Msg()
   {
   }

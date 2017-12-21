@@ -27,7 +27,7 @@ import ufxcoder.app.ProcessMode;
  */
 public class JpegProcessorTest
 {
-  private JpegProcessor create(final byte[] data)
+  public static JpegProcessor create(final byte[] data)
   {
     final AppConfig config = new AppConfig();
     config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));

@@ -110,6 +110,16 @@ public final class Constants
    */
   public static final int MARKER_DEFINE_HUFFMAN_TABLES = 0xffdb;
 
+  /**
+   * Maximum number of components for a progressive frame.
+   */
+  public static final int PROGRESSIVE_MAX_COMPONENTS = 4;
+
+  /**
+   * Minimum length of frame, without marker and length value.
+   */
+  public static final int MIN_FRAME_LENGTH = 9;
+
   private Constants()
   {
     // avoid instantiation of this helper class

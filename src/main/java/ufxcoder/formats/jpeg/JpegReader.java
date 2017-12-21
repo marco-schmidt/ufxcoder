@@ -57,14 +57,31 @@ public class JpegReader
     }
   }
 
-  private void parseStartOfFrame(final Marker marker)
+  protected void parseStartOfFrame(final Marker marker)
   {
-    if (proc.getJpegFileDescription().getFrame() != null)
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    if (desc.getFrame() != null)
     {
       proc.error(Msg.MULTIPLE_FRAMES);
     }
-    final int id = marker.getId();
+    if (marker.getLength() - 2 < Constants.MIN_FRAME_LENGTH)
+    {
+      proc.error(Msg.FRAME_LENGTH_TOO_SMALL, marker.getLength(), Constants.MIN_FRAME_LENGTH);
+    }
+    if (proc.isSuccess())
+    {
+      parseStartOfFrameContent(marker);
+    }
+  }
+
+  protected void parseStartOfFrameContent(final Marker marker)
+  {
     final JpegFrame frame = new JpegFrame();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    desc.setFrame(frame);
+
+    // determine various properties from marker
+    final int id = marker.getId();
     frame.setBaseline(id == Constants.MARKER_START_OF_FRAME_0);
     frame.setExtended(id == Constants.MARKER_START_OF_FRAME_1 || id == Constants.MARKER_START_OF_FRAME_5
         || id == Constants.MARKER_START_OF_FRAME_9 || id == Constants.MARKER_START_OF_FRAME_13);
@@ -73,9 +90,55 @@ public class JpegReader
     frame.setLossless(id == Constants.MARKER_START_OF_FRAME_3 || id == Constants.MARKER_START_OF_FRAME_7
         || id == Constants.MARKER_START_OF_FRAME_11 || id == Constants.MARKER_START_OF_FRAME_15);
 
+    // read fixed part of SOF
     final Segment segment = marker.getSegment();
     frame.setSamplePrecision(segment.int8());
+    frame.setHeight(segment.int16());
+    frame.setWidth(segment.int16());
+    final int numComponents = segment.int8();
+
+    // check values
     checkSamplePrecision(frame);
+    if (frame.getWidth() == 0)
+    {
+      proc.error(Msg.WIDTH_ZERO);
+    }
+    frame.setNumComponents(numComponents);
+    if (numComponents < 1)
+    {
+      proc.error(Msg.AT_LEAST_ONE_COMPONENT);
+    }
+    else
+    {
+      if (frame.isProgressive() && numComponents > Constants.PROGRESSIVE_MAX_COMPONENTS)
+      {
+        proc.error(Msg.INVALID_PROGRESSIVE_TOO_MANY_COMPONENTS, numComponents);
+      }
+    }
+
+    // read remaining part of SOF: definition of components
+    final int expectedMarkerSize = 2 + 6 + numComponents * 3;
+    if (marker.getLength() == expectedMarkerSize)
+    {
+      parseFrameComponentDefinitions(marker, frame);
+    }
+    else
+    {
+      proc.error(Msg.INVALID_FRAME_LENGTH, numComponents, expectedMarkerSize, marker.getLength());
+    }
+  }
+
+  private void parseFrameComponentDefinitions(final Marker marker, final JpegFrame frame)
+  {
+    final Segment segment = marker.getSegment();
+    int index = 0;
+    while (index < frame.getNumComponents())
+    {
+      segment.int8();
+      segment.int8();
+      segment.int8();
+      index++;
+    }
   }
 
   /**
@@ -85,7 +148,7 @@ public class JpegReader
    * @param frame
    *          check this frame's sample precision
    */
-  private void checkSamplePrecision(final JpegFrame frame)
+  protected void checkSamplePrecision(final JpegFrame frame)
   {
     final int samplePrecision = frame.getSamplePrecision();
     if (frame.isLossless() && (samplePrecision < 2 || samplePrecision > 16))
