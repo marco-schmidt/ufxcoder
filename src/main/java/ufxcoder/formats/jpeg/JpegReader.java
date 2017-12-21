@@ -47,125 +47,13 @@ public class JpegReader
     case Constants.MARKER_START_OF_FRAME_13:
     case Constants.MARKER_START_OF_FRAME_14:
     case Constants.MARKER_START_OF_FRAME_15:
-      parseStartOfFrame(marker);
+      new JpegFrameReader(proc).parseStartOfFrame(marker);
       break;
     case Constants.MARKER_DEFINE_HUFFMAN_TABLES:
       parseHuffmanTable(marker);
       break;
     default:
       break;
-    }
-  }
-
-  protected void parseStartOfFrame(final Marker marker)
-  {
-    final JpegFileDescription desc = proc.getJpegFileDescription();
-    if (desc.getFrame() != null)
-    {
-      proc.error(Msg.MULTIPLE_FRAMES);
-    }
-    if (marker.getLength() - 2 < Constants.MIN_FRAME_LENGTH)
-    {
-      proc.error(Msg.FRAME_LENGTH_TOO_SMALL, marker.getLength(), Constants.MIN_FRAME_LENGTH);
-    }
-    if (proc.isSuccess())
-    {
-      parseStartOfFrameContent(marker);
-    }
-  }
-
-  protected void parseStartOfFrameContent(final Marker marker)
-  {
-    final JpegFrame frame = new JpegFrame();
-    final JpegFileDescription desc = proc.getJpegFileDescription();
-    desc.setFrame(frame);
-
-    // determine various properties from marker
-    final int id = marker.getId();
-    frame.setBaseline(id == Constants.MARKER_START_OF_FRAME_0);
-    frame.setExtended(id == Constants.MARKER_START_OF_FRAME_1 || id == Constants.MARKER_START_OF_FRAME_5
-        || id == Constants.MARKER_START_OF_FRAME_9 || id == Constants.MARKER_START_OF_FRAME_13);
-    frame.setProgressive(id == Constants.MARKER_START_OF_FRAME_2 || id == Constants.MARKER_START_OF_FRAME_6
-        || id == Constants.MARKER_START_OF_FRAME_10 || id == Constants.MARKER_START_OF_FRAME_14);
-    frame.setLossless(id == Constants.MARKER_START_OF_FRAME_3 || id == Constants.MARKER_START_OF_FRAME_7
-        || id == Constants.MARKER_START_OF_FRAME_11 || id == Constants.MARKER_START_OF_FRAME_15);
-
-    // read fixed part of SOF
-    final Segment segment = marker.getSegment();
-    frame.setSamplePrecision(segment.int8());
-    frame.setHeight(segment.int16());
-    frame.setWidth(segment.int16());
-    final int numComponents = segment.int8();
-
-    // check values
-    checkSamplePrecision(frame);
-    if (frame.getWidth() == 0)
-    {
-      proc.error(Msg.WIDTH_ZERO);
-    }
-    frame.setNumComponents(numComponents);
-    if (numComponents < 1)
-    {
-      proc.error(Msg.AT_LEAST_ONE_COMPONENT);
-    }
-    else
-    {
-      if (frame.isProgressive() && numComponents > Constants.PROGRESSIVE_MAX_COMPONENTS)
-      {
-        proc.error(Msg.INVALID_PROGRESSIVE_TOO_MANY_COMPONENTS, numComponents);
-      }
-    }
-
-    // read remaining part of SOF: definition of components
-    final int expectedMarkerSize = 2 + 6 + numComponents * 3;
-    if (marker.getLength() == expectedMarkerSize)
-    {
-      parseFrameComponentDefinitions(marker, frame);
-    }
-    else
-    {
-      proc.error(Msg.INVALID_FRAME_LENGTH, numComponents, expectedMarkerSize, marker.getLength());
-    }
-  }
-
-  private void parseFrameComponentDefinitions(final Marker marker, final JpegFrame frame)
-  {
-    final Segment segment = marker.getSegment();
-    int index = 0;
-    while (index < frame.getNumComponents())
-    {
-      segment.int8();
-      segment.int8();
-      segment.int8();
-      index++;
-    }
-  }
-
-  /**
-   * Check sample precision for given frame. ITU-T T.81 page 35f, see "Table B.2 – Frame header parameter sizes and
-   * values".
-   *
-   * @param frame
-   *          check this frame's sample precision
-   */
-  protected void checkSamplePrecision(final JpegFrame frame)
-  {
-    final int samplePrecision = frame.getSamplePrecision();
-    if (frame.isLossless() && (samplePrecision < 2 || samplePrecision > 16))
-    {
-      proc.error(Msg.INVALID_SAMPLE_PRECISION_LOSSLESS, samplePrecision);
-    }
-    if (frame.isExtended() && samplePrecision != 8 && samplePrecision != 12)
-    {
-      proc.error(Msg.INVALID_SAMPLE_PRECISION_EXTENDED, samplePrecision);
-    }
-    if (frame.isProgressive() && samplePrecision != 8 && samplePrecision != 12)
-    {
-      proc.error(Msg.INVALID_SAMPLE_PRECISION_PROGRESSIVE, samplePrecision);
-    }
-    if (frame.isBaseline() && samplePrecision != 8)
-    {
-      proc.error(Msg.INVALID_SAMPLE_PRECISION_BASELINE, samplePrecision);
     }
   }
 

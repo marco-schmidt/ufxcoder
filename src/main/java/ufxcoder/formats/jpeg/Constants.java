@@ -120,6 +120,15 @@ public final class Constants
    */
   public static final int MIN_FRAME_LENGTH = 9;
 
+  /**
+   * Minimum component sampling factor.
+   */
+  public static final int MIN_COMPONENT_SAMPLING_FACTOR = 1;
+  /**
+   * Maximum component sampling factor.
+   */
+  public static final int MAX_COMPONENT_SAMPLING_FACTOR = 4;
+
   private Constants()
   {
     // avoid instantiation of this helper class

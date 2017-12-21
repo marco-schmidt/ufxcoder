@@ -100,6 +100,26 @@ public final class Msg
    */
   public static final String FRAME_LENGTH_TOO_SMALL = "jpeg.error.frame_length_too_small";
 
+  /**
+   * Horizontal component sampling factor is not in valid range.
+   */
+  public static final String INVALID_HORIZONTAL_COMPONENT_SAMPLING_FACTOR = "jpeg.error.invalid_horizontal_component_sampling_factor";
+
+  /**
+   * Vertical component sampling factor is not in valid range.
+   */
+  public static final String INVALID_VERTICAL_COMPONENT_SAMPLING_FACTOR = "jpeg.error.invalid_vertical_component_sampling_factor";
+
+  /**
+   * Invalid quantization table destination selector.
+   */
+  public static final String INVALID_QUANTIZATION_TABLE = "jpeg.error.invalid_quantization_table";
+
+  /**
+   * Vertical component sampling factor is not in valid range.
+   */
+  public static final String DUPLICATE_FRAME_COMPONENT = "jjpeg.error.duplicate_frame_component";
+
   private Msg()
   {
   }

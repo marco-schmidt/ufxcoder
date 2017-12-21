@@ -15,6 +15,9 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Data class describing a JPEG frame.
  */
@@ -28,6 +31,7 @@ public class JpegFrame
   private int numComponents;
   private int width;
   private int height;
+  private final Map<Integer, JpegFrameComponent> components = new HashMap<>();
 
   public int getSamplePrecision()
   {
@@ -107,5 +111,15 @@ public class JpegFrame
   public void setHeight(final int height)
   {
     this.height = height;
+  }
+
+  public JpegFrameComponent findComponent(final int id)
+  {
+    return components.get(Integer.valueOf(id));
+  }
+
+  public void add(final JpegFrameComponent comp)
+  {
+    components.put(comp.getId(), comp);
   }
 }
