@@ -120,6 +120,31 @@ public final class Msg
    */
   public static final String DUPLICATE_FRAME_COMPONENT = "jjpeg.error.duplicate_frame_component";
 
+  /**
+   * Invalid number of scan components.
+   */
+  public static final String INVALID_NUMBER_OF_SCAN_COMPONENTS = "jpeg.error.invalid_number_of_scan_components";
+
+  /**
+   * Scan appears before frame in stream.
+   */
+  public static final String SCAN_BEFORE_FRAME = "jpeg.error.scan_before_frame";
+
+  /**
+   * Scan header size differs from expected size.
+   */
+  public static final String INVALID_SCAN_MARKER_LENGTH = "jpeg.error.invalid_scan_marker_length";
+
+  /**
+   * Scan component id was not defined in frame.
+   */
+  public static final String SCAN_COMPONENT_DEFINED_MORE_THAN_ONCE = "jpeg.error.scan_component_twice";
+
+  /**
+   * Scan component id is used more than once in frame.
+   */
+  public static final String SCAN_COMPONENT_UNDEFINED_IN_FRAME = "jpeg.error.scan_component_undefined";
+
   private Msg()
   {
   }

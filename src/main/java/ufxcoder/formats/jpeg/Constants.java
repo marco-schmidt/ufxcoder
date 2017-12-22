@@ -124,10 +124,21 @@ public final class Constants
    * Minimum component sampling factor.
    */
   public static final int MIN_COMPONENT_SAMPLING_FACTOR = 1;
+
   /**
    * Maximum component sampling factor.
    */
   public static final int MAX_COMPONENT_SAMPLING_FACTOR = 4;
+
+  /**
+   * Minimum number of components in a scan.
+   */
+  public static final int MIN_SCAN_COMPONENTS = 1;
+
+  /**
+   * Maximum number of components in a scan.
+   */
+  public static final int MAX_SCAN_COMPONENTS = 4;
 
   private Constants()
   {

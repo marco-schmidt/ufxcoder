@@ -49,6 +49,9 @@ public class JpegReader
     case Constants.MARKER_START_OF_FRAME_15:
       new JpegFrameReader(proc).parseStartOfFrame(marker);
       break;
+    case Constants.MARKER_START_OF_SCAN:
+      new JpegScanReader(proc).readScan(marker);
+      break;
     case Constants.MARKER_DEFINE_HUFFMAN_TABLES:
       parseHuffmanTable(marker);
       break;
