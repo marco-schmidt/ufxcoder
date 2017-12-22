@@ -203,7 +203,7 @@ public class JpegProcessor extends AbstractFormatProcessor
       final long length = source.getLength();
       if (position != length)
       {
-        error(Msg.EXTRANEOUS_DATA_AFTER_END_OF_STREAM, position, length);
+        warn(Msg.EXTRANEOUS_DATA_AFTER_END_OF_STREAM, position, length);
       }
     }
   }
