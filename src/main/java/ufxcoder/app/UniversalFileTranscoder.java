@@ -62,6 +62,7 @@ public class UniversalFileTranscoder
       {
         try
         {
+          LOGGER.debug(config.msg("args.debug.scanning_directory", dirName));
           Files.walkFileTree(Paths.get(dirName), new CollectAllFilesVisitor(config));
         }
         catch (IOException e)
