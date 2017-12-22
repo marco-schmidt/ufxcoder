@@ -28,7 +28,7 @@ description 'Universal File Transcoder'
 version = '0.0.1'
 mainClassName = 'ufxcoder.app.UniversalFileTranscoder'
 
-defaultTasks 'clean', 'build'
+defaultTasks 'clean', 'check', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
   compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
@@ -86,6 +86,10 @@ jar {
     include 'LICENSE'
     into 'META-INF'
   }
+}
+
+run {
+  args += '--print-env'
 }
 
 // https://pmd.github.io/
