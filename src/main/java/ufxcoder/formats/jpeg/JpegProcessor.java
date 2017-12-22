@@ -170,7 +170,7 @@ public class JpegProcessor extends AbstractFormatProcessor
         desc.add(marker);
       }
       while (isSuccess() && marker.getId() != Constants.MARKER_END_OF_IMAGE);
-      checkForExtraneousData(offset);
+      checkForExtraneousData();
     }
     catch (IOException e)
     {
@@ -194,15 +194,16 @@ public class JpegProcessor extends AbstractFormatProcessor
     return initialOffset + length;
   }
 
-  private void checkForExtraneousData(final long offset) throws IOException
+  private void checkForExtraneousData() throws IOException
   {
     if (!getJpegFileDescription().isEmbedded() && isSuccess())
     {
       final SeekableSource source = getSource();
+      final long position = source.getPosition();
       final long length = source.getLength();
-      if (offset != length)
+      if (position != length)
       {
-        error(Msg.EXTRANEOUS_DATA_AFTER_END_OF_STREAM, offset, length);
+        error(Msg.EXTRANEOUS_DATA_AFTER_END_OF_STREAM, position, length);
       }
     }
   }

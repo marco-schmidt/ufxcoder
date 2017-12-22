@@ -60,6 +60,15 @@ public interface SeekableSource extends Closeable
    */
   long getPosition() throws IOException;
 
+  /**
+   * Read a single unsigned byte from input.
+   *
+   * @return byte read as value from 0 to 255 or -1 if end-of-input was reached
+   * @throws IOException
+   *           on read errors
+   */
+  int read() throws IOException;
+
   int read(byte[] buffer, int offset, int length) throws IOException;
 
   void readFully(byte[] buffer, int offset, int length) throws IOException;

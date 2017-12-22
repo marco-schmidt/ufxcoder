@@ -102,4 +102,19 @@ public class MemorySource extends AbstractSeekableSource
   {
     return "?";
   }
+
+  @Override
+  public int read() throws IOException
+  {
+    int result;
+    if (index >= data.length)
+    {
+      result = -1;
+    }
+    else
+    {
+      result = data[index++];
+    }
+    return result;
+  }
 }

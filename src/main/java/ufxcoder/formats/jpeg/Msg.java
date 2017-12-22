@@ -145,6 +145,16 @@ public final class Msg
    */
   public static final String SCAN_COMPONENT_UNDEFINED_IN_FRAME = "jpeg.error.scan_component_undefined";
 
+  /**
+   * Found restart marker differing from the expected one in input.
+   */
+  public static final String UNEXPECTED_RESTART_MARKER = "jpeg.error.unexpected_restart_marker";
+
+  /**
+   * Found a marker different from EOI and RST0-7 within scan data.
+   */
+  public static final String UNKNOWN_MARKER_IN_SCAN_DATA = "jpeg.error.unknown_marker_in_scan";
+
   private Msg()
   {
   }

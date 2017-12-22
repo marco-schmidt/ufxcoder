@@ -15,8 +15,10 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import ufxcoder.io.SeekableSource;
 import ufxcoder.io.Segment;
 
 /**
@@ -54,10 +56,58 @@ public class JpegScanReader
       if (marker.getLength() == expectedLength)
       {
         readScanHeader(segment, frame, scan);
+        if (proc.isSuccess())
+        {
+          readScanData();
+        }
       }
       else
       {
         proc.error(Msg.INVALID_SCAN_MARKER_LENGTH, numComponents, expectedLength, marker.getLength());
+      }
+    }
+  }
+
+  private void readScanData()
+  {
+    final SeekableSource input = proc.getSource();
+    int expectedRestart = Constants.MARKER_MIN_RESTART_INTERVAL;
+    while (true)
+    {
+      try
+      {
+        final int value = input.read();
+        if (value == 0xff)
+        {
+          final int second = input.read();
+          if (second != 0)
+          {
+            final int id = Constants.MARKER_MASK | second;
+            if (id >= Constants.MARKER_MIN_RESTART_INTERVAL && id <= Constants.MARKER_MAX_RESTART_INTERVAL)
+            {
+              // restart interval
+              if (id == expectedRestart)
+              {
+                expectedRestart = id == Constants.MARKER_MAX_RESTART_INTERVAL ? Constants.MARKER_MIN_RESTART_INTERVAL
+                    : id + 1;
+              }
+              else
+              {
+                proc.error(Msg.UNEXPECTED_RESTART_MARKER, expectedRestart, id);
+              }
+            }
+            else
+            {
+              // scan is over
+              input.seek(input.getPosition() - 2);
+              break;
+            }
+          }
+        }
+      }
+      catch (IOException e)
+      {
+        proc.error(Msg.READING_ERROR, e.getMessage());
       }
     }
   }

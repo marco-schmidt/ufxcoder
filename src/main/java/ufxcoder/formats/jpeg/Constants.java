@@ -111,6 +111,21 @@ public final class Constants
   public static final int MARKER_DEFINE_HUFFMAN_TABLES = 0xffdb;
 
   /**
+   * Marker with information on restart intervals.
+   */
+  public static final int MARKER_DEFINE_RESTART_INTERVAL = 0xffdd;
+
+  /**
+   * Marker with first restart interval.
+   */
+  public static final int MARKER_MIN_RESTART_INTERVAL = 0xffd0;
+
+  /**
+   * Marker with last restart interval.
+   */
+  public static final int MARKER_MAX_RESTART_INTERVAL = 0xffd7;
+
+  /**
    * Maximum number of components for a progressive frame.
    */
   public static final int PROGRESSIVE_MAX_COMPONENTS = 4;

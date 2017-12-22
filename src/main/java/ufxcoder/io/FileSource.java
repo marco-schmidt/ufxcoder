@@ -109,4 +109,10 @@ public class FileSource extends AbstractSeekableSource
   {
     return name;
   }
+
+  @Override
+  public int read() throws IOException
+  {
+    return input.read();
+  }
 }
