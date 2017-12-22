@@ -118,7 +118,7 @@ public final class Msg
   /**
    * Vertical component sampling factor is not in valid range.
    */
-  public static final String DUPLICATE_FRAME_COMPONENT = "jjpeg.error.duplicate_frame_component";
+  public static final String DUPLICATE_FRAME_COMPONENT = "jpeg.error.duplicate_frame_component";
 
   /**
    * Invalid number of scan components.
