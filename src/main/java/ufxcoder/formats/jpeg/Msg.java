@@ -155,6 +155,11 @@ public final class Msg
    */
   public static final String UNKNOWN_MARKER_IN_SCAN_DATA = "jpeg.error.unknown_marker_in_scan";
 
+  /**
+   * Input's end was reached prematurely.
+   */
+  public static final String UNEXPECTED_END_OF_INPUT = "jpeg.error.unexpected_end_of_input";
+
   private Msg()
   {
   }

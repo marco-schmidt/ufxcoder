@@ -18,6 +18,7 @@ package ufxcoder.formats.jpeg;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import ufxcoder.io.BufferedSource;
 import ufxcoder.io.SeekableSource;
 import ufxcoder.io.Segment;
 
@@ -70,18 +71,24 @@ public class JpegScanReader
 
   private void readScanData()
   {
-    final SeekableSource input = proc.getSource();
+    final SeekableSource source = proc.getSource();
+    final BufferedSource input = new BufferedSource(source, 4096);
     int expectedRestart = Constants.MARKER_MIN_RESTART_INTERVAL;
     while (true)
     {
       try
       {
-        final int value = input.read();
+        final int value = input.next();
         if (value == 0xff)
         {
-          final int second = input.read();
+          final int second = input.next();
           if (second != 0)
           {
+            if (second == -1)
+            {
+              proc.error(Msg.UNEXPECTED_END_OF_INPUT);
+              break;
+            }
             final int id = Constants.MARKER_MASK | second;
             if (id >= Constants.MARKER_MIN_RESTART_INTERVAL && id <= Constants.MARKER_MAX_RESTART_INTERVAL)
             {
@@ -98,10 +105,18 @@ public class JpegScanReader
             }
             else
             {
-              // scan is over
-              input.seek(input.getPosition() - 2);
+              // scan is over, position underlying input two bytes back
+              input.seekBack(2);
               break;
             }
+          }
+        }
+        else
+        {
+          if (value == -1)
+          {
+            proc.error(Msg.UNEXPECTED_END_OF_INPUT);
+            break;
           }
         }
       }

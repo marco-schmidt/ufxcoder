@@ -16,7 +16,17 @@
         <property name="reportLevel" value="15"/>
     </properties>
   </rule>
-  
+  <rule ref="rulesets/java/codesize.xml/ModifiedCyclomaticComplexity">
+    <properties>
+        <property name="reportLevel" value="15"/>
+    </properties>
+  </rule>
+  <rule ref="rulesets/java/codesize.xml/StdCyclomaticComplexity">
+    <properties>
+        <property name="reportLevel" value="15"/>
+    </properties>
+  </rule>
+
   <rule ref="rulesets/java/comments.xml">
      <exclude name="CommentRequired"/>
   </rule>
