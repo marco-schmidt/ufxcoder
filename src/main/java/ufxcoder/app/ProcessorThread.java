@@ -89,7 +89,7 @@ public class ProcessorThread implements Runnable
       {
         if (highestSeverity == EventSeverity.Warning)
         {
-          key = "processor.result.warn";
+          key = "processor.result.warning";
         }
         else
         {
