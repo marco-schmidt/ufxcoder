@@ -10,3 +10,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 script: ./gradlew
+after_success:
+  - unzip -c build/libs/ufxcoder-*.jar META-INF/MANIFEST.MF
