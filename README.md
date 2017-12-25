@@ -6,7 +6,7 @@ This helps identifying problematic files among large data sets.
 Such files can then be processed in different ways: moved, copied, deleted, renamed, transcoded, in some cases repaired.
 
 Some more properties:
-* The project is written in Java and compatible with version 8 (see section [Java Compatability](#java-compatibility)).
+* The project is written in Java and compatible with version 8 (see section [Java Compatibility](#java-compatibility)).
 * [Gradle](https://gradle.org/) is the project build tool.
 * It relies on libraries [slf4j](https://www.slf4j.org) and [logback](https://logback.qos.ch) as dependencies for logging.
 * Unit tests are included, they depend on [JUnit 4](http://junit.org/junit4/).
