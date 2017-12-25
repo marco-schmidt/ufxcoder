@@ -6,17 +6,17 @@ This helps identifying problematic files among large data sets.
 Such files can then be processed in different ways: moved, copied, deleted, renamed, transcoded, in some cases repaired.
 
 Some more properties:
-* The project is written in Java and compatible with version 8.
-* Gradle is the project build tool.
-* It relies on libraries slf4j and logback as dependencies for logging.
-* Unit tests are included, they depend on JUnit 4.
-* All contents are distributed under the Apache 2.0 license.
-* [The maven standard directory layout convention is followed.](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
-* Code is maintained in a git repository at GitHub.
-* [Travis CI provides continuous integration.](https://travis-ci.org/marco-schmidt/ufxcoder)
-* Code analysis is done with gradle plugins for PMD, spotbugs and checkstyle.
-* Source code is formatted with spotless using an Eclipse XML configuration file.
-* Eclipse configuration files can be generated with gradle.
+* The project is written in Java and compatible with version 8 (see section [Java Compatability](#java-compatibility)).
+* [Gradle](https://gradle.org/) is the project build tool.
+* It relies on libraries [slf4j](https://www.slf4j.org) and [logback](https://logback.qos.ch) as dependencies for logging.
+* Unit tests are included, they depend on [JUnit 4](http://junit.org/junit4/).
+* All contents are distributed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
+* The [maven standard directory layout convention](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) is followed.
+* Code is maintained in a [git repository at GitHub](https://github.com/marco-schmidt/ufxcoder).
+* Continuous integration: [Travis CI rebuilds the project on each commit.](https://travis-ci.org/marco-schmidt/ufxcoder)
+* Code analysis is done with gradle plugins for [PMD](https://pmd.github.io), [spotbugs](https://spotbugs.github.io) and [checkstyle](http://checkstyle.sourceforge.net).
+* Source code is formatted with [spotless](https://github.com/diffplug/spotless) using an [Eclipse XML configuration file](config/eclipse/formatter.xml).
+* Eclipse configuration files can be [generated with gradle](https://docs.gradle.org/current/userguide/eclipse_plugin.html).
 
 ## Status Quo
 
