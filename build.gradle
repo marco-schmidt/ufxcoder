@@ -94,7 +94,7 @@ run {
 
 // https://pmd.github.io/
 pmd {
-  toolVersion = '5.8.1'
+  toolVersion = '6.0.0'
   ruleSets = []
   consoleOutput = true
   ruleSetConfig = resources.text.fromFile('config/pmd/pmd.xml')
