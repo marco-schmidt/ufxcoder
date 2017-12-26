@@ -18,6 +18,7 @@ package ufxcoder.formats.tiff;
 import java.io.IOException;
 import java.math.BigInteger;
 import ufxcoder.formats.AbstractFormatProcessor;
+import ufxcoder.formats.EventSeverity;
 import ufxcoder.formats.FileDescription;
 import ufxcoder.io.Segment;
 
@@ -51,10 +52,25 @@ public class TiffProcessor extends AbstractFormatProcessor
       {
         final ImageFileDirectoryReader ifdReader = new ImageFileDirectoryReader(this);
         ifdReader.readAllMetadata(imageFileDirectoryOffset);
+        checkBaseline(desc);
       }
     }
 
     closeSource();
+  }
+
+  private void checkBaseline(final TiffFileDescription desc)
+  {
+    if (desc.isSuccess())
+    {
+      final TiffBaselineCheck baseline = new TiffBaselineCheck();
+      baseline.check(desc);
+      if (baseline.isBaseline())
+      {
+        final String key = "tiff.info.baseline";
+        desc.addEvent(EventSeverity.Info, key, msg(key));
+      }
+    }
   }
 
   public TiffFileDescription getTiffFileDescription()

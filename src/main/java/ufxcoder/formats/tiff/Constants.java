@@ -163,6 +163,21 @@ public final class Constants
   public static final int PLANAR_CONFIGURATION_PLANAR = 2;
 
   /**
+   * Compression type uncompressed.
+   */
+  public static final int COMPRESSION_NONE = 1;
+
+  /**
+   * Compression type CCITT Group 3 1-dimensional Modified Huffman Run-Length Encoding.
+   */
+  public static final int COMPRESSION_MODIFIED_HUFFMAN_RLE = 2;
+
+  /**
+   * Compression type Packbits.
+   */
+  public static final int COMPRESSION_PACKBITS = 32773;
+
+  /**
    * Maximum size of field data outside of an image file directory to be allocated at once.
    */
   public static final int MAX_FIELD_DATA_ALLOCATION_SIZE = 64 * 1024;
