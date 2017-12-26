@@ -61,9 +61,9 @@ public class TiffProcessor extends AbstractFormatProcessor
 
   private void checkBaseline(final TiffFileDescription desc)
   {
-    if (desc.isSuccess())
+    if (desc.isSuccess() && getConfig().isTiffBaseline())
     {
-      final TiffBaselineCheck baseline = new TiffBaselineCheck();
+      final TiffBaselineCheck baseline = new TiffBaselineCheck(this);
       baseline.check(desc);
       if (baseline.isBaseline())
       {

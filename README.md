@@ -84,6 +84,12 @@ To get more information about those problematic files change the log level to de
 Processed 1,694 file(s) in 23 second(s).
 ```
 
+Some switches are relevant only if a file is in a certain format. To check if a TIFF file is in conformance with the TIFF baseline specification, use `--tiff:baseline`. Note that this is a valid TIFF file which would have a result of OK with a regular check. It just does not match the more strict baseline requirements.
+```
+> ./ufxcoder --tiff:baseline 20170805-181749_defl.tif
+20170805-181749_defl.tif	TIFF		Error	[1/2] Field not allowed in a baseline TIFF file (317, Predictor). [2/2] Compression type not allowed in a baseline TIFF file (8, Deflate).
+```
+
 ## Development Setup
 
 You will need a version 8 JDK and version control management software git.

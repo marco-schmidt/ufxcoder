@@ -53,6 +53,7 @@ public class AppConfig
   private Locale locale;
   private boolean quiet;
   private boolean knownFileExtensionsOnly;
+  private boolean tiffBaseline;
 
   public AppConfig()
   {
@@ -219,5 +220,15 @@ public class AppConfig
   public void setKnownFileExtensionsOnly(final boolean knownFileExtensionsOnly)
   {
     this.knownFileExtensionsOnly = knownFileExtensionsOnly;
+  }
+
+  public boolean isTiffBaseline()
+  {
+    return tiffBaseline;
+  }
+
+  public void setTiffBaseline(final boolean tiffBaseline)
+  {
+    this.tiffBaseline = tiffBaseline;
   }
 }

@@ -142,8 +142,14 @@ public class ArgumentParser
         {
           config.setQuiet(true);
         };
+      }, new AbstractParameter("args.tiff.baseline", "tiff:baseline", null, null)
+      {
+        @Override
+        public void process(final AppConfig config, final String nextArg)
+        {
+          config.setTiffBaseline(true);
+        };
       }
-
   };
   private static final Logger LOGGER = LoggerFactory.getLogger(ArgumentParser.class);
   private static final String DASH = "-";

@@ -67,6 +67,21 @@ public final class Msg
    */
   public static final String INVALID_BIG_TIFF_OFFSET_ZERO = "tiff.error.invalid_big_tiff_offset_zero";
 
+  /**
+   * Prefix for field names.
+   */
+  public static final String PREFIX_FIELD_NAME = "tiff.field.";
+
+  /**
+   * TIFF contains field which is not allowed according to baseline specification.
+   */
+  public static final String NON_BASELINE_FIELD = "tiff.error.baseline.non_baseline_field";
+
+  /**
+   * TIFF uses compression type which is not allowed according to baseline specification.
+   */
+  public static final String NON_BASELINE_COMPRESSION = "tiff.error.baseline.non_baseline_compression";
+
   private Msg()
   {
   }

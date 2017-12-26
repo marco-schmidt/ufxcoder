@@ -25,20 +25,22 @@ public class TiffBaselineCheck
 {
   private final Map<Integer, FieldDescription> tagToDesc = new HashMap<>();
   private boolean baseline;
+  private final TiffProcessor processor;
 
-  public TiffBaselineCheck()
+  public TiffBaselineCheck(final TiffProcessor proc)
   {
     for (final FieldDescription desc : FieldDescriptionFactory.getBaseline())
     {
       tagToDesc.put(desc.getTag(), desc);
     }
     baseline = false;
+    processor = proc;
   }
 
   public void check(final TiffFileDescription desc)
   {
     final int numDirectories = desc.getNumDirectories();
-    if (numDirectories > 0)
+    if (processor.getConfig().isTiffBaseline() && numDirectories > 0)
     {
       final ImageFileDirectory directory = desc.getDirectory(0);
       check(directory);
@@ -50,8 +52,15 @@ public class TiffBaselineCheck
     baseline = true;
     for (final Field field : ifd.getFields())
     {
-      if (tagToDesc.get(field.getId()) == null)
+      final int id = field.getId();
+      if (tagToDesc.get(id) == null)
       {
+        String fieldName = processor.msg(Msg.PREFIX_FIELD_NAME + id);
+        if ("".equals(fieldName))
+        {
+          fieldName = "?";
+        }
+        processor.error(Msg.NON_BASELINE_FIELD, id, fieldName);
         baseline = false;
         break;
       }
@@ -62,15 +71,28 @@ public class TiffBaselineCheck
   private void checkCompression(final ImageFileDirectory ifd)
   {
     final Field compr = ifd.findByTag(FieldDescriptionFactory.COMPRESSION);
+    boolean baselineCompression;
+    String name = null;
+    int value = 0;
     if (compr == null)
     {
-      baseline = false;
+      baselineCompression = false;
     }
     else
     {
-      final int value = compr.getAsInt();
-      baseline = baseline && (value == Constants.COMPRESSION_NONE || value == Constants.COMPRESSION_MODIFIED_HUFFMAN_RLE
-          || value == Constants.COMPRESSION_PACKBITS);
+      value = compr.getAsInt();
+      baselineCompression = value == Constants.COMPRESSION_NONE || value == Constants.COMPRESSION_MODIFIED_HUFFMAN_RLE
+          || value == Constants.COMPRESSION_PACKBITS;
+      name = processor.msg(Msg.PREFIX_FIELD_NAME + FieldDescriptionFactory.COMPRESSION.getTag() + "." + value);
+    }
+    if (!baselineCompression)
+    {
+      if (name == null)
+      {
+        name = "?";
+      }
+      processor.error(Msg.NON_BASELINE_COMPRESSION, value, name);
+      baseline = false;
     }
   }
 
