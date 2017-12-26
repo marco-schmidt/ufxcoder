@@ -20,6 +20,7 @@ apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'pmd'
 apply plugin: 'checkstyle'
+apply plugin: 'maven-publish'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: 'com.github.jk1.dependency-license-report'
 apply plugin: 'com.github.spotbugs'
@@ -133,5 +134,42 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
     xml.enabled = false
     html.enabled = true
     html.stylesheet resources.text.fromFile('config/spotbugs/report-stylesheet.xsl')
+  }
+}
+
+task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+task packageSources(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      artifact packageSources
+      artifact packageJavadoc
+      groupId 'ufxcoder'
+      pom.withXml {
+        asNode().appendNode('url', 'https://github.com/marco-schmidt/ufxcoder')
+        asNode().appendNode('description', "${description}")
+        asNode().appendNode('packaging', 'jar')
+        asNode().appendNode('scm').
+          appendNode('connection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
+          appendNode('developerConnection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
+          appendNode('url', 'https://github.com/marco-schmidt/')
+        asNode().appendNode('developers').appendNode('developer').
+          appendNode('id', 'marco-schmidt').parent().
+          appendNode('name', 'Marco Schmidt').parent().
+          appendNode('email', 'mschmidtgit@protonmail.com')
+        asNode().appendNode('licenses').appendNode('license').
+          appendNode('name', 'The Apache Software License, Version 2.0').parent().
+          appendNode('url', 'https://www.apache.org/licenses/LICENSE-2.0.html')
+      }
+    }
   }
 }
