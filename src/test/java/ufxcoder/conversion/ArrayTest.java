@@ -15,6 +15,7 @@
  */
 package ufxcoder.conversion;
 
+import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -139,5 +140,31 @@ public class ArrayTest
         Array.toBigInteger(array, ByteOrder.BigEndian).longValue());
     Assert.assertEquals("Four bytes little endian.", 4 * 16777216L + 3 * 65536L + 2 * 256L + 1,
         Array.toBigInteger(array, ByteOrder.LittleEndian).longValue());
+  }
+
+  @Test
+  public void testToSetNull()
+  {
+    final Set<Integer> set = Array.toSet(null);
+    Assert.assertNotNull("Null array leads to non-null set.", set);
+    Assert.assertEquals("Null array leads to size zero set.", 0, set.size());
+  }
+
+  @Test
+  public void testToSetEmpty()
+  {
+    final Set<Integer> set = Array.toSet();
+    Assert.assertNotNull("Empty array leads to non-null set.", set);
+    Assert.assertEquals("Empty array leads to size zero set.", 0, set.size());
+  }
+
+  @Test
+  public void testToSetInputDuplicates()
+  {
+    final Set<Integer> set = Array.toSet(17, Integer.MIN_VALUE, 17, Integer.MAX_VALUE);
+    Assert.assertNotNull("Test array leads to non-null set.", set);
+    Assert.assertEquals("Test array has three unique values.", 3, set.size());
+    Assert.assertTrue("Test array contains 17.", set.contains(17));
+    Assert.assertFalse("Test array does not contain 0.", set.contains(0));
   }
 }

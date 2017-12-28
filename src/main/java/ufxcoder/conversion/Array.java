@@ -16,6 +16,8 @@
 package ufxcoder.conversion;
 
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Helper class with array-related operations.
@@ -214,6 +216,28 @@ public final class Array
           break;
         }
         currentInitial++;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Create a {@link java.util.Set} of Integer values from argument int values so that the resulting set holds all the
+   * different int values found in the arguments.
+   *
+   * @param array
+   *          input int values
+   * @return Set of Integer values
+   */
+  public static Set<Integer> toSet(final int... array)
+  {
+    final int capacity = array == null ? 0 : array.length;
+    final Set<Integer> result = new HashSet<>(capacity);
+    if (array != null)
+    {
+      for (final int value : array)
+      {
+        result.add(Integer.valueOf(value));
       }
     }
     return result;

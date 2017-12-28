@@ -17,12 +17,16 @@ package ufxcoder.formats.tiff;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import ufxcoder.conversion.Array;
 
 /**
  * Checks conformance of a file with TIFF Baseline.
  */
 public class TiffBaselineCheck
 {
+  private static final Set<Integer> ALLOWED_COMPRESSION = Array.toSet(Constants.COMPRESSION_NONE,
+      Constants.COMPRESSION_MODIFIED_HUFFMAN_RLE, Constants.COMPRESSION_PACKBITS);
   private final Map<Integer, FieldDescription> tagToDesc = new HashMap<>();
   private boolean baseline;
   private final TiffProcessor processor;
@@ -81,8 +85,7 @@ public class TiffBaselineCheck
     else
     {
       value = compr.getAsInt();
-      baselineCompression = value == Constants.COMPRESSION_NONE || value == Constants.COMPRESSION_MODIFIED_HUFFMAN_RLE
-          || value == Constants.COMPRESSION_PACKBITS;
+      baselineCompression = ALLOWED_COMPRESSION.contains(value);
       name = processor.msg(Msg.PREFIX_FIELD_NAME + FieldDescriptionFactory.COMPRESSION.getTag() + "." + value);
     }
     if (!baselineCompression)
