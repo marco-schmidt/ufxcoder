@@ -153,7 +153,7 @@ publishing {
       from components.java
       artifact packageSources
       artifact packageJavadoc
-      groupId 'com.github.marco-schmidt.ufxcoder'
+      groupId 'ufxcoder'
       pom.withXml {
         asNode().appendNode('url', 'https://github.com/marco-schmidt/ufxcoder')
         asNode().appendNode('description', "${description}")
@@ -161,7 +161,7 @@ publishing {
         asNode().appendNode('scm').
           appendNode('connection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
           appendNode('developerConnection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
-          appendNode('url', 'https://github.com/marco-schmidt/ufxcoder')
+          appendNode('url', 'https://github.com/marco-schmidt/')
         asNode().appendNode('developers').appendNode('developer').
           appendNode('id', 'marco-schmidt').parent().
           appendNode('name', 'Marco Schmidt').parent().
