@@ -48,18 +48,16 @@ public class JpegProcessor extends AbstractFormatProcessor
     return result;
   }
 
-  private long identify(final long initialOffset, final Marker marker)
+  private void identify(final Marker marker)
   {
-    long offset = initialOffset;
     try
     {
-      offset = readMarker(offset, marker);
+      readMarker(marker);
     }
     catch (IOException e)
     {
       error(Msg.CANNOT_READ_HEADER, e);
     }
-    return offset;
   }
 
   @Override
@@ -70,11 +68,11 @@ public class JpegProcessor extends AbstractFormatProcessor
 
     final Marker startOfImage = new Marker();
     startOfImage.setNumber(1);
-    final long offset = identify(0, startOfImage);
+    identify(startOfImage);
 
     if (isFormatIdentified() && !isIdentify())
     {
-      processInput(offset);
+      processInput();
     }
 
     closeSource();
@@ -83,17 +81,13 @@ public class JpegProcessor extends AbstractFormatProcessor
   /**
    * Read a two-byte marker and possibly a two-byte length value.
    *
-   * @param initialOffset
-   *          file offset from which to start reading
    * @param marker
    *          data structure to add read integer values to
-   * @return offset after reading marker information
    * @throws IOException
    *           if there are problems seeking or reading
    */
-  private long readMarker(final long initialOffset, final Marker marker) throws IOException
+  private void readMarker(final Marker marker) throws IOException
   {
-    long offset = initialOffset;
     Segment segm;
     segm = read(2);
     segm.setByteOrder(ByteOrder.BigEndian);
@@ -102,7 +96,6 @@ public class JpegProcessor extends AbstractFormatProcessor
     if ((markerId & Constants.MARKER_MASK) == Constants.MARKER_MASK)
     {
       marker.setId(markerId);
-      offset += 2;
       if (marker.getId() == Constants.MARKER_START_OF_IMAGE)
       {
         if (marker.getNumber() == 1)
@@ -126,14 +119,13 @@ public class JpegProcessor extends AbstractFormatProcessor
         append(segm, 2);
         final int length = segm.int16();
         marker.setLength(length);
-        offset += 2;
       }
     }
     else
     {
-      error(Msg.INVALID_MARKER, markerId, offset);
+      error(Msg.INVALID_MARKER, markerId, getSource().getPosition() - 2);
     }
-    return offset;
+    // return offset;
   }
 
   /**
@@ -148,10 +140,9 @@ public class JpegProcessor extends AbstractFormatProcessor
     return marker != Constants.MARKER_START_OF_IMAGE && marker != Constants.MARKER_END_OF_IMAGE;
   }
 
-  private void processInput(final long initialOffset)
+  private void processInput()
   {
     final JpegFileDescription desc = getJpegFileDescription();
-    long offset = initialOffset;
 
     // read markers until there is an I/O exception or an error
     int number = 2;
@@ -162,10 +153,10 @@ public class JpegProcessor extends AbstractFormatProcessor
       {
         marker = new Marker();
         marker.setNumber(number++);
-        offset = readMarker(offset, marker);
+        readMarker(marker);
         if (isSuccess())
         {
-          offset = handleMarker(offset, marker);
+          handleMarker(marker);
         }
         desc.add(marker);
       }
@@ -178,7 +169,7 @@ public class JpegProcessor extends AbstractFormatProcessor
     }
   }
 
-  private long handleMarker(final long initialOffset, final Marker marker) throws IOException
+  private void handleMarker(final Marker marker) throws IOException
   {
     int length = marker.getLength();
     if (hasLength(marker.getId()))
@@ -191,7 +182,6 @@ public class JpegProcessor extends AbstractFormatProcessor
         .debug(marker.getSegment().getOffset() + " " + Integer.toHexString(marker.getId()) + " " + marker.getLength());
     final JpegReader reader = new JpegReader(this);
     reader.parseMarker(marker);
-    return initialOffset + length;
   }
 
   private void checkForExtraneousData() throws IOException
