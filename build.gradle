@@ -28,6 +28,7 @@ apply plugin: 'com.github.spotbugs'
 description 'Universal File Transcoder'
 version = '0.0.1'
 mainClassName = 'ufxcoder.app.UniversalFileTranscoder'
+def licenseName = 'The Apache Software License, Version 2.0'
 
 defaultTasks 'clean', 'check', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
@@ -76,7 +77,7 @@ jar {
       'Implementation-Version': project.version,
       'Created-By': 'Gradle ' + getProject().getGradle().getGradleVersion(),
       'Build-Date': new Date(),
-      'License': 'The Apache License 2.0',
+      'License': licenseName,
       'Main-Class': mainClassName,
       'Java-Version': targetCompatibility,
       'Git-Revision': retrieveGitRevision(),
@@ -153,11 +154,13 @@ publishing {
       from components.java
       artifact packageSources
       artifact packageJavadoc
+      artifact(distZip) {
+        classifier 'bin'
+      }
       groupId 'com.github.marco-schmidt'
       pom.withXml {
         asNode().appendNode('url', 'https://github.com/marco-schmidt/ufxcoder')
         asNode().appendNode('description', "${description}")
-        asNode().appendNode('packaging', 'jar')
         asNode().appendNode('scm').
           appendNode('connection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
           appendNode('developerConnection', 'scm:git:git@github.com:marco-schmidt/ufxcoder.git').parent().
@@ -167,7 +170,7 @@ publishing {
           appendNode('name', 'Marco Schmidt').parent().
           appendNode('email', 'mschmidtgit@protonmail.com')
         asNode().appendNode('licenses').appendNode('license').
-          appendNode('name', 'The Apache Software License, Version 2.0').parent().
+          appendNode('name', licenseName).parent().
           appendNode('url', 'https://www.apache.org/licenses/LICENSE-2.0.html')
       }
     }
