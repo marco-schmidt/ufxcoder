@@ -160,6 +160,11 @@ public final class Msg
    */
   public static final String UNEXPECTED_END_OF_INPUT = "jpeg.error.unexpected_end_of_input";
 
+  /**
+   * Read error.
+   */
+  public static final String IO_ERROR = "jpeg.error.io_error";
+
   private Msg()
   {
   }

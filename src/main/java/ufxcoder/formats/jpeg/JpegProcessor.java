@@ -92,9 +92,15 @@ public class JpegProcessor extends AbstractFormatProcessor
     segm = read(2);
     segm.setByteOrder(ByteOrder.BigEndian);
     marker.setSegment(segm);
-    final int markerId = segm.int16();
+    int markerId = segm.int16();
     if ((markerId & Constants.MARKER_MASK) == Constants.MARKER_MASK)
     {
+      // skip additional 0xff bytes
+      while (markerId == 0xffff)
+      {
+        append(segm, 1);
+        markerId = Constants.MARKER_MASK | segm.int8();
+      }
       marker.setId(markerId);
       if (marker.getId() == Constants.MARKER_START_OF_IMAGE)
       {
@@ -165,7 +171,7 @@ public class JpegProcessor extends AbstractFormatProcessor
     }
     catch (IOException e)
     {
-      error(e.getMessage());
+      error(Msg.IO_ERROR, e.getMessage());
     }
   }
 
