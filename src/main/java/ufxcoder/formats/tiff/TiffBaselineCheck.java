@@ -70,6 +70,95 @@ public class TiffBaselineCheck
       }
     }
     checkCompression(ifd);
+    checkPhotometricInterpretation(ifd);
+  }
+
+  private void checkPhotometricInterpretation(final ImageFileDirectory ifd)
+  {
+    final Field field = ifd.findByTag(FieldDescriptionFactory.PHOTOMETRIC_INTERPRETATION);
+    if (field != null)
+    {
+      final int pi = field.getAsInt();
+      switch (pi)
+      {
+      case Constants.PHOTOMETRIC_INTERPRETATION_BLACK_IS_ZERO:
+      case Constants.PHOTOMETRIC_INTERPRETATION_WHITE_IS_ZERO:
+      {
+        checkGrayscale(ifd, pi);
+        break;
+      }
+      case Constants.PHOTOMETRIC_INTERPRETATION_PALETTED:
+      {
+        checkPaletted(ifd);
+        break;
+      }
+      case Constants.PHOTOMETRIC_INTERPRETATION_RGB:
+      {
+        checkRgb(ifd);
+        break;
+      }
+      default:
+      {
+        processor.error(Msg.NON_BASELINE_PHOTOMETRIC_INTERPRETATON, pi);
+        break;
+      }
+      }
+    }
+  }
+
+  private void checkRgb(final ImageFileDirectory ifd)
+  {
+    // TIFF6.pdf, p. 24: "Each component is 8 bits deep in a Baseline TIFF RGB image."
+    checkBitsPerSample(ifd, Constants.PHOTOMETRIC_INTERPRETATION_RGB, 3, Array.toSet(new int[]
+    {
+        8
+    }));
+  }
+
+  private void checkPaletted(final ImageFileDirectory ifd)
+  {
+    checkBitsPerSample(ifd, Constants.PHOTOMETRIC_INTERPRETATION_PALETTED, 1, Array.toSet(new int[]
+    {
+        // TIFF6.pdf, p. 23
+        4, 8
+    }));
+  }
+
+  private void checkGrayscale(final ImageFileDirectory ifd, final int photomInterp)
+  {
+    checkBitsPerSample(ifd, photomInterp, 1, Array.toSet(new int[]
+    {
+        1, 4, 8
+    }));
+  }
+
+  private void checkBitsPerSample(final ImageFileDirectory ifd, final int photomInterp, final int numComponents,
+      final Set<Integer> allowedBitsPerSample)
+  {
+    final Field bps = ifd.findByTag(FieldDescriptionFactory.BITS_PER_SAMPLE);
+    if (bps == null)
+    {
+      processor.error(Msg.BASELINE_BITS_PER_SAMPLE_MISSING);
+    }
+    else
+    {
+      final long numValues = bps.getNumValues();
+      if (numValues < numComponents)
+      {
+        processor.error(Msg.BASELINE_NUM_COMPONENTS, photomInterp, numComponents, numValues);
+      }
+      else
+      {
+        for (int index = 0; index < numComponents; index++)
+        {
+          final int compBits = bps.getAsInt(index);
+          if (!allowedBitsPerSample.contains(compBits))
+          {
+            processor.error(Msg.BASELINE_INVALID_BITS_PER_SAMPLE, photomInterp, index, compBits);
+          }
+        }
+      }
+    }
   }
 
   private void checkCompression(final ImageFileDirectory ifd)

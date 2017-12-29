@@ -82,6 +82,26 @@ public final class Msg
    */
   public static final String NON_BASELINE_COMPRESSION = "tiff.error.baseline.non_baseline_compression";
 
+  /**
+   * TIFF uses photometric interpretation which is not allowed according to baseline specification.
+   */
+  public static final String NON_BASELINE_PHOTOMETRIC_INTERPRETATON = "tiff.error.baseline.non_baseline_photometric_interpretation";
+
+  /**
+   * TIFF baseline requires field bits per sample.
+   */
+  public static final String BASELINE_BITS_PER_SAMPLE_MISSING = "tiff.error.baseline.bits_per_sample_missing";
+
+  /**
+   * TIFF baseline expected different number of components.
+   */
+  public static final String BASELINE_NUM_COMPONENTS = "tiff.error.baseline.invalid_number_of_components";
+
+  /**
+   * TIFF baseline does not support the number of bits per sample encountered for given photometric interpretation.
+   */
+  public static final String BASELINE_INVALID_BITS_PER_SAMPLE = "tiff.error.baseline.invalid_bits_per_sample";
+
   private Msg()
   {
   }
