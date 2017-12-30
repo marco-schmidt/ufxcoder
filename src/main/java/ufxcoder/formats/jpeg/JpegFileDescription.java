@@ -29,6 +29,7 @@ public class JpegFileDescription extends FileDescription
   private boolean embedded;
   private final List<Marker> markers = new ArrayList<>();
   private JpegFrame frame;
+  private final List<JpegHuffmanTable> huffmanTables = new ArrayList<>();
 
   public BigInteger getInitialOffset()
   {
@@ -68,5 +69,10 @@ public class JpegFileDescription extends FileDescription
   public void setFrame(final JpegFrame frame)
   {
     this.frame = frame;
+  }
+
+  public void add(final JpegHuffmanTable table)
+  {
+    huffmanTables.add(table);
   }
 }

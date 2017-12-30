@@ -170,6 +170,16 @@ public final class Msg
    */
   public static final String INVALID_MARKER_LENGTH = "jpeg.error.invalid_marker_length";
 
+  /**
+   * Marker does not have {@link Constants#MAX_HUFFMAN_CODE_LENGTH} bytes left to store code lengths.
+   */
+  public static final String MARKER_TOO_SMALL_FOR_HUFFMAN_CODE_LENGTHS = "jpeg.error.marker_too_small_for_huffman_code_lengths";
+
+  /**
+   * Marker does not have enough space left for Huffman codes.
+   */
+  public static final String MARKER_TOO_SMALL_FOR_HUFFMAN_CODES = "jpeg.error.marker_too_small_for_huffman_codes";
+
   private Msg()
   {
   }

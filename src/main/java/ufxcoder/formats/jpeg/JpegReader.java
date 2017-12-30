@@ -15,8 +15,6 @@
  */
 package ufxcoder.formats.jpeg;
 
-import ufxcoder.io.Segment;
-
 /**
  * Read information from JPEG input streams.
  */
@@ -53,19 +51,10 @@ public class JpegReader
       new JpegScanReader(proc).readScan(marker);
       break;
     case Constants.MARKER_DEFINE_HUFFMAN_TABLES:
-      parseHuffmanTable(marker);
+      new JpegHuffmanReader(proc).readTable(marker);
       break;
     default:
       break;
-    }
-  }
-
-  private void parseHuffmanTable(final Marker marker)
-  {
-    final Segment segment = marker.getSegment();
-    for (int numBits = 1; numBits <= 16; numBits++)
-    {
-      segment.int8();
     }
   }
 }

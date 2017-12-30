@@ -156,4 +156,23 @@ public class Segment
   {
     this.byteOrder = byteOrder;
   }
+
+  public int getNumBytesLeft()
+  {
+    int result;
+    if (data == null || index > length)
+    {
+      result = 0;
+    }
+    else
+    {
+      result = length - index;
+    }
+    return result;
+  }
+
+  public boolean hasBytes(final int num)
+  {
+    return num <= getNumBytesLeft();
+  }
 }

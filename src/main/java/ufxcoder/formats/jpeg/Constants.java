@@ -108,7 +108,12 @@ public final class Constants
   /**
    * Marker with tables to be used for Huffman entropy coding.
    */
-  public static final int MARKER_DEFINE_HUFFMAN_TABLES = 0xffdb;
+  public static final int MARKER_DEFINE_HUFFMAN_TABLES = 0xffc4;
+
+  /**
+   * Marker with quantization tables.
+   */
+  public static final int MARKER_DEFINE_QUANTIZATION_TABLES = 0xffdb;
 
   /**
    * Marker with information on restart intervals.
@@ -154,6 +159,11 @@ public final class Constants
    * Maximum number of components in a scan.
    */
   public static final int MAX_SCAN_COMPONENTS = 4;
+
+  /**
+   * Maximum length of a Huffman code in bits.
+   */
+  public static final int MAX_HUFFMAN_CODE_LENGTH = 16;
 
   private Constants()
   {
