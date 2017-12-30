@@ -165,6 +165,11 @@ public final class Msg
    */
   public static final String IO_ERROR = "jpeg.error.io_error";
 
+  /**
+   * Marker length invalid.
+   */
+  public static final String INVALID_MARKER_LENGTH = "jpeg.error.invalid_marker_length";
+
   private Msg()
   {
   }

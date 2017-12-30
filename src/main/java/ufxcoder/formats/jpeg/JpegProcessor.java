@@ -182,12 +182,19 @@ public class JpegProcessor extends AbstractFormatProcessor
     {
       length -= 2;
     }
-    final Segment segment = marker.getSegment();
-    append(segment, length);
-    LOGGER
-        .debug(marker.getSegment().getOffset() + " " + Integer.toHexString(marker.getId()) + " " + marker.getLength());
-    final JpegReader reader = new JpegReader(this);
-    reader.parseMarker(marker);
+    if (length < 0)
+    {
+      error(Msg.INVALID_MARKER_LENGTH, length, Integer.toHexString(marker.getId()));
+    }
+    else
+    {
+      final Segment segment = marker.getSegment();
+      append(segment, length);
+      LOGGER.debug(
+          marker.getSegment().getOffset() + " " + Integer.toHexString(marker.getId()) + " " + marker.getLength());
+      final JpegReader reader = new JpegReader(this);
+      reader.parseMarker(marker);
+    }
   }
 
   private void checkForExtraneousData() throws IOException
