@@ -180,6 +180,16 @@ public final class Msg
    */
   public static final String MARKER_TOO_SMALL_FOR_HUFFMAN_CODES = "jpeg.error.marker_too_small_for_huffman_codes";
 
+  /**
+   * Invalid Huffman table destination identifier found in input.
+   */
+  public static final String INVALID_HUFFMAN_TABLE_DEST_IDENTIFIER = "jpeg.error.invalid_huffman_table_destination_identifier";
+
+  /**
+   * Invalid table class encountered in input.
+   */
+  public static final String INVALID_HUFFMAN_TABLE_CLASS = "jpeg.error.invalid_huffman_table_class";
+
   private Msg()
   {
   }

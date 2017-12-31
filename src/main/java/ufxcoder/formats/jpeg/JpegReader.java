@@ -51,7 +51,7 @@ public class JpegReader
       new JpegScanReader(proc).readScan(marker);
       break;
     case Constants.MARKER_DEFINE_HUFFMAN_TABLES:
-      new JpegHuffmanReader(proc).readTable(marker);
+      new JpegHuffmanReader(proc).readTables(marker);
       break;
     default:
       break;

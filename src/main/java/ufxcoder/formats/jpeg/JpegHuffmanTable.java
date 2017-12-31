@@ -46,7 +46,8 @@ public class JpegHuffmanTable
 
   public int getNumCodes(final int index)
   {
-    return codes[index].length;
+    final int[] array = codes[index];
+    return array == null ? 0 : array.length;
   }
 
   public void setNumCodes(final int index, final int length)

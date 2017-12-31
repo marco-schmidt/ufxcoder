@@ -29,18 +29,25 @@ public class JpegHuffmanReader
     this.proc = proc;
   }
 
-  public void readTable(final Marker marker)
+  public void readTables(final Marker marker)
   {
     final Segment segment = marker.getSegment();
     while (proc.isSuccess() && segment.hasBytes(1))
     {
       final JpegHuffmanTable table = new JpegHuffmanTable();
+      final JpegFileDescription desc = proc.getJpegFileDescription();
       readTableIdClass(marker, table);
       readCodeLengths(marker, table);
       readCodes(marker, table);
       if (proc.isSuccess())
       {
-        proc.getJpegFileDescription().add(table);
+        desc.add(table);
+      }
+
+      final JpegFrame frame = desc.getFrame();
+      if (frame != null)
+      {
+        checkTable(frame, table);
       }
     }
   }
@@ -88,5 +95,21 @@ public class JpegHuffmanReader
     final int value = segment.int8();
     table.setId(value & 0x0f);
     table.setTableClass((value >> 4) & 0x0f);
+  }
+
+  public void checkTable(final JpegFrame frame, final JpegHuffmanTable table)
+  {
+    final int maxId = frame.isBaseline() ? 1 : 3;
+    final int id = table.getId();
+    if (id > maxId)
+    {
+      proc.error(Msg.INVALID_HUFFMAN_TABLE_DEST_IDENTIFIER, id, maxId);
+    }
+    final int tableClass = table.getTableClass();
+    final int maxClass = frame.isLossless() ? 0 : 1;
+    if (tableClass > maxClass)
+    {
+      proc.error(Msg.INVALID_HUFFMAN_TABLE_CLASS, tableClass, maxClass);
+    }
   }
 }
