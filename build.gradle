@@ -155,7 +155,7 @@ publishing {
       artifact packageSources
       artifact packageJavadoc
       artifact(distZip) {
-        classifier 'bin'
+        classifier 'install'
       }
       groupId 'com.github.marco-schmidt'
       pom.withXml {
