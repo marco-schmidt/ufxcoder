@@ -116,7 +116,7 @@ spotless {
 // https://github.com/checkstyle/checkstyle
 // http://checkstyle.sourceforge.net
 checkstyle {
-  toolVersion '8.5'
+  toolVersion '8.6'
   ignoreFailures false
   showViolations true
 }
