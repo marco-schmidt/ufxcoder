@@ -32,22 +32,21 @@ public class JpegHuffmanReader
   public void readTables(final Marker marker)
   {
     final Segment segment = marker.getSegment();
+    final JpegFileDescription desc = proc.getJpegFileDescription();
+    final JpegFrame frame = desc.getFrame();
     while (proc.isSuccess() && segment.hasBytes(1))
     {
       final JpegHuffmanTable table = new JpegHuffmanTable();
-      final JpegFileDescription desc = proc.getJpegFileDescription();
       readTableIdClass(marker, table);
       readCodeLengths(marker, table);
       readCodes(marker, table);
-      if (proc.isSuccess())
-      {
-        desc.add(table);
-      }
-
-      final JpegFrame frame = desc.getFrame();
       if (frame != null)
       {
         checkTable(frame, table);
+      }
+      if (proc.isSuccess())
+      {
+        desc.add(table);
       }
     }
   }
