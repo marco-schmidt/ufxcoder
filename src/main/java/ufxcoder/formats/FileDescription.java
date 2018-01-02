@@ -17,6 +17,7 @@ package ufxcoder.formats;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import ufxcoder.conversion.ByteOrder;
 
@@ -41,6 +42,18 @@ public class FileDescription
         result.add(event);
       }
     }
+    return result;
+  }
+
+  public List<String> getSortedErrorWarningKeys()
+  {
+    final List<ProcessorEvent> events = errorsAndWarnings();
+    final List<String> result = new ArrayList<>(events.size());
+    for (final ProcessorEvent event : events)
+    {
+      result.add(event.getMessageKey());
+    }
+    Collections.sort(result);
     return result;
   }
 

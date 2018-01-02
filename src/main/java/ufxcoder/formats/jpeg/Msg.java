@@ -48,7 +48,7 @@ public final class Msg
   /**
    * There is data after the last marker.
    */
-  public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.error.extraneous_data_after_end_of_stream";
+  public static final String EXTRANEOUS_DATA_AFTER_END_OF_STREAM = "jpeg.warning.extraneous_data_after_end_of_stream";
 
   /**
    * Invalid number of bits per sample for lossless frames.
