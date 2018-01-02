@@ -98,7 +98,9 @@
     <exclude name="AvoidInstantiatingObjectsInLoops" />
     <exclude name="UseStringBufferForStringAppends" /> <!-- rule too strict, even String s = s + t; is forbidden although rule description explicitly says it's about non-trivial concatenations -->
   </rule>
-  <rule ref="rulesets/java/strictexception.xml"/>
+  <rule ref="rulesets/java/strictexception.xml">
+    <exclude name="AvoidRethrowingException" /> <!-- rule ignores existing finally clause -->
+  </rule>
   <rule ref="rulesets/java/strings.xml"/>
   <rule ref="rulesets/java/sunsecure.xml"/>
   <rule ref="rulesets/java/typeresolution.xml"/>
