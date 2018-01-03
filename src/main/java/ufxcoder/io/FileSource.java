@@ -29,7 +29,7 @@ public class FileSource extends AbstractSeekableSource
 
   public FileSource(final File file) throws IOException
   {
-    this(file.getAbsolutePath());
+    this(file.getPath());
   }
 
   public FileSource(final String name) throws IOException
