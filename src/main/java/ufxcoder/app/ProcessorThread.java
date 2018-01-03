@@ -69,7 +69,7 @@ public class ProcessorThread implements Runnable
     }
     if (!identified)
     {
-      LOGGER.info(fileName + "\t" + "?" + "\t");
+      LOGGER.info(fileName + "\t" + config.msg("processor.result.unknown") + "\t");
     }
   }
 
