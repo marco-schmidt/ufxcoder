@@ -1,4 +1,6 @@
 random.bin	unknown	jpeg.error.invalid_marker	random data: dd if=/dev/random of=random.bin bs=1 count=256
 g8x8h.jpg	ok		Huffman-encoded 8x8 grayscale uniform gray pixels (127): cjpeg -optimize g8x8.pgm > g8x8h.jpg
+g8x8hp.jpg	ok		Huffman-encoded progressive 8x8 grayscale uniform gray pixels (127): jpegtran -progressive < g8x8h.jpg > g8x8hp.jpg
+g8x8a.jpg	ok		Arithmetic-encoded 8x8 grayscale uniform gray pixels (127): jpegtran -arithmetic < g8x8h.jpg > g8x8a.jpg
 g8x8h-extra.jpg	warning	jpeg.warning.extraneous_data_after_end_of_stream	Two bytes appended to the end of g8x8h.jpg
 g8x8h-jpeg.error.invalid_sample_precision_baseline.bin	error	jpeg.error.invalid_sample_precision_baseline	Changed sample precision of g8x8h.jpg to a value different from 8.
