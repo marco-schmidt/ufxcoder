@@ -27,7 +27,7 @@ apply plugin: 'com.github.jk1.dependency-license-report'
 apply plugin: 'com.github.spotbugs'
 
 description 'Universal File Transcoder'
-version = '0.0.1'
+version = '0.0.2'
 mainClassName = 'ufxcoder.app.UniversalFileTranscoder'
 def licenseName = 'The Apache Software License, Version 2.0'
 
