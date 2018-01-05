@@ -151,13 +151,10 @@ task packageSources(type: Jar, dependsOn: 'classes') {
 
 publishing {
   publications {
-    mavenJava(MavenPublication) {
+    library(MavenPublication) {
       from components.java
       artifact packageSources
       artifact packageJavadoc
-      artifact(distZip) {
-        classifier 'install'
-      }
       groupId 'com.github.marco-schmidt'
       pom.withXml {
         asNode().appendNode('url', 'https://github.com/marco-schmidt/ufxcoder')
@@ -183,16 +180,16 @@ publishing {
 bintray {
   user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
   key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-  publications = ['mavenJava']
+  publications = ['library']
   pkg {
     repo = 'ufxcoder'
-    name = 'ufxcoder'
+    name = 'library'
     licenses = ['Apache-2.0']
     vcsUrl = 'https://github.com/marco-schmidt/ufxcoder.git'
-    publicDownloadNumbers = true
+    publicDownloadNumbers = false
     version {
       name = project.version
-	  vcsTag = project.version
+	  released  = new Date()
     }
   }
 }
