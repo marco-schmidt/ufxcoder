@@ -41,7 +41,7 @@ public class AppConfig
   /**
    * If no argument is specified, use this many threads per CPU as returned by {@link Runtime#availableProcessors()}.
    */
-  public static final int DEFAULT_NUMBER_OF_THREADS_PER_CPU = 8;
+  public static final int DEFAULT_NUMBER_OF_THREADS_PER_CPU = 4;
   private boolean showEnvironment;
   private ResourceBundle bundle;
   private final List<String> fileNames;
