@@ -149,19 +149,24 @@ If java works but not javac, you only have a JRE, not a JDK.
 If multiple Java versions are installed on a system, a version 8 JDK must be made available. This is done with the environment variable `JAVA_HOME`. In some cases, variable `PATH` must be set as well.
 
 1) Windows. These variables can be permanently changed with an Environment Variables dialog in the Windows control panel.
-```
-set JAVA_HOME=C:\Program Files\jdk1.8.0_144
-set PATH=%JAVA_HOME%\bin;%PATH%
-```
+
+    ```
+    set JAVA_HOME=C:\Program Files\jdk1.8.0_144
+    set PATH=%JAVA_HOME%\bin;%PATH%
+    ```
+
 2) Unix. This change can be made permanent in a file like `~/.profile`:
-```
-export JAVA_HOME=/opt/jdk1.8.0_144
-export PATH=$PATH/bin:$PATH
-```
+
+    ```
+    export JAVA_HOME=/opt/jdk1.8.0_144
+    export PATH=$PATH/bin:$PATH
+    ```
+
 3) Mac OS X. A tool java_home returns the newest version within a given major version (if multiple 1.8 JDKs are installed). For a permanent change, a configuration file can be edited as described for Unix above. There is no need to adjust the `PATH` variable.
-```
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-```
+
+    ```
+    export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+    ```
 
 ### Java 8
 
