@@ -27,7 +27,7 @@ apply plugin: 'com.github.jk1.dependency-license-report'
 apply plugin: 'com.github.spotbugs'
 
 description 'Universal File Transcoder'
-version = '0.0.2'
+version = '0.0.3-SNAPSHOT'
 mainClassName = 'ufxcoder.app.UniversalFileTranscoder'
 def licenseName = 'The Apache Software License, Version 2.0'
 
@@ -189,7 +189,7 @@ bintray {
     publicDownloadNumbers = false
     version {
       name = project.version
-	  released  = new Date()
+      released  = new Date()
     }
   }
 }
