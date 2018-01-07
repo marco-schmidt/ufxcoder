@@ -15,6 +15,8 @@
  */
 package ufxcoder.formats.jpeg;
 
+import ufxcoder.conversion.Array;
+
 /**
  * A single Huffman table as defined in a DHT marker.
  */
@@ -23,6 +25,7 @@ public class JpegHuffmanTable
   private final int[][] codes = new int[Constants.MAX_HUFFMAN_CODE_LENGTH][];
   private int id;
   private int tableClass;
+  private int[] sizes;
 
   public int getId()
   {
@@ -58,5 +61,15 @@ public class JpegHuffmanTable
   public void setCode(final int lengthIndex, final int index, final int value)
   {
     codes[lengthIndex][index] = value;
+  }
+
+  public int[] getSizes()
+  {
+    return Array.clone(sizes);
+  }
+
+  public void setSizes(final int... sizes)
+  {
+    this.sizes = Array.clone(sizes);
   }
 }

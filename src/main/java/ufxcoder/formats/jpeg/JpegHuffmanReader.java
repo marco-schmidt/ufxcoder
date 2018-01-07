@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.jpeg;
 
+import ufxcoder.conversion.Array;
 import ufxcoder.io.Segment;
 
 /**
@@ -46,6 +47,7 @@ public class JpegHuffmanReader
       }
       if (proc.isSuccess())
       {
+        generateTableSize(table);
         desc.add(table);
       }
     }
@@ -110,5 +112,33 @@ public class JpegHuffmanReader
     {
       proc.error(Msg.INVALID_HUFFMAN_TABLE_CLASS, tableClass, maxClass);
     }
+  }
+
+  /**
+   * Generate an array with the length of each code. ITU-T81.pdf p. 50f.
+   */
+  private void generateTableSize(final JpegHuffmanTable table)
+  {
+    // initial size is the maximum theoretic size if each of the sixteen bit lengths was defined as the maximum byte
+    // value 255; that many codes do not make sense, but the call to clone at the bottom of this method truncates the
+    // array as needed
+    final int[] huffSize = new int[Constants.MAX_HUFFMAN_CODE_LENGTH * 255];
+    int bitLength = 1; // "i" in document
+    int indexLength = 1; // index within one bit length, "j" in document
+    int huffSizeIndex = 0; // "k" in document
+    do
+    {
+      final int numCodes = table.getNumCodes(bitLength - 1);
+      while (indexLength <= numCodes)
+      {
+        huffSize[huffSizeIndex] = bitLength;
+        indexLength++;
+        huffSizeIndex++;
+      }
+      bitLength++;
+      indexLength = 1;
+    }
+    while (bitLength <= Constants.MAX_HUFFMAN_CODE_LENGTH);
+    table.setSizes(Array.clone(huffSize, 0, huffSizeIndex, 0));
   }
 }
