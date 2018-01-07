@@ -29,7 +29,7 @@ public class ArrayTest
   @Test
   public void testClone()
   {
-    Assert.assertNull("Clone of null array is null.", Array.clone(null));
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null));
     final byte[] clone = Array.clone(ZERO_ONE_TWO_THREE);
     Assert.assertArrayEquals("Clone content must be identical to original.", ZERO_ONE_TWO_THREE, clone);
   }

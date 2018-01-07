@@ -67,6 +67,34 @@ public final class Array
     return result;
   }
 
+  public static int[] clone(final int... array)
+  {
+    return clone(array, 0);
+  }
+
+  public static int[] clone(final int[] array, final int additionalElements)
+  {
+    return array == null ? null : clone(array, 0, array.length, additionalElements);
+  }
+
+  public static int[] clone(final int[] array, final int offset, final int numElements, final int additionalElements)
+  {
+    int[] result = null;
+    if (array != null && additionalElements >= 0)
+    {
+      final long newArraySizeLong = (long) numElements + (long) additionalElements;
+      if (newArraySizeLong * 4 > Integer.MAX_VALUE)
+      {
+        throw new IllegalArgumentException(String.format(
+            "Combined size of existing array length %d and additional items %d goes beyond maximum array size %d.",
+            array.length, additionalElements, Integer.MAX_VALUE));
+      }
+      result = new int[numElements + additionalElements];
+      System.arraycopy(array, offset, result, 0, numElements);
+    }
+    return result;
+  }
+
   public static int from16(final byte[] buffer, final int offset, final ByteOrder order)
   {
     return order == ByteOrder.BigEndian ? from16Big(buffer, offset) : from16Little(buffer, offset);

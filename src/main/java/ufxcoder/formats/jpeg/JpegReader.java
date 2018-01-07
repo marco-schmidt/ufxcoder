@@ -53,6 +53,9 @@ public class JpegReader
     case Constants.MARKER_DEFINE_HUFFMAN_TABLES:
       new JpegHuffmanReader(proc).readTables(marker);
       break;
+    case Constants.MARKER_DEFINE_QUANTIZATION_TABLES:
+      new JpegQuantizationReader(proc).readTables(marker);
+      break;
     default:
       break;
     }

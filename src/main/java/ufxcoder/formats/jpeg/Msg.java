@@ -190,6 +190,22 @@ public final class Msg
    */
   public static final String INVALID_HUFFMAN_TABLE_CLASS = "jpeg.error.invalid_huffman_table_class";
 
+  /**
+   * Invalid quantization table destination identifier.
+   */
+  public static final String INVALID_QUANTIZATION_TABLE_DEST_IDENTIFIER = "jpeg.error.invalid_quantization_dest_identifier";
+
+  /**
+   * Invalid quantization table precision, must be {@link Constants#QUANTIZATION_PRECISION_8_BITS} or
+   * {@link Constants#QUANTIZATION_PRECISION_16_BITS}.
+   */
+  public static final String INVALID_QUANTIZATION_TABLE_PRECISION = "jpeg.error.invalid_quantization_table_precision";
+
+  /**
+   * Marker is too small for quantization table.
+   */
+  public static final String NOT_ENOUGH_DATA_FOR_QUANTIZATION_TABLE = "jpeg.error.not_enough_data_for_quantization_table";
+
   private Msg()
   {
   }

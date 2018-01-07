@@ -165,6 +165,26 @@ public final class Constants
    */
   public static final int MAX_HUFFMAN_CODE_LENGTH = 16;
 
+  /**
+   * Number of elements in a minimum coded unit (MCU).
+   */
+  public static final int MINIMUM_CODED_UNIT_ELEMENTS = 64;
+
+  /**
+   * Precision of a quantization table element is eight bits.
+   */
+  public static final int QUANTIZATION_PRECISION_8_BITS = 0;
+
+  /**
+   * Precision of a quantization table element is sixteen bits.
+   */
+  public static final int QUANTIZATION_PRECISION_16_BITS = 1;
+
+  /**
+   * Maximum quantization table destination identifier.
+   */
+  public static final int MAX_QUANTIZATION_TABLE_DEST_IDENTIFIER = 3;
+
   private Constants()
   {
     // avoid instantiation of this helper class

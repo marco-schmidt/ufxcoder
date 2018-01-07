@@ -30,6 +30,7 @@ public class JpegFileDescription extends FileDescription
   private final List<Marker> markers = new ArrayList<>();
   private JpegFrame frame;
   private final List<JpegHuffmanTable> huffmanTables = new ArrayList<>();
+  private final List<JpegQuantizationTable> quantizationTables = new ArrayList<>();
 
   public BigInteger getInitialOffset()
   {
@@ -74,5 +75,10 @@ public class JpegFileDescription extends FileDescription
   public void add(final JpegHuffmanTable table)
   {
     huffmanTables.add(table);
+  }
+
+  public void add(final JpegQuantizationTable table)
+  {
+    quantizationTables.add(table);
   }
 }

@@ -141,7 +141,7 @@ public class JpegFrameReader
       proc.error(Msg.INVALID_VERTICAL_COMPONENT_SAMPLING_FACTOR, horiz, Constants.MIN_COMPONENT_SAMPLING_FACTOR,
           Constants.MAX_COMPONENT_SAMPLING_FACTOR);
     }
-    final int maxQuant = frame.isLossless() ? 0 : 3;
+    final int maxQuant = frame.isLossless() ? 0 : Constants.MAX_QUANTIZATION_TABLE_DEST_IDENTIFIER;
     if (quantId > maxQuant)
     {
       proc.error(Msg.INVALID_QUANTIZATION_TABLE, quantId);
