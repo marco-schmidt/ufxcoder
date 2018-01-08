@@ -48,6 +48,7 @@ public class JpegHuffmanReader
       if (proc.isSuccess())
       {
         generateTableSize(table);
+        generateCodeTable(table);
         desc.add(table);
       }
     }
@@ -140,5 +141,38 @@ public class JpegHuffmanReader
     }
     while (bitLength <= Constants.MAX_HUFFMAN_CODE_LENGTH);
     table.setSizes(Array.clone(huffSize, 0, huffSizeIndex, 0));
+  }
+
+  /**
+   * Generate an array with the actual codes. ITU-T81.pdf p. 52.
+   */
+  private void generateCodeTable(final JpegHuffmanTable table)
+  {
+    final int[] huffSize = table.getSizes();
+    final int[] huffCode = new int[huffSize.length];
+    int huffSizeIndex = 0; // "k" in document
+    int code = 0;
+    int si = huffSize[0];
+    while (true)
+    {
+      do
+      {
+        huffCode[huffSizeIndex] = code;
+        code++;
+        huffSizeIndex++;
+      }
+      while (huffSizeIndex != huffSize.length && si == huffSize[huffSizeIndex]);
+      if (huffSizeIndex == huffSize.length)
+      {
+        break;
+      }
+      do
+      {
+        code = code << 1;
+        si++;
+      }
+      while (si != huffSize[huffSizeIndex]);
+    }
+    table.setHuffCode(huffCode);
   }
 }

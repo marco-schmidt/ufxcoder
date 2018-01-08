@@ -26,6 +26,7 @@ public class JpegHuffmanTable
   private int id;
   private int tableClass;
   private int[] sizes;
+  private int[] huffCode;
 
   public int getId()
   {
@@ -71,5 +72,15 @@ public class JpegHuffmanTable
   public void setSizes(final int... sizes)
   {
     this.sizes = Array.clone(sizes);
+  }
+
+  public int[] getHuffCode()
+  {
+    return Array.clone(huffCode);
+  }
+
+  public void setHuffCode(final int... huffCode)
+  {
+    this.huffCode = Array.clone(huffCode);
   }
 }
