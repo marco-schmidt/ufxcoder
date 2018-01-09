@@ -59,19 +59,24 @@ public class JpegHuffmanTable
     codes[index] = new int[length];
   }
 
+  public int getCode(final int lengthIndex, final int index)
+  {
+    return codes[lengthIndex][index];
+  }
+
   public void setCode(final int lengthIndex, final int index, final int value)
   {
     codes[lengthIndex][index] = value;
   }
 
-  public int[] getSizes()
+  public int[] getHuffSize()
   {
     return Array.clone(sizes);
   }
 
-  public void setSizes(final int... sizes)
+  public void setHuffSize(final int... huffSize)
   {
-    this.sizes = Array.clone(sizes);
+    this.sizes = Array.clone(huffSize);
   }
 
   public int[] getHuffCode()

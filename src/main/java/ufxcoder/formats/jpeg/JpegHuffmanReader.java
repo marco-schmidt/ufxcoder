@@ -140,7 +140,7 @@ public class JpegHuffmanReader
       indexLength = 1;
     }
     while (bitLength <= Constants.MAX_HUFFMAN_CODE_LENGTH);
-    table.setSizes(Array.clone(huffSize, 0, huffSizeIndex, 0));
+    table.setHuffSize(Array.clone(huffSize, 0, huffSizeIndex, 0));
   }
 
   /**
@@ -148,7 +148,7 @@ public class JpegHuffmanReader
    */
   private void generateCodeTable(final JpegHuffmanTable table)
   {
-    final int[] huffSize = table.getSizes();
+    final int[] huffSize = table.getHuffSize();
     final int[] huffCode = new int[huffSize.length];
     int huffSizeIndex = 0; // "k" in document
     int code = 0;
