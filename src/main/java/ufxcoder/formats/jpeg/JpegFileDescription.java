@@ -81,4 +81,18 @@ public class JpegFileDescription extends FileDescription
   {
     quantizationTables.add(table);
   }
+
+  public JpegHuffmanTable findHuffmanTable(final int id, final int tableClass)
+  {
+    JpegHuffmanTable result = null;
+    for (final JpegHuffmanTable table : huffmanTables)
+    {
+      if (id == table.getId() && tableClass == table.getTableClass())
+      {
+        result = table;
+        break;
+      }
+    }
+    return result;
+  }
 }

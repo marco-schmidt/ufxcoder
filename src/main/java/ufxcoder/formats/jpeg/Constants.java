@@ -185,6 +185,16 @@ public final class Constants
    */
   public static final int MAX_QUANTIZATION_TABLE_DEST_IDENTIFIER = 3;
 
+  /**
+   * Table class for DC coefficients.
+   */
+  public static final int TABLE_CLASS_DC = 0;
+
+  /**
+   * Table class for AC coefficients.
+   */
+  public static final int TABLE_CLASS_AC = 1;
+
   private Constants()
   {
     // avoid instantiation of this helper class

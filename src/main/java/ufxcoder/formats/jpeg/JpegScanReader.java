@@ -51,6 +51,10 @@ public class JpegScanReader
     else
     {
       final JpegScan scan = new JpegScan();
+      if (frame != null)
+      {
+        frame.add(scan);
+      }
       scan.setNumComponents(numComponents);
       // check marker length
       final int expectedLength = 2 + 1 + numComponents * 2 + 3;
@@ -60,6 +64,8 @@ public class JpegScanReader
         if (proc.isSuccess())
         {
           readScanData();
+          // final JpegBaselineHuffmanDecoder dec = new JpegBaselineHuffmanDecoder(proc);
+          // dec.decode();
         }
       }
       else
@@ -69,7 +75,7 @@ public class JpegScanReader
     }
   }
 
-  private void readScanData()
+  public void readScanData()
   {
     final SeekableSource source = proc.getSource();
     final BufferedSource input = new BufferedSource(source, 4096);

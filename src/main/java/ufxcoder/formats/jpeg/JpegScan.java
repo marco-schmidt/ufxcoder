@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +49,12 @@ public class JpegScan
   public JpegScanComponent findById(final int id)
   {
     return components.get(id);
+  }
+
+  public JpegScanComponent getFirstScan()
+  {
+    final Collection<JpegScanComponent> coll = components.values();
+    return coll.isEmpty() ? null : coll.iterator().next();
   }
 
   public int getStartSpectral()

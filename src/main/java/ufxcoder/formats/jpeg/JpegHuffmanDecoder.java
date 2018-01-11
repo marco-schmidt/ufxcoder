@@ -26,7 +26,6 @@ public class JpegHuffmanDecoder
   private final int[] minCode;
   private final int[] maxCode;
   private final int[] valPtr;
-  private int prev;
 
   public JpegHuffmanDecoder(final JpegHuffmanTable table)
   {
@@ -38,7 +37,6 @@ public class JpegHuffmanDecoder
     maxCode = new int[Constants.MAX_HUFFMAN_CODE_LENGTH];
     valPtr = new int[Constants.MAX_HUFFMAN_CODE_LENGTH];
     initDecoderTables();
-    prev = 0;
   }
 
   private void initHuffVal()
@@ -46,18 +44,18 @@ public class JpegHuffmanDecoder
     int huffValIndex = 0;
     for (int bitLength = 1; bitLength <= Constants.MAX_HUFFMAN_CODE_LENGTH; bitLength++)
     {
-      int numCodes = table.getNumCodes(bitLength);
+      int numCodes = table.getNumCodes(bitLength - 1);
       int index = 0;
       while (numCodes > 0)
       {
-        huffVal[huffValIndex++] = table.getCode(bitLength, index++);
+        huffVal[huffValIndex++] = table.getCode(bitLength - 1, index++);
         numCodes--;
       }
     }
   }
 
   /**
-   * ITU-T81.pdf p. 108 ("Decoder_tables").
+   * Initialize arrays {@link #maxCode}, {@link #minCode} and {@link #valPtr}. ITU-T81.pdf p. 108 ("Decoder_tables").
    */
   private void initDecoderTables()
   {
@@ -86,13 +84,13 @@ public class JpegHuffmanDecoder
     }
   }
 
-  public void decodeDataUnit(final int... zz)
-  {
-    zz[0] = decodeDc();
-    decodeAc(zz);
-  }
-
-  private void decodeAc(final int... zz)
+  /**
+   * Decode AC coefficients and put them into argument array.
+   *
+   * @param zz
+   *          array with at least 64 entries, elements with index 1 to 63 will be changed in this method
+   */
+  public void decodeAc(final int... zz)
   {
     for (int index = 1; index < 8 * 8; index++)
     {
@@ -107,14 +105,12 @@ public class JpegHuffmanDecoder
   /**
    * F.2.2.1, p. 104.
    */
-  private int decodeDc()
+  public int decodeDc()
   {
     final int tt = decode();
     int diff = receive(tt);
     diff = extend(diff, tt);
-    final int result = prev + diff;
-    prev = result;
-    return result;
+    return diff;
   }
 
   /**
@@ -126,11 +122,18 @@ public class JpegHuffmanDecoder
   }
 
   /**
-   * F.2.2.4, p. 110.
+   * Return a number of bits from input. ITU-T81.pdf F.2.2.4, p. 110. Figure F.17, p. 110.
    */
-  private int receive(final int tt)
+  private int receive(final int numBits)
   {
-    return tt;
+    int result = 0;
+    int bitsLeft = numBits;
+    while (bitsLeft != 0)
+    {
+      result = (result << 1) | nextBit();
+      bitsLeft--;
+    }
+    return result;
   }
 
   /**
@@ -138,12 +141,25 @@ public class JpegHuffmanDecoder
    */
   private int decode()
   {
-    return 0;
+    int bitLength = 1; // "i" in document
+    int code = nextBit();
+    while (code < maxCode[bitLength - 1])
+    {
+      bitLength++;
+      code = (code << 1) | nextBit();
+    }
+    int valueIndex = valPtr[bitLength - 1]; // "j" in document
+    valueIndex = valueIndex + code - minCode[bitLength - 1];
+    return huffVal[valueIndex];
   }
 
-  public void decodeAll()
+  /**
+   * Return a single bit from input. ITU-T81.pdf F2.2.5, p. 110. Figure F.18, p. 111.
+   *
+   * @return bit value, either 0 or 1
+   */
+  private int nextBit()
   {
-    final int rr = huffCode[0] + huffVal[0] + maxCode[0] + minCode[0] + valPtr[0];
-    prev = rr + 1;
+    return 0;
   }
 }

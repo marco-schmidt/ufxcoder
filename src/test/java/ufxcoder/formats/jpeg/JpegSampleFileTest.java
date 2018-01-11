@@ -42,6 +42,15 @@ public final class JpegSampleFileTest
     return getClass().getResourceAsStream(name);
   }
 
+  /**
+   * Load resource data from argument file to byte array.
+   *
+   * @param name
+   *          file name
+   * @return byte array with data
+   * @throws IOException
+   *           on read errors
+   */
   public byte[] read(final String name) throws IOException
   {
     final InputStream in = open(name);

@@ -15,7 +15,9 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +34,7 @@ public class JpegFrame
   private int width;
   private int height;
   private final Map<Integer, JpegFrameComponent> components = new HashMap<>();
+  private final List<JpegScan> scans = new ArrayList<>();
 
   public int getSamplePrecision()
   {
@@ -121,5 +124,15 @@ public class JpegFrame
   public void add(final JpegFrameComponent comp)
   {
     components.put(comp.getId(), comp);
+  }
+
+  public void add(final JpegScan scan)
+  {
+    scans.add(scan);
+  }
+
+  public JpegScan getLastScan()
+  {
+    return scans.isEmpty() ? null : scans.get(scans.size() - 1);
   }
 }
