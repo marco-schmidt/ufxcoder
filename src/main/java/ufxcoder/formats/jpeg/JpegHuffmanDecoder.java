@@ -104,6 +104,8 @@ public class JpegHuffmanDecoder
 
   /**
    * F.2.2.1, p. 104.
+   *
+   * @return decoded DC coefficient
    */
   public int decodeDc()
   {
