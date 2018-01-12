@@ -206,6 +206,11 @@ public final class Msg
    */
   public static final String NOT_ENOUGH_DATA_FOR_QUANTIZATION_TABLE = "jpeg.error.not_enough_data_for_quantization_table";
 
+  /**
+   * DRI marker must have length 4.
+   */
+  public static final String INVALID_RESTART_INTERVAL_DEFINITION_LENGTH = "jpeg.error.invalid_restart_interval_definition_length";
+
   private Msg()
   {
   }

@@ -195,6 +195,11 @@ public final class Constants
    */
   public static final int TABLE_CLASS_AC = 1;
 
+  /**
+   * Length of a DRI marker.
+   */
+  public static final int LENGTH_RESTART_INTERVAL_DEFINITION = 4;
+
   private Constants()
   {
     // avoid instantiation of this helper class

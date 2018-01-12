@@ -31,6 +31,7 @@ public class JpegFileDescription extends FileDescription
   private JpegFrame frame;
   private final List<JpegHuffmanTable> huffmanTables = new ArrayList<>();
   private final List<JpegQuantizationTable> quantizationTables = new ArrayList<>();
+  private int numRestartIntervalMcus;
 
   public BigInteger getInitialOffset()
   {
@@ -94,5 +95,15 @@ public class JpegFileDescription extends FileDescription
       }
     }
     return result;
+  }
+
+  public void setNumRestartIntervalMcus(final int newValue)
+  {
+    numRestartIntervalMcus = newValue;
+  }
+
+  public int getNumRestartIntervalMcus()
+  {
+    return numRestartIntervalMcus;
   }
 }

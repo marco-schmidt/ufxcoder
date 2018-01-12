@@ -15,6 +15,8 @@
  */
 package ufxcoder.formats.jpeg;
 
+import ufxcoder.io.Segment;
+
 /**
  * Read information from JPEG input streams.
  */
@@ -56,8 +58,25 @@ public class JpegReader
     case Constants.MARKER_DEFINE_QUANTIZATION_TABLES:
       new JpegQuantizationReader(proc).readTables(marker);
       break;
+    case Constants.MARKER_DEFINE_RESTART_INTERVAL:
+      readRestartIntervalDefinition(marker);
+      break;
     default:
       break;
+    }
+  }
+
+  private void readRestartIntervalDefinition(final Marker marker)
+  {
+    if (marker.getLength() == Constants.LENGTH_RESTART_INTERVAL_DEFINITION)
+    {
+      final Segment segment = marker.getSegment();
+      proc.getJpegFileDescription().setNumRestartIntervalMcus(segment.int16());
+    }
+    else
+    {
+      proc.error(Msg.INVALID_RESTART_INTERVAL_DEFINITION_LENGTH, Constants.LENGTH_RESTART_INTERVAL_DEFINITION,
+          marker.getLength());
     }
   }
 }
