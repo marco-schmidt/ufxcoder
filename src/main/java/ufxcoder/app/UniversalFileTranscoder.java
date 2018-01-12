@@ -79,9 +79,9 @@ public class UniversalFileTranscoder
       setDefaults(config, args);
       final SystemInfo info = new SystemInfo();
       config.setSystemInfo(info);
+      info.initialize(config, args);
       if (config.isShowEnvironment())
       {
-        info.initialize(config, args);
         info.print(config);
       }
     }
