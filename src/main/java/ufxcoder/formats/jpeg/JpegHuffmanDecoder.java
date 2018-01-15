@@ -15,6 +15,8 @@
  */
 package ufxcoder.formats.jpeg;
 
+import ufxcoder.conversion.Array;
+
 /**
  * Decode Huffman-encoded symbols as found in a JPEG stream.
  */
@@ -30,6 +32,8 @@ public class JpegHuffmanDecoder
   public JpegHuffmanDecoder(final JpegHuffmanTable table)
   {
     this.table = table;
+    generateTableSize(table);
+    generateCodeTable(table);
     huffCode = table.getHuffCode();
     huffVal = new int[huffCode.length];
     initHuffVal();
@@ -37,6 +41,67 @@ public class JpegHuffmanDecoder
     maxCode = new int[Constants.MAX_HUFFMAN_CODE_LENGTH];
     valPtr = new int[Constants.MAX_HUFFMAN_CODE_LENGTH];
     initDecoderTables();
+  }
+
+  /**
+   * Generate an array with the length of each code. ITU-T81.pdf p. 50f.
+   */
+  private void generateTableSize(final JpegHuffmanTable table)
+  {
+    // initial size is the maximum theoretic size if each of the sixteen bit lengths was defined as the maximum byte
+    // value 255; that many codes do not make sense, but the call to clone at the bottom of this method truncates the
+    // array as needed
+    final int[] huffSize = new int[Constants.MAX_HUFFMAN_CODE_LENGTH * 255];
+    int bitLength = 1; // "i" in document
+    int indexLength = 1; // index within one bit length, "j" in document
+    int huffSizeIndex = 0; // "k" in document
+    do
+    {
+      final int numCodes = table.getNumCodes(bitLength - 1);
+      while (indexLength <= numCodes)
+      {
+        huffSize[huffSizeIndex] = bitLength;
+        indexLength++;
+        huffSizeIndex++;
+      }
+      bitLength++;
+      indexLength = 1;
+    }
+    while (bitLength <= Constants.MAX_HUFFMAN_CODE_LENGTH);
+    table.setHuffSize(Array.clone(huffSize, 0, huffSizeIndex, 0));
+  }
+
+  /**
+   * Generate an array with the actual codes. ITU-T81.pdf p. 52.
+   */
+  private void generateCodeTable(final JpegHuffmanTable table)
+  {
+    final int[] huffSize = table.getHuffSize();
+    final int[] huffCode = new int[huffSize.length];
+    int huffSizeIndex = 0; // "k" in document
+    int code = 0;
+    int si = huffSize[0];
+    while (true)
+    {
+      do
+      {
+        huffCode[huffSizeIndex] = code;
+        code++;
+        huffSizeIndex++;
+      }
+      while (huffSizeIndex != huffSize.length && si == huffSize[huffSizeIndex]);
+      if (huffSizeIndex == huffSize.length)
+      {
+        break;
+      }
+      do
+      {
+        code = code << 1;
+        si++;
+      }
+      while (si != huffSize[huffSizeIndex]);
+    }
+    table.setHuffCode(huffCode);
   }
 
   private void initHuffVal()
