@@ -74,9 +74,19 @@ public class JpegHuffmanReader
     final Segment segment = marker.getSegment();
     if (segment.hasBytes(Constants.MAX_HUFFMAN_CODE_LENGTH))
     {
+      int maxCodes = 2;
       for (int index = 0; index < Constants.MAX_HUFFMAN_CODE_LENGTH; index++)
       {
-        table.setNumCodes(index, segment.int8());
+        final int numCodes = segment.int8();
+        if (numCodes > maxCodes)
+        {
+          proc.error(Msg.INVALID_NUMBER_OF_HUFFMAN_CODES, index + 1, numCodes, maxCodes);
+        }
+        else
+        {
+          table.setNumCodes(index, numCodes);
+        }
+        maxCodes <<= 1;
       }
     }
     else

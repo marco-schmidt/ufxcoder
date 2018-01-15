@@ -211,6 +211,11 @@ public final class Msg
    */
   public static final String INVALID_RESTART_INTERVAL_DEFINITION_LENGTH = "jpeg.error.invalid_restart_interval_definition_length";
 
+  /**
+   * Too many Huffman codes for given bit length.
+   */
+  public static final String INVALID_NUMBER_OF_HUFFMAN_CODES = "jpeg.error.invalid_number_of_huffman_codes";
+
   private Msg()
   {
   }

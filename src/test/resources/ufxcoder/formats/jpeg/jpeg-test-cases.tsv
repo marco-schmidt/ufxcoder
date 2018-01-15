@@ -5,3 +5,4 @@ g8x8a.jpg	ok		Arithmetic-encoded 8x8 grayscale uniform gray pixels (127): jpegtr
 g8x8h-extra.jpg	warning	jpeg.warning.extraneous_data_after_end_of_stream	Two bytes appended to the end of g8x8h.jpg
 g8x8h-jpeg.error.invalid_sample_precision_baseline.bin	error	jpeg.error.invalid_sample_precision_baseline	Changed sample precision of g8x8h.jpg to a value different from 8.
 g8x8h-jpeg.error.invalid_restart_interval_definition_length.bin	error	jpeg.error.invalid_restart_interval_definition_length
+g8x8h-jpeg.error.invalid_number_of_huffman_codes.bin	error	jpeg.error.invalid_number_of_huffman_codes
