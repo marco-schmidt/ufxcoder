@@ -126,7 +126,7 @@ You can also generate configuration files for the [Eclipse IDE](https://www.ecli
 > ./gradlew eclipse
 ```
 
-In Eclipse, choose `File / Import...`, then `General / Exising Projects into Workspace`.
+In Eclipse, choose `File / Import...`, then `General / Existing Projects into Workspace`.
 As root directory pick the main project directory.
 
 ## Java Compatibility
