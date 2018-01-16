@@ -197,7 +197,8 @@ public class UniversalFileTranscoder
     }
 
     // determine number of threads to be used
-    // 1) prefer argument 2) otherwise number of CPUs times 8 3) limit if there are fewer files than threads
+    // 1) prefer argument 2) otherwise number of CPUs times AppConfig.DEFAULT_NUMBER_OF_THREADS_PER_CPU 3) limit if
+    // there are fewer files than threads
     final Integer numberOfThreadsConfig = config.getNumberOfThreads();
     final int numThreads = Math.min(numFileNames,
         numberOfThreadsConfig == null
@@ -222,7 +223,7 @@ public class UniversalFileTranscoder
       }
       catch (InterruptedException e)
       {
-        LOGGER.error(e.getMessage());
+        LOGGER.error(config.msg("processor.error.sleep", e.getMessage()));
       }
       final Iterator<Thread> iter = threads.iterator();
       while (iter.hasNext())
