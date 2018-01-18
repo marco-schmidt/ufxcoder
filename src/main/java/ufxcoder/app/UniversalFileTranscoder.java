@@ -110,9 +110,9 @@ public class UniversalFileTranscoder
   {
     final UniversalFileTranscoder transcoder = new UniversalFileTranscoder();
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.UTC));
-    initLogger();
     final AppConfig config = new AppConfig();
     config.setLocale(Locale.ENGLISH);
+    initLogger(config);
     FormatProcessorRegistry.register(TiffProcessor.class);
     FormatProcessorRegistry.register(JpegProcessor.class);
     if (transcoder.initialize(config, args))
@@ -127,7 +127,7 @@ public class UniversalFileTranscoder
     return loggerContext;
   }
 
-  private static void initLogger()
+  private static void initLogger(final AppConfig config)
   {
     final ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger) LoggerFactory
         .getLogger(Logger.ROOT_LOGGER_NAME);
@@ -139,7 +139,7 @@ public class UniversalFileTranscoder
     }
     catch (IllegalArgumentException | UnknownHostException e)
     {
-      LOGGER.error("Unable to retrieve local host.", e);
+      LOGGER.error(config.msg("system.error.failed_to_look_up_host", e.getMessage()));
     }
 
     final PatternLayoutEncoder encoder = new PatternLayoutEncoder();
