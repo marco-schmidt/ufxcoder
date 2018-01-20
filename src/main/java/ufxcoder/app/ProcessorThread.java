@@ -51,6 +51,7 @@ public class ProcessorThread implements Runnable
   private void process(final String fileName)
   {
     boolean identified = false;
+    reorder(fileName);
     for (final AbstractFormatProcessor proc : processors)
     {
       proc.setConfig(config);
@@ -70,6 +71,23 @@ public class ProcessorThread implements Runnable
     if (!identified)
     {
       LOGGER.info(fileName + "\t" + config.msg("processor.result.unknown") + "\t");
+    }
+  }
+
+  private void reorder(final String fileName)
+  {
+    final String ext = AbstractFormatProcessor.extractFileExtension(fileName);
+    int index = 1;
+    final int size = processors.size();
+    while (index < size)
+    {
+      final AbstractFormatProcessor proc = processors.get(index);
+      if (proc.isFileNameWithTypicalExtension(ext))
+      {
+        processors.remove(index);
+        processors.add(0, proc);
+      }
+      index++;
     }
   }
 

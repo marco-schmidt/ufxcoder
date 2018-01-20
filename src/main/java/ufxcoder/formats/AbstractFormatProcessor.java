@@ -18,6 +18,8 @@ package ufxcoder.formats;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufxcoder.app.AppConfig;
@@ -38,6 +40,13 @@ public abstract class AbstractFormatProcessor
   private FileDescription fileDescription;
   private AppConfig config;
   private boolean formatIdentified;
+  private final Set<String> typicalExtensions = new HashSet<>();
+
+  public AbstractFormatProcessor()
+  {
+    super();
+    initializeExtensionSet();
+  }
 
   public void addEvent(final EventSeverity severity, final String messageKey, final Object... arguments)
   {
@@ -267,5 +276,56 @@ public abstract class AbstractFormatProcessor
   public void setFormatIdentified(final boolean formatIdentified)
   {
     this.formatIdentified = formatIdentified;
+  }
+
+  public boolean hasTypicalExtension(final String ext)
+  {
+    return typicalExtensions.contains(ext);
+  }
+
+  public static String extractFileExtension(final String fileName)
+  {
+    String result = null;
+    if (fileName != null)
+    {
+      int sepIndex = fileName.lastIndexOf(File.pathSeparator);
+      if (sepIndex < 0)
+      {
+        sepIndex = 0;
+      }
+      final int dotIndex = fileName.lastIndexOf('.');
+      if (dotIndex > sepIndex && dotIndex < fileName.length() - 1)
+      {
+        result = fileName.substring(dotIndex + 1);
+      }
+    }
+    return result;
+  }
+
+  public boolean isFileNameWithTypicalExtension(final String extension)
+  {
+    boolean result;
+    if (extension == null)
+    {
+      result = false;
+    }
+    else
+    {
+      result = typicalExtensions.contains(extension);
+    }
+    return result;
+  }
+
+  private void initializeExtensionSet()
+  {
+    typicalExtensions.clear();
+    final String[] exts = getTypicalFileExtensions();
+    if (exts != null)
+    {
+      for (final String ext : exts)
+      {
+        typicalExtensions.add(ext);
+      }
+    }
   }
 }
