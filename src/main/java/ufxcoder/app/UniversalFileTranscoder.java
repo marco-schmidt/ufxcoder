@@ -188,6 +188,7 @@ public class UniversalFileTranscoder
     // create a job object for each file name
     final List<String> fileNames = config.getFileNames();
     final int numFileNames = fileNames.size();
+    LOGGER.debug(config.msg("processor.number_of_files", numFileNames));
     final BlockingQueue<ProcessorJob> queue = new ArrayBlockingQueue<ProcessorJob>(numFileNames);
     for (final String fileName : fileNames)
     {
@@ -206,6 +207,7 @@ public class UniversalFileTranscoder
             : numberOfThreadsConfig.intValue());
 
     // create and start threads
+    LOGGER.debug(config.msg("processor.number_of_threads", numThreads));
     final List<Thread> threads = new ArrayList<Thread>(numThreads);
     for (int i = 1; i <= numThreads; i++)
     {
