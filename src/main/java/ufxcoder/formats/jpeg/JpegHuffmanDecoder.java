@@ -23,15 +23,17 @@ import ufxcoder.conversion.Array;
 public class JpegHuffmanDecoder
 {
   private final JpegHuffmanTable table;
+  private final JpegScanReader reader;
   private final int[] huffCode;
   private final int[] huffVal;
   private final int[] minCode;
   private final int[] maxCode;
   private final int[] valPtr;
 
-  public JpegHuffmanDecoder(final JpegHuffmanTable table)
+  public JpegHuffmanDecoder(final JpegHuffmanTable table, final JpegScanReader reader)
   {
     this.table = table;
+    this.reader = reader;
     generateTableSize(table);
     generateCodeTable(table);
     huffCode = table.getHuffCode();
@@ -197,7 +199,7 @@ public class JpegHuffmanDecoder
     int bitsLeft = numBits;
     while (bitsLeft != 0)
     {
-      result = (result << 1) | nextBit();
+      result = (result << 1) | reader.nextBit();
       bitsLeft--;
     }
     return result;
@@ -209,24 +211,14 @@ public class JpegHuffmanDecoder
   private int decode()
   {
     int bitLength = 1; // "i" in document
-    int code = nextBit();
+    int code = reader.nextBit();
     while (code < maxCode[bitLength - 1])
     {
       bitLength++;
-      code = (code << 1) | nextBit();
+      code = (code << 1) | reader.nextBit();
     }
     int valueIndex = valPtr[bitLength - 1]; // "j" in document
     valueIndex = valueIndex + code - minCode[bitLength - 1];
     return huffVal[valueIndex];
-  }
-
-  /**
-   * Return a single bit from input. ITU-T81.pdf F2.2.5, p. 110. Figure F.18, p. 111.
-   *
-   * @return bit value, either 0 or 1
-   */
-  private int nextBit()
-  {
-    return 0;
   }
 }

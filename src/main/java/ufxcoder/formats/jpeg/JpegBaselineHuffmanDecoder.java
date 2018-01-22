@@ -21,10 +21,12 @@ package ufxcoder.formats.jpeg;
 public class JpegBaselineHuffmanDecoder
 {
   private final JpegFileDescription desc;
+  private final JpegScanReader reader;
 
-  public JpegBaselineHuffmanDecoder(final JpegProcessor proc)
+  public JpegBaselineHuffmanDecoder(final JpegProcessor proc, final JpegScanReader reader)
   {
     desc = proc.getJpegFileDescription();
+    this.reader = reader;
   }
 
   public void decode()
@@ -39,9 +41,9 @@ public class JpegBaselineHuffmanDecoder
         final int dc = scanComp.getDc();
         final int ac = scanComp.getAc();
         final JpegHuffmanTable dcTable = desc.findHuffmanTable(dc, Constants.TABLE_CLASS_DC);
-        final JpegHuffmanDecoder dcDec = new JpegHuffmanDecoder(dcTable);
+        final JpegHuffmanDecoder dcDec = new JpegHuffmanDecoder(dcTable, reader);
         final JpegHuffmanTable acTable = desc.findHuffmanTable(ac, Constants.TABLE_CLASS_AC);
-        final JpegHuffmanDecoder acDec = new JpegHuffmanDecoder(acTable);
+        final JpegHuffmanDecoder acDec = new JpegHuffmanDecoder(acTable, reader);
         final int hBlocks = (frame.getWidth() + 7) / 8;
         final int vBlocks = (frame.getHeight() + 7) / 8;
         int totalBlocks = hBlocks * vBlocks;
