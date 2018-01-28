@@ -32,6 +32,7 @@ public class JpegScanReader
   private int expectedRestart;
   private int bitMask;
   private int byteValue;
+  private int dcPredictor;
 
   public JpegScanReader(final JpegProcessor processor)
   {
@@ -278,5 +279,15 @@ public class JpegScanReader
     final int approx = segment.int8();
     scan.setApproxHigh(approx >> 4);
     scan.setApproxLow(approx & 0x0f);
+  }
+
+  public int getDcPredictor()
+  {
+    return dcPredictor;
+  }
+
+  public void setDcPredictor(final int dcPredictor)
+  {
+    this.dcPredictor = dcPredictor;
   }
 }

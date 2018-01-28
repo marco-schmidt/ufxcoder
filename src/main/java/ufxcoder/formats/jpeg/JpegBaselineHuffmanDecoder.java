@@ -15,11 +15,15 @@
  */
 package ufxcoder.formats.jpeg;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Decode baseline Huffman input.
  */
 public class JpegBaselineHuffmanDecoder
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger(JpegBaselineHuffmanDecoder.class);
   private final JpegFileDescription desc;
   private final JpegScanReader reader;
 
@@ -47,6 +51,7 @@ public class JpegBaselineHuffmanDecoder
         final int hBlocks = (frame.getWidth() + 7) / 8;
         final int vBlocks = (frame.getHeight() + 7) / 8;
         int totalBlocks = hBlocks * vBlocks;
+        LOGGER.debug("H=" + hBlocks + " V=" + vBlocks + " TOTAL=" + totalBlocks);
         final int[] zz = new int[64];
         while (totalBlocks > 0)
         {

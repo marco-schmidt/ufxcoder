@@ -15,6 +15,7 @@
  */
 package ufxcoder.formats.jpeg;
 
+import java.util.Arrays;
 import ufxcoder.conversion.Array;
 
 /**
@@ -152,21 +153,47 @@ public class JpegHuffmanDecoder
   }
 
   /**
-   * Decode AC coefficients and put them into argument array.
+   * Decode AC coefficients and put them into argument array. ITU-T81.pdf F2.2.2, p. 105f.
    *
    * @param zz
    *          array with at least 64 entries, elements with index 1 to 63 will be changed in this method
    */
   public void decodeAc(final int... zz)
   {
-    for (int index = 1; index < 8 * 8; index++)
+    Arrays.fill(zz, 1, Constants.MINIMUM_CODED_UNIT_ELEMENTS - 1, 0);
+    int index = 1; // "k" in document
+    do
     {
-      zz[index] = 0;
-      if (zz.length >= index)
+      final int rs = decode();
+      final int ssss = rs & 0x0f;
+      final int rrrr = (rs >> 4) & 0x0f;
+      if (ssss == 0)
       {
-        break;
+        if (rrrr == 15)
+        {
+          index += 15;
+        }
+        else
+        {
+          break;
+        }
+      }
+      else
+      {
+        index += rrrr;
+        zz[index] = receive(ssss);
+        zz[index] = extend(zz[index], ssss);
+        if (index == Constants.MINIMUM_CODED_UNIT_ELEMENTS - 1)
+        {
+          break;
+        }
+        else
+        {
+          index++;
+        }
       }
     }
+    while (true);
   }
 
   /**
@@ -187,7 +214,18 @@ public class JpegHuffmanDecoder
    */
   private int extend(final int value, final int tt)
   {
-    return value + tt;
+    int threshold = 1 << (tt - 1);
+    int result;
+    if (value < threshold)
+    {
+      result = value;
+    }
+    else
+    {
+      threshold = (-1 << tt) + 1;
+      result = threshold + value;
+    }
+    return result;
   }
 
   /**
