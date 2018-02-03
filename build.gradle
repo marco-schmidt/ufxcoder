@@ -5,8 +5,8 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.gradle.spotless' version '3.7.0'
-  id 'com.github.jk1.dependency-license-report' version '0.4.1'
+  id 'com.diffplug.gradle.spotless' version '3.8.0'
+  id 'com.github.jk1.dependency-license-report' version '0.5.0'
   id 'com.github.spotbugs' version '1.6.0'
   id "com.jfrog.bintray" version "1.8.0"
 }
@@ -97,7 +97,7 @@ run {
 
 // https://pmd.github.io/
 pmd {
-  toolVersion = '6.0.0'
+  toolVersion = '6.0.1'
   ruleSets = []
   consoleOutput = true
   ruleSetConfig = resources.text.fromFile('config/pmd/pmd.xml')
@@ -117,7 +117,7 @@ spotless {
 // https://github.com/checkstyle/checkstyle
 // http://checkstyle.sourceforge.net
 checkstyle {
-  toolVersion '8.7'
+  toolVersion '8.8'
   ignoreFailures false
   showViolations true
 }
