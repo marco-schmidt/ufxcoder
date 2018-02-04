@@ -13,6 +13,7 @@ Some more properties:
 * All contents are distributed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
 * The [maven standard directory layout convention](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) is followed.
 * Code is maintained in a [git repository at GitHub](https://github.com/marco-schmidt/ufxcoder).
+* Releases are available as artifacts from [Bintray](https://bintray.com/marco-schmidt/ufxcoder).
 * Continuous integration: [Travis CI rebuilds the project on each commit.](https://travis-ci.org/marco-schmidt/ufxcoder)
 * Code analysis is done with gradle plugins for [PMD](https://pmd.github.io), [spotbugs](https://spotbugs.github.io) and [checkstyle](http://checkstyle.sourceforge.net).
 * Source code is formatted with [spotless](https://github.com/diffplug/spotless) using an [Eclipse XML configuration file](config/eclipse/formatter.xml).
