@@ -15,29 +15,27 @@
  */
 package ufxcoder.formats.xmp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * An Xpacket, part of an XMP block.
+ * Data class to store name and value of a single attribute defined in an xpacket header or trailer.
  */
-public class Xpacket
+public class XmpPacketAttribute
 {
-  private String id;
-  private final List<XmpPacketAttribute> attributes = new ArrayList<>();
+  private final String name;
+  private final String value;
 
-  public String getId()
+  public XmpPacketAttribute(final String name, final String value)
   {
-    return id;
+    this.name = name;
+    this.value = value;
   }
 
-  public void setId(final String id)
+  public String getName()
   {
-    this.id = id;
+    return name;
   }
 
-  public List<XmpPacketAttribute> getAttributes()
+  public String getValue()
   {
-    return attributes;
+    return value;
   }
 }
