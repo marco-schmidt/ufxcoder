@@ -104,7 +104,7 @@ public class XmpReader
     if (index >= 0)
     {
       final List<XmpPacketAttribute> attributes = xpacket.getAttributes();
-      index = consumeAttributes(data, index, attributes);
+      index = consumeAttributes(data, index + XPACKET.length, attributes);
     }
     return index;
   }
@@ -172,6 +172,10 @@ public class XmpReader
     if (processor.isSuccess())
     {
       if (index >= data.length)
+      {
+        processor.error("xmp.error.attribute_quote");
+      }
+      else
       {
         quote = data[index];
         index++;
