@@ -25,6 +25,7 @@ public class Xpacket
 {
   private String id;
   private final List<XmpPacketAttribute> attributes = new ArrayList<>();
+  private int startOffset;
 
   public String getId()
   {
@@ -39,5 +40,15 @@ public class Xpacket
   public List<XmpPacketAttribute> getAttributes()
   {
     return attributes;
+  }
+
+  public int getStartOffset()
+  {
+    return startOffset;
+  }
+
+  public void setStartOffset(final int startOffset)
+  {
+    this.startOffset = startOffset;
   }
 }

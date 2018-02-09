@@ -53,9 +53,20 @@ public class XmpReader
   public boolean parseXmp(final byte[] data)
   {
     boolean result = true;
-    final Xpacket xpacket = new Xpacket();
-    final int index = parseXpacket(data, 0, xpacket);
+    final Xpacket xpacketBegin = new Xpacket();
+    final int index = parseXpacket(data, 0, xpacketBegin);
     if (index < 0)
+    {
+      processor.error("xmp.error.unable_to_find_xpacket");
+      result = false;
+    }
+    final Xpacket xpacketEnd = new Xpacket();
+    int indexEnd = 0;
+    if (processor.isSuccess())
+    {
+      indexEnd = parseXpacket(data, index, xpacketEnd);
+    }
+    if (indexEnd <= index)
     {
       processor.error("xmp.error.unable_to_find_xpacket");
       result = false;
@@ -78,7 +89,7 @@ public class XmpReader
       Document doc;
       try
       {
-        doc = builder.parse(new ByteArrayInputStream(data));
+        doc = builder.parse(new ByteArrayInputStream(data, index, xpacketEnd.getStartOffset() - index));
         if (doc == null)
         {
           result = false;
@@ -88,7 +99,7 @@ public class XmpReader
           result = true;
         }
       }
-      catch (SAXException | IOException e)
+      catch (SAXException | IOException | ArrayIndexOutOfBoundsException e)
       {
         processor.error("tiff.error.xmp_parsing_failed", e.getMessage());
         result = false;
@@ -103,6 +114,7 @@ public class XmpReader
     int index = findXpacket(data, initialIndex);
     if (index >= 0)
     {
+      xpacket.setStartOffset(index);
       final List<XmpPacketAttribute> attributes = xpacket.getAttributes();
       index = consumeAttributes(data, index + XPACKET.length, attributes);
     }
@@ -117,6 +129,11 @@ public class XmpReader
     int nextIndex;
     do
     {
+      if (index >= data.length || data[index] != 32)
+      {
+        break;
+      }
+
       nextIndex = consumeAttribute(data, index, attributes);
       if (index == nextIndex)
       {
@@ -127,7 +144,21 @@ public class XmpReader
     while (true);
 
     // search for ?>
+    index = findEndOfPacket(data, index);
     return index;
+  }
+
+  private int findEndOfPacket(final byte[] data, final int initialIndex)
+  {
+    int index = initialIndex;
+    if (processor.isSuccess() && data != null)
+    {
+      while (index + 1 < data.length && (data[index] != '?' || data[index + 1] != '>'))
+      {
+        index++;
+      }
+    }
+    return index + 2;
   }
 
   /**
