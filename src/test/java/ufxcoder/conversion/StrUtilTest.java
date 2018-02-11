@@ -45,7 +45,7 @@ public class StrUtilTest
   {
     final String input = "abc\nabc";
     final String expected = "abc abc";
-    Assert.assertEquals("Input without control characters leads to identical output.", expected,
+    Assert.assertEquals("Input with linefeed leads to output with space at the same place.", expected,
         StrUtil.escapeControl(input));
   }
 }
