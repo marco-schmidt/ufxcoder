@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import ufxcoder.conversion.StrUtil;
 import ufxcoder.formats.AbstractFormatProcessor;
 
 /**
@@ -104,6 +105,7 @@ public class AppConfig
     {
       final MessageFormat formatter = new MessageFormat(pattern, getLocale());
       result = formatter.format(args);
+      result = StrUtil.escapeControl(result);
     }
     return result;
   }
