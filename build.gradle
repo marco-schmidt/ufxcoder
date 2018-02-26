@@ -40,7 +40,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.5.1'
+  gradleVersion = '4.6-rc-2'
 }
 
 tasks.withType(JavaCompile) {
@@ -97,7 +97,7 @@ run {
 
 // https://pmd.github.io/
 pmd {
-  toolVersion = '6.0.1'
+  toolVersion = '5.8.0'
   ruleSets = []
   consoleOutput = true
   ruleSetConfig = resources.text.fromFile('config/pmd/pmd.xml')
