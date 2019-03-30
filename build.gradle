@@ -7,7 +7,7 @@ buildscript {
 plugins {
   id 'com.diffplug.gradle.spotless' version '3.8.0'
   id 'com.github.jk1.dependency-license-report' version '0.5.0'
-  id 'com.github.spotbugs' version '1.6.0'
+  id 'com.github.spotbugs' version '1.7.1'
   id "com.jfrog.bintray" version "1.8.0"
 }
 
@@ -40,7 +40,7 @@ dependencies {
 }
 
 wrapper {
-  gradleVersion = '4.7'
+  gradleVersion = '5.3.1'
 }
 
 tasks.withType(JavaCompile) {
@@ -124,7 +124,7 @@ checkstyle {
 
 // https://github.com/spotbugs/spotbugs
 spotbugs {
-  toolVersion = '3.1.1'
+  toolVersion = '3.1.12'
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false
