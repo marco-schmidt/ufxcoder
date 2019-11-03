@@ -15,6 +15,7 @@
  */
 package ufxcoder.conversion;
 
+import java.math.BigInteger;
 import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,6 +25,14 @@ public class ArrayTest
   private static final byte[] ZERO_ONE_TWO_THREE = new byte[]
   {
       0, 1, 2, 3
+  };
+  private static final byte[] ZERO_ONE_TO_SEVEN = new byte[]
+  {
+      0, 1, 2, 3, 4, 5, 6, 7,
+  };
+  private static final byte[] ZEROES = new byte[]
+  {
+      0, 0, 0, 0, 0, 0, 0, 0
   };
 
   @Test
@@ -56,6 +65,27 @@ public class ArrayTest
         Array.from32(ZERO_ONE_TWO_THREE, 0, ByteOrder.LittleEndian));
     Assert.assertEquals("Little endian of zero-one-two-three must be .", 0 + (1 * 256) + 2 * 65536 + 3 * 16777216,
         Array.from32Little(ZERO_ONE_TWO_THREE, 0));
+  }
+
+  @Test
+  public void testFrom64()
+  {
+    Assert.assertEquals("Big endian of zeroes must be zero.", 0, Array.from64(ZEROES, 0, ByteOrder.BigEndian));
+    Assert.assertEquals("Little endian of zeroes must be zero.", 0, Array.from64(ZEROES, 0, ByteOrder.LittleEndian));
+    Assert.assertEquals("Big endian of zero-to-seven must be 283686952306183L.", 283686952306183L,
+        Array.from64(ZERO_ONE_TO_SEVEN, 0, ByteOrder.BigEndian));
+    Assert.assertEquals("Big endian of zero-to-seven must be 506097522914230528L.", 506097522914230528L,
+        Array.from64(ZERO_ONE_TO_SEVEN, 0, ByteOrder.LittleEndian));
+  }
+
+  @Test
+  public void testIndexOf()
+  {
+    Assert.assertEquals("Fail with null pattern.", -1, Array.indexOf(ZEROES, 0, null));
+    Assert.assertEquals("Fail with null data and pattern.", -1, Array.indexOf(null, 0, null));
+    Assert.assertEquals("Fail with negative index.", -1, Array.indexOf(null, -1, null));
+    Assert.assertEquals("Fail with null pattern.", -1, Array.indexOf(ZEROES, ZEROES.length + 1, null));
+    Assert.assertEquals("Fail with pattern longer than data.", -1, Array.indexOf(ZERO_ONE_TWO_THREE, 0, ZEROES));
   }
 
   @Test
@@ -127,6 +157,13 @@ public class ArrayTest
         Array.toBigInteger(array, ByteOrder.BigEndian).longValue());
     Assert.assertEquals("Two bytes little endian.", 4 * 256 + 1,
         Array.toBigInteger(array, ByteOrder.LittleEndian).longValue());
+  }
+
+  @Test
+  public void testToBigInteger()
+  {
+    Assert.assertEquals("Four bytes big endian.", BigInteger.ZERO,
+        Array.toBigInteger(ZEROES, 0, 2, ByteOrder.BigEndian));
   }
 
   @Test

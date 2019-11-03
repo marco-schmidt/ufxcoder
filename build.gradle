@@ -7,8 +7,9 @@ buildscript {
 plugins {
   id 'com.diffplug.gradle.spotless' version '3.25.0'
   id 'com.github.jk1.dependency-license-report' version '1.11'
-  id 'com.github.spotbugs' version '2.0.0'
+  id 'com.github.spotbugs' version '2.0.1'
   id "com.jfrog.bintray" version "1.8.4"
+  id 'jacoco'
 }
 
 repositories {
@@ -33,7 +34,7 @@ def licenseName = 'The Apache Software License, Version 2.0'
 defaultTasks 'clean', 'check', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
   testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
@@ -192,3 +193,19 @@ bintray {
     }
   }
 }
+
+
+jacoco {
+  toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    xml.destination file("${buildDir}/reports/jacoco/report.xml")
+    csv.enabled false
+    html.destination file("${buildDir}/reports/jacoco")
+  }
+}
+jacocoTestCoverageVerification.dependsOn test
+jacocoTestReport.dependsOn jacocoTestCoverageVerification
