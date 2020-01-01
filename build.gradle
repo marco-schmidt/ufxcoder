@@ -5,9 +5,10 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.gradle.spotless' version '3.25.0'
-  id 'com.github.jk1.dependency-license-report' version '1.11'
-  id 'com.github.spotbugs' version '2.0.1'
+  id 'com.diffplug.gradle.spotless' version '3.26.1'
+  id "com.github.ben-manes.versions" version '0.27.0'
+  id 'com.github.jk1.dependency-license-report' version '1.12'
+  id 'com.github.spotbugs' version '3.0.0'
   id "com.jfrog.bintray" version "1.8.4"
   id 'jacoco'
 }
@@ -34,13 +35,9 @@ def licenseName = 'The Apache Software License, Version 2.0'
 defaultTasks 'clean', 'check', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
   testImplementation group: 'junit', name: 'junit', version: '4.12'
-}
-
-wrapper {
-  gradleVersion = '5.6.2'
 }
 
 tasks.withType(JavaCompile) {
