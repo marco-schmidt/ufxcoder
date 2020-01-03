@@ -11,6 +11,7 @@ plugins {
   id 'com.github.spotbugs' version '3.0.0'
   id "com.jfrog.bintray" version "1.8.4"
   id 'jacoco'
+  id 'org.owasp.dependencycheck' version '5.2.4'
 }
 
 repositories {
@@ -80,7 +81,7 @@ jar {
       'Java-Version': targetCompatibility,
       'Git-Revision': retrieveGitRevision(),
       'Git-Modified': retrieveGitModification(),
-      'Class-Path': configurations.compile.collect { it.getName() }.join(' '))
+      'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '))
   }
   from ('.') {
     include 'LICENSE'
@@ -206,3 +207,13 @@ jacocoTestReport {
 }
 jacocoTestCoverageVerification.dependsOn test
 jacocoTestReport.dependsOn jacocoTestCoverageVerification
+
+dependencyCheck {
+  scanConfigurations = ['runtimeClasspath']
+  cveValidForHours=24
+  failBuildOnCVSS=0
+  analyzers {
+    assemblyEnabled=false
+  }
+}
+check.dependsOn dependencyCheckAnalyze
