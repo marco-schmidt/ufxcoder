@@ -113,6 +113,7 @@ pmd {
   consoleOutput = true
   ruleSetConfig = resources.text.fromFile('config/pmd/pmd.xml')
   ignoreFailures = false
+  incrementalAnalysis = false
 }
 
 // https://github.com/diffplug/spotless
