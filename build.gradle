@@ -33,7 +33,7 @@ description 'Universal File Transcoder'
 mainClassName = 'ufxcoder.app.UniversalFileTranscoder'
 def licenseName = 'The Apache Software License, Version 2.0'
 
-defaultTasks 'clean', 'check', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
+defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
