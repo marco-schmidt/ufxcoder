@@ -39,8 +39,47 @@ public class ArrayTest
   public void testClone()
   {
     Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null));
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0));
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, -1));
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, -1));
+
+    Assert.assertNull("Clone of null array is null.", Array.clone((int[]) null, 0));
+    Assert.assertNull("Clone of null array is null.", Array.clone(new int[]
+    {}, -1));
+    Assert.assertNull("Clone of null array is null.", Array.clone((int[]) null, 0, 0, -1));
+
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0, 0, -1));
+    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0, 0, 0));
+    Assert.assertNull("Clone of null array is null.", Array.clone(new byte[]
+    {}, 0, 0, -1));
+    Assert.assertNull("Clone of null array is null.", Array.clone(new byte[]
+    {}, -1));
+    Assert.assertEquals("Clone of array with additional elements.", 11, Array.clone(new byte[]
+    {
+        1
+    }, 10).length);
+    Assert.assertNull("Clone of non-null array and negative number of bytes is null.", Array.clone(new byte[]
+    {}, 0, 0, -1));
     final byte[] clone = Array.clone(ZERO_ONE_TWO_THREE);
     Assert.assertArrayEquals("Clone content must be identical to original.", ZERO_ONE_TWO_THREE, clone);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCloneByteTooLarge()
+  {
+    Array.clone(new byte[]
+    {
+        0
+    }, 0, 1, Integer.MAX_VALUE);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCloneIntTooLarge()
+  {
+    Array.clone(new int[]
+    {
+        0
+    }, 0, 1, Integer.MAX_VALUE);
   }
 
   @Test
@@ -57,13 +96,13 @@ public class ArrayTest
   @Test
   public void testFrom32()
   {
-    Assert.assertEquals("Big endian of zero-one-two-three must be 66051.", 3 + (2 * 256) + 65536,
+    Assert.assertEquals("Big endian of zero-one-two-three must be 66051.", 3 + 2 * 256 + 65536,
         Array.from32(ZERO_ONE_TWO_THREE, 0, ByteOrder.BigEndian));
-    Assert.assertEquals("Big endian of zero-one-two-three must be 66051.", 3 + (2 * 256) + 65536,
+    Assert.assertEquals("Big endian of zero-one-two-three must be 66051.", 3 + 2 * 256 + 65536,
         Array.from32Big(ZERO_ONE_TWO_THREE, 0));
-    Assert.assertEquals("Little endian of zero-one-two-three must be .", 0 + (1 * 256) + 2 * 65536 + 3 * 16777216,
+    Assert.assertEquals("Little endian of zero-one-two-three must be .", 0 + 1 * 256 + 2 * 65536 + 3 * 16777216,
         Array.from32(ZERO_ONE_TWO_THREE, 0, ByteOrder.LittleEndian));
-    Assert.assertEquals("Little endian of zero-one-two-three must be .", 0 + (1 * 256) + 2 * 65536 + 3 * 16777216,
+    Assert.assertEquals("Little endian of zero-one-two-three must be .", 0 + 1 * 256 + 2 * 65536 + 3 * 16777216,
         Array.from32Little(ZERO_ONE_TWO_THREE, 0));
   }
 
@@ -81,10 +120,12 @@ public class ArrayTest
   @Test
   public void testIndexOf()
   {
-    Assert.assertEquals("Fail with null pattern.", -1, Array.indexOf(ZEROES, 0, null));
-    Assert.assertEquals("Fail with null data and pattern.", -1, Array.indexOf(null, 0, null));
-    Assert.assertEquals("Fail with negative index.", -1, Array.indexOf(null, -1, null));
-    Assert.assertEquals("Fail with null pattern.", -1, Array.indexOf(ZEROES, ZEROES.length + 1, null));
+    Assert.assertEquals("Fail with null data.", -1, Array.indexOf(null, 0, null));
+    Assert.assertEquals("Fail with null pattern (non-null data).", -1, Array.indexOf(ZEROES, 0, null));
+    Assert.assertEquals("Fail with negative index (both data and pattern non-null).", -1, Array.indexOf(new byte[]
+    {}, -1, new byte[]
+    {}));
+    Assert.assertEquals("Fail with null pattern.", -1, Array.indexOf(ZEROES, ZEROES.length + 1, ZERO_ONE_TWO_THREE));
     Assert.assertEquals("Fail with pattern longer than data.", -1, Array.indexOf(ZERO_ONE_TWO_THREE, 0, ZEROES));
   }
 

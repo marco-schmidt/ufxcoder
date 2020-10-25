@@ -1,4 +1,4 @@
-# Universal File Transcoder [![Travis CI](https://travis-ci.org/marco-schmidt/ufxcoder.svg?branch=master)](https://travis-ci.org/marco-schmidt/ufxcoder)
+# Universal File Transcoder [![Travis CI](https://travis-ci.org/marco-schmidt/ufxcoder.svg?branch=master)](https://travis-ci.org/marco-schmidt/ufxcoder) [![Codecov](https://codecov.io/gh/marco-schmidt/ufxcoder/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/marco-schmidt/ufxcoder)
 
 This library (and command line application) detects, checks and transcodes various file formats.
 It parses files, decompresses data, creates checksums, validates standard conformance and reports irregularities. 

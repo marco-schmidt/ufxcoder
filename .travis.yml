@@ -3,8 +3,6 @@ matrix:
   include:
   - os: linux
     jdk: openjdk8
-  - os: linux
-    jdk: oraclejdk8
     dist: trusty
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
