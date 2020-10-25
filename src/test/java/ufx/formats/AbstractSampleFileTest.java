@@ -28,8 +28,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import ufxcoder.formats.AbstractFormatProcessor;
 import ufxcoder.formats.EventSeverity;
-import ufxcoder.formats.jpeg.JpegFileDescription;
-import ufxcoder.formats.jpeg.JpegProcessor;
+import ufxcoder.formats.FileDescription;
 
 public abstract class AbstractSampleFileTest
 {
@@ -112,9 +111,9 @@ public abstract class AbstractSampleFileTest
   private TestResult testStream(final String fileName) throws IOException
   {
     final byte[] data = read(fileName);
-    final JpegProcessor proc = (JpegProcessor) create(data);
+    final AbstractFormatProcessor proc = create(data);
     proc.process();
-    final JpegFileDescription desc = proc.getJpegFileDescription();
+    final FileDescription desc = proc.getFileDescription();
     String result;
     if (proc.isFormatIdentified())
     {
