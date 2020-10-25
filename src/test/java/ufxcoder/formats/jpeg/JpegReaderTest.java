@@ -26,7 +26,7 @@ public class JpegReaderTest
   @Before
   public void setup()
   {
-    proc = JpegProcessorTest.create(new byte[]
+    proc = (JpegProcessor) new JpegProcessorTest().create(new byte[]
     {
         (byte) 0xff, (byte) 0xc0,
     });

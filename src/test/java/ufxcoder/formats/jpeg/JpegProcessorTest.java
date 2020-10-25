@@ -15,33 +15,21 @@
  */
 package ufxcoder.formats.jpeg;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
 import org.junit.Assert;
 import org.junit.Test;
-import ufxcoder.app.AppConfig;
+import ufx.formats.AbstractProcessorTest;
 import ufxcoder.app.ProcessMode;
+import ufxcoder.formats.AbstractFormatProcessor;
 
 /**
  * Test {@link JpegProcessor} with various input streams.
  */
-public class JpegProcessorTest
+public class JpegProcessorTest extends AbstractProcessorTest
 {
-  public static JpegProcessor create(final byte[] data)
-  {
-    final AppConfig config = new AppConfig();
-    config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));
-    config.setLocale(Locale.ENGLISH);
-    final JpegProcessor proc = new JpegProcessor();
-    proc.setConfig(config);
-    proc.open(data);
-    return proc;
-  }
-
   @Test
   public void testInputTooShort()
   {
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         0x17
     });
@@ -54,7 +42,7 @@ public class JpegProcessorTest
   @Test
   public void testInvalidMarker()
   {
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         (byte) 0x9a, 0x44
     });
@@ -67,7 +55,7 @@ public class JpegProcessorTest
   public void testFirstMarkerNotStartOfImage()
   {
     // first two bytes are a correct marker but not the right one
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         (byte) 0xff, (byte) 0xda
     });
@@ -79,7 +67,7 @@ public class JpegProcessorTest
   @Test
   public void testIdentifyCorrectMarker()
   {
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         (byte) 0xff, (byte) 0xd8
     });
@@ -93,7 +81,7 @@ public class JpegProcessorTest
   @Test
   public void testCheckCorrectMarkerThenNothing()
   {
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         (byte) 0xff, (byte) 0xd8
     });
@@ -106,7 +94,7 @@ public class JpegProcessorTest
   @Test
   public void testDuplicateStartOfImageMarker()
   {
-    final JpegProcessor proc = create(new byte[]
+    final JpegProcessor proc = (JpegProcessor) create(new byte[]
     {
         (byte) 0xff, (byte) 0xd8, (byte) 0xff, (byte) 0xd8
     });
@@ -114,5 +102,11 @@ public class JpegProcessorTest
     proc.process();
     final JpegFileDescription desc = proc.getJpegFileDescription();
     Assert.assertTrue("A second start-of-image marker is not allowed.", desc.containsEvent(Msg.SOI_FIRST_MARKER_ONLY));
+  }
+
+  @Override
+  public AbstractFormatProcessor createProcessor()
+  {
+    return new JpegProcessor();
   }
 }

@@ -13,30 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ufxcoder.formats.jpeg;
+package ufx.formats;
 
-import java.io.IOException;
-import java.io.InputStream;
-import ufx.formats.AbstractSampleFileTest;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import ufxcoder.app.AppConfig;
 import ufxcoder.formats.AbstractFormatProcessor;
 
-/**
- * Load various small files from test/resources, run them through {@link JpegProcessor} and compare actual with expected
- * result from text file.
- */
-public final class JpegSampleFileTest extends AbstractSampleFileTest
+public abstract class AbstractProcessorTest
 {
+  public abstract AbstractFormatProcessor createProcessor();
 
-  @Override
   public AbstractFormatProcessor create(final byte[] data)
   {
-    return new JpegProcessorTest().create(data);
+    final AppConfig config = new AppConfig();
+    config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));
+    config.setLocale(Locale.ENGLISH);
+    final AbstractFormatProcessor proc = createProcessor();
+    proc.setConfig(config);
+    proc.open(data);
+    return proc;
   }
-
-  @Override
-  public InputStream open(final String name) throws IOException
-  {
-    return getClass().getResourceAsStream(name);
-  }
-
 }
