@@ -39,27 +39,28 @@ public class ArrayTest
   public void testClone()
   {
     Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null));
-    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0));
-    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, -1));
-    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, -1));
+    Assert.assertNull("Clone of null array and valid offset is null.", Array.clone((byte[]) null, 0));
+    Assert.assertNull("Clone of null array and invalid offset is null.", Array.clone((byte[]) null, -1));
 
-    Assert.assertNull("Clone of null array is null.", Array.clone((int[]) null, 0));
-    Assert.assertNull("Clone of null array is null.", Array.clone(new int[]
+    Assert.assertNull("Clone of null int array and valid offset is null.", Array.clone((int[]) null, 0));
+    Assert.assertNull("Clone of non-null int array and invalid offset is null.", Array.clone(new int[]
     {}, -1));
-    Assert.assertNull("Clone of null array is null.", Array.clone((int[]) null, 0, 0, -1));
+    Assert.assertNull("Clone of null int array and invalid additional elements is null.",
+        Array.clone((int[]) null, 0, 0, -1));
 
-    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0, 0, -1));
-    Assert.assertNull("Clone of null array is null.", Array.clone((byte[]) null, 0, 0, 0));
-    Assert.assertNull("Clone of null array is null.", Array.clone(new byte[]
+    Assert.assertNull("Clone of null array and invalid additional elements is null.",
+        Array.clone((byte[]) null, 0, 0, -1));
+    Assert.assertNull("Clone of null array and valid additional elements is null.",
+        Array.clone((byte[]) null, 0, 0, 0));
+    Assert.assertNull("Clone of non-null array and invalid additional elements is null.", Array.clone(new byte[]
     {}, 0, 0, -1));
-    Assert.assertNull("Clone of null array is null.", Array.clone(new byte[]
+    Assert.assertNull("Clone of non-null array and invalid offset is null.", Array.clone(new byte[]
     {}, -1));
-    Assert.assertEquals("Clone of array with additional elements.", 11, Array.clone(new byte[]
-    {
-        1
-    }, 10).length);
-    Assert.assertNull("Clone of non-null array and negative number of bytes is null.", Array.clone(new byte[]
-    {}, 0, 0, -1));
+    Assert.assertEquals("Clone of one-element array with ten additional elements has length 11.", 11,
+        Array.clone(new byte[]
+        {
+            1
+        }, 10).length);
     final byte[] clone = Array.clone(ZERO_ONE_TWO_THREE);
     Assert.assertArrayEquals("Clone content must be identical to original.", ZERO_ONE_TWO_THREE, clone);
   }
