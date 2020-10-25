@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import org.junit.Assert;
 import org.junit.Test;
+import ufx.formats.TestResult;
 import ufxcoder.formats.EventSeverity;
 
 /**
@@ -91,7 +92,7 @@ public final class JpegSampleFileTest
       }
       while (line != null);
     }
-    catch (IOException ioe)
+    catch (final IOException ioe)
     {
       throw ioe;
     }
@@ -100,31 +101,6 @@ public final class JpegSampleFileTest
       reader.close();
     }
     return result;
-  }
-
-  /**
-   * Class with test result: result string plus keys.
-   */
-  private static class TestResult
-  {
-    private final String result;
-    private final List<String> keys;
-
-    TestResult(final String result, final List<String> keys)
-    {
-      this.result = result;
-      this.keys = keys;
-    }
-
-    public List<String> getKeys()
-    {
-      return keys;
-    }
-
-    public String getResult()
-    {
-      return result;
-    }
   }
 
   private TestResult testStream(final String fileName) throws IOException
