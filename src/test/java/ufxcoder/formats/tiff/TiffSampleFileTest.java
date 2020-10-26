@@ -29,7 +29,9 @@ public final class TiffSampleFileTest extends AbstractSampleFileTest
   @Override
   public AbstractFormatProcessor create(final byte[] data)
   {
-    return new TiffProcessorTest().create(data);
+    final TiffProcessor proc = (TiffProcessor) new TiffProcessorTest().create(data);
+    proc.getConfig().setTiffBaseline(true);
+    return proc;
   }
 
   @Override
