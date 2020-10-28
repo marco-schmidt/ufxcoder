@@ -17,13 +17,13 @@ package ufxcoder.formats.tiff;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ufx.formats.AbstractProcessorTest;
+import ufx.formats.AbstractFormatProcessorTest;
 import ufxcoder.formats.AbstractFormatProcessor;
 
 /**
  * Test {@link TiffProcessor} with various input streams.
  */
-public class TiffProcessorTest extends AbstractProcessorTest
+public class TiffProcessorTest extends AbstractFormatProcessorTest
 {
   @Test
   public void testInputTooShort()

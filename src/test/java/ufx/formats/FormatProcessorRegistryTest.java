@@ -15,23 +15,21 @@
  */
 package ufx.formats;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import ufxcoder.app.AppConfig;
-import ufxcoder.formats.AbstractFormatProcessor;
+import java.util.Set;
+import org.junit.Assert;
+import org.junit.Test;
+import ufxcoder.formats.FormatProcessorRegistry;
 
-public abstract class AbstractProcessorTest
+public class FormatProcessorRegistryTest
 {
-  public abstract AbstractFormatProcessor createProcessor();
-
-  public AbstractFormatProcessor create(final byte[] data)
+  @Test
+  public void testExtensions()
   {
-    final AppConfig config = new AppConfig();
-    config.setBundle(ResourceBundle.getBundle("Messages", Locale.ENGLISH));
-    config.setLocale(Locale.ENGLISH);
-    final AbstractFormatProcessor proc = createProcessor();
-    proc.setConfig(config);
-    proc.open(data);
-    return proc;
+    Set<String> set = FormatProcessorRegistry.createKnownExtensionsSet(false);
+    Assert.assertNotNull("Extension set must be non-null.", set);
+    Assert.assertFalse("Extension set not empty.", set.isEmpty());
+    set = FormatProcessorRegistry.createKnownExtensionsSet(true);
+    Assert.assertNotNull("Extension set must be non-null.", set);
+    Assert.assertFalse("Extension set not empty.", set.isEmpty());
   }
 }

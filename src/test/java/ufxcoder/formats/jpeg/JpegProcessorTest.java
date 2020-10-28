@@ -17,14 +17,14 @@ package ufxcoder.formats.jpeg;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ufx.formats.AbstractProcessorTest;
+import ufx.formats.AbstractFormatProcessorTest;
 import ufxcoder.app.ProcessMode;
 import ufxcoder.formats.AbstractFormatProcessor;
 
 /**
  * Test {@link JpegProcessor} with various input streams.
  */
-public class JpegProcessorTest extends AbstractProcessorTest
+public class JpegProcessorTest extends AbstractFormatProcessorTest
 {
   @Test
   public void testInputTooShort()
