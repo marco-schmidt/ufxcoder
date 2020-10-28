@@ -1,1 +1,0 @@
-package ufxcoder.formats.tiff;
