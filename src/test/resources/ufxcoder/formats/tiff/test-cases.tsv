@@ -1,2 +1,3 @@
 random.bin	unknown	tiff.error.invalid_byte_order	random data: dd if=/dev/random of=random.bin bs=1 count=256
 g8x8.tif	error	tiff.error.baseline.non_baseline_field	convert ../jpeg/g8x8h.jpg g8x8.tif
+g8x8desc.tif	ok		cp g8x8.tif g8x8desc.tif ; exiftool -ImageDescription="A sample image description in ASCII" g8x8desc.tif ; exiftool -PageNumber= g8x8desc.tif
