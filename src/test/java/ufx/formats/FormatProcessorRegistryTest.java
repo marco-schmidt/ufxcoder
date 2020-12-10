@@ -19,12 +19,16 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import ufxcoder.formats.FormatProcessorRegistry;
+import ufxcoder.formats.jpeg.JpegProcessor;
+import ufxcoder.formats.tiff.TiffProcessor;
 
 public class FormatProcessorRegistryTest
 {
   @Test
   public void testExtensions()
   {
+    FormatProcessorRegistry.register(TiffProcessor.class);
+    FormatProcessorRegistry.register(JpegProcessor.class);
     Set<String> set = FormatProcessorRegistry.createKnownExtensionsSet(false);
     Assert.assertNotNull("Extension set must be non-null.", set);
     Assert.assertFalse("Extension set not empty.", set.isEmpty());
