@@ -130,7 +130,7 @@ spotless {
 // https://github.com/checkstyle/checkstyle
 // http://checkstyle.sourceforge.net
 checkstyle {
-  toolVersion '8.37'
+  toolVersion '8.38'
   ignoreFailures false
   showViolations true
   configDirectory = file("${rootDir}/config/checkstyle")
@@ -138,7 +138,7 @@ checkstyle {
 
 // https://github.com/spotbugs/spotbugs
 spotbugs {
-  toolVersion = '4.0.3'
+  toolVersion = '4.2.0'
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false
@@ -210,7 +210,7 @@ bintray {
 
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.6"
 }
 
 jacocoTestReport {
