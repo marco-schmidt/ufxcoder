@@ -104,6 +104,7 @@ dependencyUpdates {
   rejectVersionIf {
     !isStable(it.candidate.version)
   }
+  outputDir = "${buildDir}/reports/dependencyUpdates"
 }
 
 // https://pmd.github.io/
@@ -230,5 +231,6 @@ dependencyCheck {
   analyzers {
     assemblyEnabled=false
   }
+  outputDirectory = "${buildDir}/reports/security-report"
 }
 check.dependsOn dependencyCheckAnalyze

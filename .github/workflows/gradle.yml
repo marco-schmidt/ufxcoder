@@ -1,0 +1,79 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: '37 4 * * *'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v1
+    - uses: gradle/wrapper-validation-action@v1
+    - name: gradle cache 
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: NVD cache 
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/dependency-check-data
+        key: ${{ runner.os }}-nvd-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-nvd-
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Gradle
+      run: ./gradlew check distTar generateLicenseReport dependencyCheckAnalyze dependencyUpdates jacocoTestReport --info --stacktrace --write-verification-metadata sha256
+    - name: Upload application package
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-distribution
+        path: build/distributions/
+    - name: Upload license report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-license-report
+        path: build/reports/dependency-license
+    - name: Upload versions report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-versions-report
+        path: build/reports/dependencyUpdates
+    - name: Upload security report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-security-report
+        path: build/reports/security-report
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-coverage-report
+        path: build/reports/jacoco
+    - name: Upload unit test report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-unit-test-report
+        path: build/reports/tests/test
+    - name: Upload spotbugs static analysis report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-spotbugs-report
+        path: build/reports/spotbugs
+    - name: Upload checkstyle static analysis report
+      uses: actions/upload-artifact@v1
+      with:
+        name: ufxcoder-${{github.run_number}}-checkstyle-report
+        path: build/reports/checkstyle
