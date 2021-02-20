@@ -5,13 +5,13 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.spotless' version '5.9.0'
+  id 'com.diffplug.spotless' version '5.10.2'
   id "com.github.ben-manes.versions" version '0.36.0'
   id 'com.github.jk1.dependency-license-report' version '1.16'
-  id 'com.github.spotbugs' version '4.6.0'
+  id 'com.github.spotbugs' version '4.6.1'
   id "com.jfrog.bintray" version "1.8.5"
   id 'jacoco'
-  id 'org.owasp.dependencycheck' version '6.0.4'
+  id 'org.owasp.dependencycheck' version '6.1.1'
 }
 
 repositories {
@@ -38,7 +38,7 @@ defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'ge
 dependencies {
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-  testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+  testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 tasks.withType(JavaCompile) {
