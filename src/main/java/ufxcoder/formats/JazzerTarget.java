@@ -17,6 +17,9 @@ package ufxcoder.formats;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Level;
 import ufxcoder.app.AppConfig;
 import ufxcoder.formats.jpeg.JpegProcessor;
 
@@ -28,10 +31,10 @@ import ufxcoder.formats.jpeg.JpegProcessor;
  * <pre>
  * bazel --version
  * ./gradlew install
- * jazzer --cp=build/install/ufxcoder/ufxcoder-0.0.3-SNAPSHOT.jar:\
- *   build/install/ufxcoder/logback-classic-1.2.3.jar:\
- *   build/install/ufxcoder/logback-core-1.2.3.jar:\
- *   build/install/ufxcoder/slf4j-api-1.7.30.jar --target_class=ufxcoder.formats.JazzerTarget
+ * jazzer --cp=build/install/ufxcoder/lib/ufxcoder-0.0.3-SNAPSHOT.jar:\
+    build/install/ufxcoder/lib/logback-classic-1.2.3.jar:\
+    build/install/ufxcoder/lib/logback-core-1.2.3.jar:\
+    build/install/ufxcoder/lib/slf4j-api-1.7.30.jar --target_class=ufxcoder.formats.JazzerTarget
  * </pre>
  *
  * @see https://github.com/CodeIntelligenceTesting/jazzer
@@ -52,6 +55,13 @@ public final class JazzerTarget
     config.setLocale(Locale.ENGLISH);
     proc = new JpegProcessor();
     proc.setConfig(config);
+    // turn off logging
+    final ch.qos.logback.classic.Logger rootLogger = (ch.qos.logback.classic.Logger) LoggerFactory
+        .getLogger(Logger.ROOT_LOGGER_NAME);
+    if (rootLogger != null)
+    {
+      rootLogger.setLevel(Level.OFF);
+    }
   }
 
   public static void fuzzerTestOneInput(final byte[] input)
