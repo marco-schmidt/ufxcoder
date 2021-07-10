@@ -5,13 +5,13 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.spotless' version '5.12.5'
+  id 'com.diffplug.spotless' version '5.14.1'
   id "com.github.ben-manes.versions" version '0.39.0'
   id 'com.github.jk1.dependency-license-report' version '1.16'
-  id 'com.github.spotbugs' version '4.7.1'
+  id 'com.github.spotbugs' version '4.7.2'
   id "com.jfrog.bintray" version "1.8.5"
   id 'jacoco'
-  id 'org.owasp.dependencycheck' version '6.1.6'
+  id 'org.owasp.dependencycheck' version '6.2.2'
 }
 
 repositories {
@@ -35,7 +35,7 @@ def licenseName = 'The Apache Software License, Version 2.0'
 defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.31'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
@@ -137,7 +137,7 @@ checkstyle {
 
 // https://github.com/spotbugs/spotbugs
 spotbugs {
-  toolVersion = '4.2.0'
+  toolVersion = '4.3.0'
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false
@@ -214,9 +214,6 @@ jacoco {
 
 jacocoTestReport {
   reports {
-    xml.enabled true
-    xml.destination file("${buildDir}/reports/jacoco/report.xml")
-    csv.enabled false
     html.destination file("${buildDir}/reports/jacoco")
   }
 }
