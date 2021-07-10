@@ -137,7 +137,7 @@ checkstyle {
 
 // https://github.com/spotbugs/spotbugs
 spotbugs {
-  toolVersion = '4.3.0'
+  toolVersion = '4.2.0'
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false
