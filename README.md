@@ -1,4 +1,4 @@
-# Universal File Transcoder [![Travis CI](https://travis-ci.org/marco-schmidt/ufxcoder.svg?branch=master)](https://travis-ci.org/marco-schmidt/ufxcoder) [![Java CI](https://github.com/marco-schmidt/ufxcoder/workflows/Java%20CI/badge.svg)](https://github.com/marco-schmidt/ufxcoder/actions?query=workflow%3A%22Java+CI%22) [![CodeQL](https://github.com/marco-schmidt/ufxcoder/workflows/CodeQL/badge.svg)](https://github.com/marco-schmidt/ufxcoder/actions?query=workflow%3ACodeQL) [![Codecov](https://codecov.io/gh/marco-schmidt/ufxcoder/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/marco-schmidt/ufxcoder)
+# Universal File Transcoder [![Java CI](https://github.com/marco-schmidt/ufxcoder/workflows/Java%20CI/badge.svg)](https://github.com/marco-schmidt/ufxcoder/actions?query=workflow%3A%22Java+CI%22) [![CodeQL](https://github.com/marco-schmidt/ufxcoder/workflows/CodeQL/badge.svg)](https://github.com/marco-schmidt/ufxcoder/actions?query=workflow%3ACodeQL) [![Codecov](https://codecov.io/gh/marco-schmidt/ufxcoder/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/gh/marco-schmidt/ufxcoder)
 
 This library (and command line application) detects, checks and transcodes various file formats.
 It parses files, decompresses data, creates checksums, validates standard conformance and reports irregularities. 
@@ -21,7 +21,7 @@ Some more properties:
 
 ## Status Quo
 
-As of December 2017, the project is in its early stages.
+As of August 2021, the project is in its early stages.
 Only TIFF, DNG, CR2 and JPEG files are being supported.
 Transcoding has not been implemented yet, and a lot of checks are missing.
 The software is in an alpha stage and unsuitable for a production environment.
@@ -179,20 +179,3 @@ tasks.withType(JavaCompile) {
   // more
 }
 ```
-
-### Java 9
-
-The installation version of ufxcoder created with Java 8 can be run with a higher
-version Java runtime environment like Java 9 because of Java's commitment to
-backward compatibility.
-
-However, building with Java 9 brings out some problems (as of December 2017).
-
-1) The build uses the Gradle spotless plugin to format source code.
-Its removeUnusedImports feature does not work because spotless dependency
-google-format-java in its latest released version still has
-issues with Java 9: https://github.com/diffplug/spotless/issues/83
-
-2) The build also relies on code analysis toolkit PMD. The Gradle PMD plugin does not work
-with Java 9 because PMD dependency ASM is not yet Java 9 bytecode-compatible:
-https://github.com/gradle/gradle/issues/3519
