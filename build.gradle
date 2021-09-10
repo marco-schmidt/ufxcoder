@@ -36,7 +36,7 @@ defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'ge
 
 dependencies {
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
