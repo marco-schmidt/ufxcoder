@@ -4,4 +4,12 @@
     <Class name="~.*Test"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
+  <Match>
+    <Class name="~.*"/>
+    <Bug pattern="EI_EXPOSE_REP" type="EI_EXPOSE_REP"/>
+  </Match>
+  <Match>
+    <Class name="~.*"/>
+    <Bug pattern="EI_EXPOSE_REP2" type="EI_EXPOSE_REP2"/>
+  </Match>
 </FindBugsFilter>

@@ -15,6 +15,7 @@
  */
 package ufx.formats;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,17 +31,16 @@ public class TestResult
   public TestResult(final String result, final List<String> keys)
   {
     this.result = result;
-    this.keys = keys;
+    this.keys = new ArrayList<>(keys);
   }
 
   public List<String> getKeys()
   {
-    return keys;
+    return new ArrayList<>(keys);
   }
 
   public String getResult()
   {
     return result;
   }
-
 }
