@@ -5,13 +5,13 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.spotless' version '5.17.0'
+  id 'com.diffplug.spotless' version '6.0.5'
   id "com.github.ben-manes.versions" version '0.39.0'
   id 'com.github.jk1.dependency-license-report' version '2.0'
-  id 'com.github.spotbugs' version '4.7.9'
+  id 'com.github.spotbugs' version '5.0.3'
   id "com.jfrog.bintray" version "1.8.5"
   id 'jacoco'
-  id 'org.owasp.dependencycheck' version '6.3.1'
+  id 'org.owasp.dependencycheck' version '6.5.0.1'
 }
 
 repositories {
@@ -36,7 +36,7 @@ defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'ge
 
 dependencies {
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.9'
   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
@@ -137,7 +137,7 @@ checkstyle {
 
 // https://github.com/spotbugs/spotbugs
 spotbugs {
-  toolVersion = '4.4.1'
+  toolVersion = '4.5.2'
   effort = 'max' // min, default, max
   reportLevel = 'low' // low, medium, high  
   ignoreFailures = false

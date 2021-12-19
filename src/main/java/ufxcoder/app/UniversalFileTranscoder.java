@@ -144,7 +144,6 @@ public class UniversalFileTranscoder
 
     final PatternLayoutEncoder encoder = new PatternLayoutEncoder();
     encoder.setContext(loggerContext);
-    // encoder.setPattern("%message%n");
     encoder.setPattern(AppConfig.DEFAULT_LOGGING_PATTERN);
     encoder.start();
 
