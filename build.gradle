@@ -5,11 +5,10 @@ buildscript {
 }
 
 plugins {
-  id 'com.diffplug.spotless' version '6.1.2'
-  id "com.github.ben-manes.versions" version '0.41.0'
+  id 'com.diffplug.spotless' version '6.3.0'
+  id "com.github.ben-manes.versions" version '0.42.0'
   id 'com.github.jk1.dependency-license-report' version '2.0'
-  id 'com.github.spotbugs' version '5.0.3'
-  id "com.jfrog.bintray" version "1.8.5"
+  id 'com.github.spotbugs' version '5.0.6'
   id 'jacoco'
   id 'org.owasp.dependencycheck' version '6.5.2.1'
 }
@@ -35,8 +34,8 @@ def licenseName = 'The Apache Software License, Version 2.0'
 defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
@@ -187,26 +186,6 @@ publishing {
     }
   }
 }
-
-// https://github.com/bintray/bintray-examples/tree/master/gradle-bintray-plugin-examples/publications-example
-// usage: ./gradlew -PbintrayUser=marco-schmidt -PbintrayApiKey=... bintrayUpload
-bintray {
-  user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-  key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-  publications = ['library']
-  pkg {
-    repo = 'ufxcoder'
-    name = 'library'
-    licenses = ['Apache-2.0']
-    vcsUrl = 'https://github.com/marco-schmidt/ufxcoder.git'
-    publicDownloadNumbers = false
-    version {
-      name = project.version
-      released  = new Date()
-    }
-  }
-}
-
 
 jacoco {
   toolVersion = "0.8.7"
