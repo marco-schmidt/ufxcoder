@@ -34,7 +34,7 @@ def licenseName = 'The Apache Software License, Version 2.0'
 defaultTasks 'clean', 'check', 'jacocoTestReport', 'javadoc', 'installDist', 'generateLicenseReport', 'run'
 
 dependencies {
-  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.1'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
